@@ -1,0 +1,111 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background: radial-gradient(circle at top left, #f1f5f9 0%, #e2e8f0 100%);
+  color: #0f172a;
+  /* Slate 900 */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Flash animation for highlight link */
+@keyframes flash-yellow {
+
+  0%,
+  100% {
+    background-color: transparent;
+  }
+
+  25% {
+    background-color: #fef08a;
+  }
+
+  50% {
+    background-color: #fde047;
+  }
+
+  75% {
+    background-color: #fef08a;
+  }
+}
+
+.animate-flash-yellow {
+  animation: flash-yellow 2s ease-in-out;
+}
+
+/* Marker pulse animation */
+@keyframes marker-pulse {
+
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  25% {
+    transform: scale(2.5);
+  }
+
+  50% {
+    transform: scale(2);
+  }
+
+  75% {
+    transform: scale(2.5);
+  }
+}
+
+.animate-marker-pulse {
+  animation: marker-pulse 2s ease-in-out;
+}
+
+/* Modal & Dropdown animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.15s ease-out;
+}
+
+.animate-scaleIn {
+  animation: scaleIn 0.2s ease-out;
+}

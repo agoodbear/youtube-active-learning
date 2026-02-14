@@ -1,0 +1,2476 @@
+WEBVTT
+Kind: captions
+Language: en-US
+
+00:00:00.560 --> 00:00:02.720
+Speaker 1: Welcome to the Emergency Medicine Cases Podcast.
+
+00:00:02.800 --> 00:00:03.520
+Speaker 1: I'm your host, Dr.
+
+00:00:03.600 --> 00:00:07.280
+Speaker 1: Anton Hellman, bringing you the brightest minds in emergency medicine from around the world.
+
+00:00:07.600 --> 00:00:12.080
+Speaker 1: EM Cases is brought to you by Shremi, the Schwartz-Riesman Emergency Medicine Institute.
+
+00:00:12.240 --> 00:00:14.880
+Speaker 1: That's a nonprofit organization dedicated to improving EM Cases.
+
+00:00:15.160 --> 00:00:16.600
+Speaker 1: care through high quality research and education.
+
+00:00:16.840 --> 00:00:23.160
+Speaker 1: The opinions express on this podcast are intended for information and education purposes only and should not be used to diagnose treat or prevent any medical condition nor should they be used as a substitute for medical advice from qualified practicing physicians.
+
+00:00:24.279 --> 00:00:29.800
+Speaker 2: First, just a quick word from our sponsor Metricade, the experts in complex physician scheduling since 2012.
+
+00:00:30.720 --> 00:00:37.680
+Speaker 2: I've been using Metrocaid's incredible scheduling system for more than a decade, and it's been a game changer for me and my colleagues.
+
+00:00:37.600 --> 00:00:52.320
+Speaker 2: Shift work comes with its challenges, but Metricade helps minimize the drawbacks by ensuring fair distribution of shifts while integrating circadian rhythm-friendly recovery time into its methodology, preserving your precious sleep so that you can perform at your best.
+
+00:00:52.640 --> 00:00:53.760
+Speaker 2: Go to metricaid.
+
+00:00:54.000 --> 00:01:00.960
+Speaker 2: com slash emcases to see how Metricaid can make your scheduling fair, improve your sleep, and your performance.
+
+00:01:01.000 --> 00:01:02.200
+Speaker 2: That's metricade.
+
+00:01:02.600 --> 00:01:05.160
+Speaker 2: com slash em C A-S-E-S.
+
+00:01:06.200 --> 00:01:11.160
+Speaker 1: And now a word from one of our sponsors, Paradis, the all-new emergency assistant.
+
+00:01:11.360 --> 00:01:25.520
+Speaker 1: Paratus combines everything you loved about Easy Recess with powerful upgrades, just in time procedural guidance, stress proof organization, and Adams, the intelligent assistant that helps you find exactly what you need.
+
+00:01:25.560 --> 00:01:30.920
+Speaker 1: Whether you're in the ER, on transport, or in the field, Paradis keeps you ready for anything.
+
+00:01:31.160 --> 00:01:34.760
+Speaker 1: Learn more and start your free trial today at Paradus Medical.
+
+00:01:35.080 --> 00:01:36.600
+Speaker 1: com slash EMcases.
+
+00:01:36.860 --> 00:01:40.299
+Speaker 1: That's P-A-R-A-T-U-S-Medical.
+
+00:01:40.700 --> 00:01:42.539
+Speaker 1: com slash EM cases.
+
+00:01:43.180 --> 00:01:47.579
+Speaker 1: Status epilepticus remains one of the most time-critical emergencies we face.
+
+00:01:47.860 --> 00:01:54.659
+Speaker 1: Prolonged seizures can lead to severe acidosis, causing cardiovascular collapse and CNS damage.
+
+00:01:55.140 --> 00:01:59.140
+Speaker 1: Time-based definitions have shortened in the last decade or so.
+
+00:01:59.439 --> 00:02:06.159
+Speaker 1: Mortality remains high, and our seizure, cessation, airway, and sedation strategies are evolving.
+
+00:02:06.399 --> 00:02:08.399
+Speaker 1: So it's time for an update.
+
+00:02:09.020 --> 00:02:16.860
+Speaker 1: If you haven't listened to our Big Main episode podcast on Status Epilepticus already, episode number 133, I encourage you to do so.
+
+00:02:17.019 --> 00:02:18.620
+Speaker 1: It's one of my personal faves.
+
+00:02:19.040 --> 00:02:32.480
+Speaker 1: Now, there are lots of controversies when it comes to how best to manage status epilepticus, and as we discussed in this update, we'll try to make clear what is evidence-based and not so controversial, and what is opinion-based and controversial.
+
+00:02:32.540 --> 00:02:43.260
+Speaker 1: So it's a pleasure and honor, as always, to have back on the show and in the EMC studios my friend, master educator, EM speaker, and EM Doc Coach.
+
+00:02:43.560 --> 00:02:51.560
+Speaker 1: who's worked both as an intensivist and EM doc for about the same number of years as I've been working as an EM doc, Dr.
+
+00:02:51.640 --> 00:02:52.680
+Speaker 1: Sarah Gray.
+
+00:02:52.920 --> 00:02:56.040
+Speaker 1: Great to have you back at EMC Studios again, Sarah.
+
+00:02:56.360 --> 00:02:57.959
+Speaker 3: Thanks so much for having me.
+
+00:02:58.379 --> 00:03:09.900
+Speaker 1: So before we get into the status epilepticus management algorithm and chat about specific decision points, I just want to hit on the sort of game changers that are most likely to determine outcomes.
+
+00:03:10.220 --> 00:03:20.700
+Speaker 1: So what would you say are the most important moves or aspects of management that are likely to decrease the incredibly high mortality and disability that can result from status epilepticus?
+
+00:03:20.940 --> 00:03:27.660
+Speaker 1: You know, there's there's time to first benzo, there's the correct dosing of benzos, there's aspiration risk, there's like so many aspects.
+
+00:03:27.819 --> 00:03:35.260
+Speaker 1: But I just want to try and focus our listeners on the most important life-saving things that we can do in status epilepticus.
+
+00:03:35.799 --> 00:03:39.560
+Speaker 3: Okay, and I would say, Anton, I probably think about three things.
+
+00:03:39.799 --> 00:03:42.040
+Speaker 3: Number one, get a glucose, right?
+
+00:03:42.120 --> 00:03:44.360
+Speaker 3: It's so easy, but we don't want to overlook it.
+
+00:03:44.599 --> 00:03:45.480
+Speaker 3: Number two.
+
+00:03:46.140 --> 00:03:49.019
+Speaker 3: Time to your first benzodose matters.
+
+00:03:49.180 --> 00:03:52.939
+Speaker 3: So the quicker you give it, the lower mortality in status epilepticus.
+
+00:03:53.019 --> 00:03:57.019
+Speaker 3: So you want to think about that as a serious quality marker here.
+
+00:03:57.240 --> 00:04:07.080
+Speaker 3: And number three, the duration of the seizure makes a huge difference in terms of outcomes, in terms of mortality, but also morbidity from seizure.
+
+00:04:07.260 --> 00:04:12.460
+Speaker 3: So turning off status as fast as possible has a huge mortality impact.
+
+00:04:13.020 --> 00:04:13.340
+Speaker 1: All right.
+
+00:04:13.580 --> 00:04:19.740
+Speaker 1: So ABCDEFG and the D-E-F-G stands for don't ever forget glucose.
+
+00:04:19.940 --> 00:04:23.940
+Speaker 1: Which of course I have forgotten quite a few times over the years.
+
+00:04:24.580 --> 00:04:25.780
+Speaker 3: Right, we all have.
+
+00:04:25.940 --> 00:04:28.980
+Speaker 3: Uh and hopefully somebody in the room prompts you or reminds you.
+
+00:04:29.380 --> 00:04:29.540
+Speaker 3: But
+
+00:04:29.600 --> 00:04:35.440
+Speaker 3: But yeah, uh I know it's such an easy point, but it is worth emphasizing because we're all human and we forget sometimes.
+
+00:04:35.840 --> 00:04:36.000
+Speaker 1: Great.
+
+00:04:36.080 --> 00:04:38.960
+Speaker 1: So those three things we should really be concentrating on.
+
+00:04:39.160 --> 00:04:41.240
+Speaker 1: And we'll come back to in our discussion.
+
+00:04:41.400 --> 00:04:49.080
+Speaker 1: So glucose, time to first benzo, and really that the faster we get this thing done, the better the outcome is going to be.
+
+00:04:49.400 --> 00:04:49.800
+Speaker 3: Exactly.
+
+00:04:50.040 --> 00:04:50.360
+Speaker 1: Okay.
+
+00:04:50.639 --> 00:04:55.440
+Speaker 1: So let's actually zero in on minimizing time to first benzo.
+
+00:04:55.680 --> 00:04:58.720
+Speaker 1: In the main episode we did it on Status Epilepticus
+
+00:04:59.039 --> 00:05:08.000
+Speaker 1: We argued that time to first benzo, as you astutely said, is so important that it actually is more important than your choice of benzo.
+
+00:05:08.720 --> 00:05:11.520
+Speaker 1: There's a bit of controversy out there as to the choice of benzo.
+
+00:05:11.600 --> 00:05:14.880
+Speaker 1: You know, there's larzepam, there's diazepam, there's medazolam.
+
+00:05:15.280 --> 00:05:18.960
+Speaker 1: There's some benefits of midazolam that has a it's short acting.
+
+00:05:19.420 --> 00:05:31.020
+Speaker 1: that it has predictable pharmacokinetics, it has high CNS penetration, but the only problem with that is that medazolam is going to turn off pretty quickly, and then if you don't have it going as a chunky infusion
+
+00:05:31.160 --> 00:05:34.440
+Speaker 1: Uh then the patient might re-sease again and they're still in status.
+
+00:05:35.240 --> 00:05:42.760
+Speaker 1: Given that we understand that time to benzo is really important and we want that as sure as possible, we do need to choose a benzo.
+
+00:05:42.840 --> 00:05:45.480
+Speaker 1: What's your benzo of choice and why?
+
+00:05:45.880 --> 00:05:50.680
+Speaker 3: So if I have an IV, I go with Lirazepam as my benzo of choice.
+
+00:05:50.919 --> 00:05:53.720
+Speaker 3: I like this because the onset is quick
+
+00:05:53.639 --> 00:05:57.000
+Speaker 3: And because it sticks around effectively in your CNS.
+
+00:05:57.240 --> 00:06:01.880
+Speaker 3: Because it's low in lipophilicity, you're going to have longer CNS effects
+
+00:06:01.700 --> 00:06:04.500
+Speaker 3: So that's my first choice if I have an IV.
+
+00:06:04.740 --> 00:06:09.300
+Speaker 3: If I don't have an IV available to me, I go with I am Medazalam.
+
+00:06:09.560 --> 00:06:11.160
+Speaker 3: Which is also a very reasonable choice.
+
+00:06:11.400 --> 00:06:18.440
+Speaker 3: Onset is fast, but as you mentioned, it's going to wear off a little quicker, so you want to be very thoughtful about repeating dosing if you need.
+
+00:06:18.760 --> 00:06:19.000
+Speaker 3: All right.
+
+00:06:19.160 --> 00:06:21.240
+Speaker 1: So Ivy Lurazepam is your go-to.
+
+00:06:21.480 --> 00:06:26.520
+Speaker 1: And I just want to talk about the dosing of that because the guidelines say 0.
+
+00:06:26.680 --> 00:06:30.920
+Speaker 1: 1 milligrams per kilogram to a maximum of four milligrams.
+
+00:06:31.320 --> 00:06:43.640
+Speaker 1: But let's say you have someone who's a known alcohol use disorder patient who has had multiple withdrawal seizures in the past and have required massive doses of benzodiazepines.
+
+00:06:43.680 --> 00:06:47.760
+Speaker 1: Four milligrams of Lurazepam is gonna do nothing for their status epilepticus.
+
+00:06:47.920 --> 00:06:49.920
+Speaker 1: That's just one extreme example.
+
+00:06:50.160 --> 00:06:51.680
+Speaker 1: But I have heard that
+
+00:06:52.139 --> 00:07:01.259
+Speaker 1: the guideline recommended maximum dose of four milligrams of Lirazepam is probably too low and that we should be doing more like eight milligrams.
+
+00:07:01.560 --> 00:07:05.960
+Speaker 1: for the average size adult as your first line status epilepticus benzo.
+
+00:07:06.280 --> 00:07:08.759
+Speaker 1: What's your opinion on on the dosing of the Razopam?
+
+00:07:09.260 --> 00:07:14.140
+Speaker 3: So certainly if somebody has known alcohol use disorder, I am willing to go higher.
+
+00:07:11.000 --> 00:07:11.240
+Speaker 3: For
+
+00:07:14.380 --> 00:07:18.780
+Speaker 3: Some experts will recommend that we double our normal doses.
+
+00:07:19.340 --> 00:07:24.940
+Speaker 3: If I was going to do that, I do want to be very sure that this patient has ethanol withdrawal.
+
+00:07:25.100 --> 00:07:27.500
+Speaker 3: Like I want to be sure of my diagnosis.
+
+00:07:27.660 --> 00:07:35.980
+Speaker 3: before I truly snow them, but there are definitely patients where they are well known to me, the diagnosis is clear, and I will double those doses.
+
+00:07:36.140 --> 00:07:40.620
+Speaker 3: So rather than giving them an initial four milligrams of Lorazepam, I will give them eight milligrams.
+
+00:07:40.820 --> 00:07:50.580
+Speaker 3: If you're not comfortable doubling the dose up front and giving that 8 milligram bolus, then maybe think about giving 4 milligrams each time, but every two to three minutes
+
+00:07:50.639 --> 00:07:54.720
+Speaker 3: repeating doses more frequently so you get them to an adequate overall dose.
+
+00:07:55.120 --> 00:07:55.280
+Speaker 1: Great.
+
+00:07:55.360 --> 00:08:01.600
+Speaker 1: So that was actually my next question is you've done your, let's say, four milligrams of Lirazepam, when are you going to repeat it?
+
+00:08:01.740 --> 00:08:07.740
+Speaker 1: So do you usually repeat every two, three minutes or there's been recommendations for every four minutes?
+
+00:08:08.060 --> 00:08:11.260
+Speaker 3: Yeah, I'm around the two to three minute mark, I would say.
+
+00:08:11.420 --> 00:08:13.100
+Speaker 3: I do have to start a watch for that.
+
+00:08:13.180 --> 00:08:15.820
+Speaker 3: So seizures are something I start a timer for.
+
+00:08:15.660 --> 00:08:20.460
+Speaker 3: Because otherwise my mental clock thinks three minutes have gone by and really it's been about forty-five seconds.
+
+00:08:20.700 --> 00:08:21.660
+Speaker 3: Uh so
+
+00:08:23.800 --> 00:08:32.919
+Speaker 3: Yeah, my my perception of time in these situations uh gets a bit compressed, so I definitely start a clock, and then yeah, I'd say every three minutes or so I'm redosing benzodiazepines.
+
+00:08:33.140 --> 00:08:33.380
+Speaker 1: Okay.
+
+00:08:33.620 --> 00:08:40.820
+Speaker 1: The other patient population I'm thinking of in terms of maybe going for a higher dose of Lurazepem is is the patient with a high BMI.
+
+00:08:41.240 --> 00:08:48.120
+Speaker 3: Yes, and so it certainly can make a difference, especially if you're using something quite lipophilic.
+
+00:08:48.280 --> 00:08:52.280
+Speaker 3: On the upside, lorazipam is fairly low in lipophilicity.
+
+00:08:52.520 --> 00:09:00.520
+Speaker 3: So it's not gonna have as much of an impact based on your patient's BMI, but it could still be the case, you know, you might need a little more.
+
+00:09:00.600 --> 00:09:02.040
+Speaker 3: So I I think that's worth
+
+00:09:02.259 --> 00:09:06.019
+Speaker 3: You know, putting into your mental algorithm and having a little flexibility there.
+
+00:09:06.259 --> 00:09:09.779
+Speaker 3: But I don't have a specific rule for patients who are obese.
+
+00:09:10.320 --> 00:09:16.080
+Speaker 1: It's a good point about the pharmacokinetics of Lirazepam that it probably won't make much of a difference in the high BMI patient.
+
+00:09:16.240 --> 00:09:17.680
+Speaker 1: With diazepam it would.
+
+00:09:18.000 --> 00:09:18.240
+Speaker 3: Exactly.
+
+00:09:18.560 --> 00:09:18.720
+Speaker 1: Yeah.
+
+00:09:18.880 --> 00:09:19.040
+Speaker 1: Okay.
+
+00:09:19.200 --> 00:09:20.480
+Speaker 1: And how about MEDAZ?
+
+00:09:20.940 --> 00:09:23.100
+Speaker 3: Yeah, so it will also have an impact on Madaz.
+
+00:09:23.260 --> 00:09:25.580
+Speaker 3: I think like it will have some impact on all of them.
+
+00:09:25.740 --> 00:09:27.980
+Speaker 3: They all have a degree of fat distribution here.
+
+00:09:28.660 --> 00:09:37.460
+Speaker 3: And so, you know, I think the the important takeaway is to titrate your medication to the patient you see in front of you.
+
+00:09:37.640 --> 00:09:45.320
+Speaker 3: Putting BMI into that, putting their ethanol or benzouse history, putting their age, their blood pressure, all of those things go into the mix.
+
+00:09:45.360 --> 00:09:46.400
+Speaker 1: Fair enough.
+
+00:09:52.320 --> 00:09:57.120
+Speaker 1: And just a quick word from one of our sponsors, the Rural Ultrasound Fellowship.
+
+00:09:57.339 --> 00:10:01.660
+Speaker 1: No matter where you practice, there are moments when decisions can't wait.
+
+00:10:01.819 --> 00:10:07.740
+Speaker 1: Maybe imaging isn't available or the system is too busy and you still need clear answers right now.
+
+00:10:08.060 --> 00:10:13.340
+Speaker 1: That's where a POCUS Fellowship makes all the difference and gives you the confidence at the bedside.
+
+00:10:13.500 --> 00:10:18.700
+Speaker 1: It helps you decide that you can manage locally and when it's time to escalate care.
+
+00:10:18.700 --> 00:10:28.300
+Speaker 1: The Rural Ultrasound Fellowship is a one-year fully online POCUS training program you can complete while working full-time, taught by international faculty.
+
+00:10:28.460 --> 00:10:30.780
+Speaker 1: Learn more at ruralultrasound.
+
+00:10:31.100 --> 00:10:31.420
+Speaker 1: com.
+
+00:10:31.820 --> 00:10:33.900
+Speaker 1: built for real-world decisions.
+
+00:10:34.380 --> 00:10:43.260
+Speaker 1: Okay, so so far we've talked about time to benzo is key and that your go-to benzo of choice, yours personally is Larazopam.
+
+00:10:43.340 --> 00:10:45.740
+Speaker 1: Some people use Ivy Medazolam.
+
+00:10:46.120 --> 00:10:49.800
+Speaker 1: And I've heard 5 milligrams up front of IV Medazolem.
+
+00:10:49.959 --> 00:10:53.160
+Speaker 1: I've also heard 10 milligrams up front of IV Medazolem
+
+00:10:53.660 --> 00:10:55.500
+Speaker 1: It does have great pharmacokinetics.
+
+00:10:55.580 --> 00:10:58.460
+Speaker 1: It's a fast onset, so it's a reasonable first choice.
+
+00:10:58.620 --> 00:11:06.380
+Speaker 1: The problem with it again is that it turns off very quickly, and if you're not totally on top of repeated doses and getting an infusion going.
+
+00:11:06.640 --> 00:11:08.640
+Speaker 1: that they might reseize again.
+
+00:11:08.880 --> 00:11:11.440
+Speaker 1: I want to talk a little bit more about specific populations.
+
+00:11:11.520 --> 00:11:14.720
+Speaker 1: We've talked a little bit about patients with alcohol use disorder.
+
+00:11:15.060 --> 00:11:21.060
+Speaker 1: Because when we're treating these patients, it's not always going to be just benzos and then going through our algorithm.
+
+00:11:21.220 --> 00:11:26.660
+Speaker 1: We need to think about those patient populations where our first line medication is actually going to be different than a benzo.
+
+00:11:26.759 --> 00:11:34.920
+Speaker 1: So can you just kind of run through for us, you know, there's the hyponatremia patient, there's the eclamptic patient, there's various TOX patients.
+
+00:11:35.259 --> 00:11:40.220
+Speaker 1: Can you just run through for us how your algorithm is going to change based on those different patient populations?
+
+00:11:40.620 --> 00:11:41.420
+Speaker 3: Yeah, absolutely.
+
+00:11:41.579 --> 00:11:43.420
+Speaker 3: Maybe let's tackle that one at a time.
+
+00:11:43.640 --> 00:11:51.400
+Speaker 3: If you have the hyponotremic plus seizing patient, they're going to follow into a different algorithm.
+
+00:11:51.300 --> 00:11:55.459
+Speaker 3: And I guess this is predicated on you knowing their sodium level.
+
+00:11:55.620 --> 00:11:59.220
+Speaker 3: Because if the patient comes in cold, you may not know, you might start with
+
+00:11:59.360 --> 00:12:00.720
+Speaker 3: benzos up front.
+
+00:12:00.960 --> 00:12:08.320
+Speaker 3: So I guess it is a good reminder that seizing patients or patients in status epilepticus certainly you want to send electrolytes.
+
+00:12:08.459 --> 00:12:11.980
+Speaker 3: You want to know what their sodium is because it's going to change your management.
+
+00:12:12.140 --> 00:12:18.380
+Speaker 3: So for those patients, I'll send a VBG with electrolytes on it because that's what my lab can process the fastest.
+
+00:12:18.580 --> 00:12:20.100
+Speaker 3: So I get those results back quicker.
+
+00:12:20.420 --> 00:12:21.620
+Speaker 1: Yeah, that's a great pearl.
+
+00:12:21.780 --> 00:12:23.460
+Speaker 1: So uh some places you can't do that.
+
+00:12:23.620 --> 00:12:33.140
+Speaker 1: I'd suggest to listeners to advocate for getting electrolytes off your VBG, making sure your lab can do that, because that can save lives for sure.
+
+00:12:32.959 --> 00:12:37.519
+Speaker 1: Because if you're just treating the hyponatremic patient just with benzos, you're not going to get very far.
+
+00:12:37.680 --> 00:12:42.240
+Speaker 1: And it's a pretty quick fix with with hypertonic saline, sodium bicarb, et cetera.
+
+00:12:42.360 --> 00:12:52.200
+Speaker 3: Yeah, I mean, and I've had that case where the patient comes in, we think they're in status, we're into our second, third, fourth line medications and nothing's turning it off.
+
+00:12:52.360 --> 00:12:55.640
+Speaker 3: And then the lab calls and tells you the sodium's a hundred and eight.
+
+00:12:55.720 --> 00:13:02.120
+Speaker 3: Uh and everything screeches to a halt as you start getting your 3% and and your treatment goes in a different direction.
+
+00:13:02.440 --> 00:13:06.600
+Speaker 3: So sending it is is a key move because it definitely changes practice.
+
+00:13:06.920 --> 00:13:07.000
+Speaker 1: Yeah.
+
+00:13:07.080 --> 00:13:08.360
+Speaker 1: So that's another great point.
+
+00:13:08.600 --> 00:13:09.160
+Speaker 1: Just
+
+00:13:08.900 --> 00:13:23.220
+Speaker 1: When your benzo is not working, this is exactly when you gotta start thinking about the other causes, like hyponeitremia, and we'll get to the other ones, but before we do get to the other ones, what are you gonna give for severe hyponia in a patient who's actively in status?
+
+00:13:23.800 --> 00:13:27.080
+Speaker 3: So my preference is to give hypertonic saline.
+
+00:13:27.240 --> 00:13:35.000
+Speaker 3: At my place we stalk 3% saline, and I'll typically give that in aliquots of about 100 cc's.
+
+00:13:35.160 --> 00:13:36.200
+Speaker 3: You give it IV.
+
+00:13:36.420 --> 00:13:38.180
+Speaker 3: You can give it over a minute or so.
+
+00:13:38.420 --> 00:13:44.740
+Speaker 3: For places that don't stock hypertonic saline, your alternate is to give an amp of sodium bicarb
+
+00:13:45.040 --> 00:13:52.880
+Speaker 3: which everybody has 'cause it's stalked on crash carts, and we think of that as bicarb, but you also want to think of it as a significant sodium load.
+
+00:13:52.959 --> 00:13:56.880
+Speaker 3: So there's fifty mil equivalents of sodium in each one of those syringes.
+
+00:13:56.800 --> 00:14:04.959
+Speaker 3: And so you can also think about giving repeated doses of that sodium bicarb until their neurologic status improves.
+
+00:14:05.339 --> 00:14:06.220
+Speaker 1: All right, fantastic.
+
+00:14:06.380 --> 00:14:08.060
+Speaker 1: So that's hyponatremia.
+
+00:14:08.139 --> 00:14:14.139
+Speaker 1: There's preeclampsia, there's hypertensive encephalopathy, there's all the sodium blockade talks drugs.
+
+00:14:14.339 --> 00:14:17.220
+Speaker 1: Can you give us uh any tips or tricks about those ones?
+
+00:14:17.699 --> 00:14:18.180
+Speaker 3: Absolutely.
+
+00:14:18.339 --> 00:14:18.660
+Speaker 3: Yeah.
+
+00:14:18.819 --> 00:14:22.660
+Speaker 3: So when your patient's eclamptic, you're going to go in a different direction, right?
+
+00:14:22.740 --> 00:14:25.220
+Speaker 3: Your fix there is magnesium.
+
+00:14:25.300 --> 00:14:33.380
+Speaker 3: So typically I'll give them a bolus of magnesium between four to six grams, and you can put that in over 15 minutes or so.
+
+00:14:33.300 --> 00:14:40.180
+Speaker 3: You want to watch for hypotension because it does give you a bit of vasodilation and you might need to support their blood pressure with some norepi.
+
+00:14:40.580 --> 00:14:45.860
+Speaker 3: And once you've given the bolus, they then get an infusion that you can titrate to how they're doing
+
+00:14:45.780 --> 00:14:47.620
+Speaker 3: So that's your eclamtic person.
+
+00:14:47.700 --> 00:14:53.620
+Speaker 3: You don't want to forget about magnesium and obviously getting your OB-Gyne service involved in those people.
+
+00:14:53.860 --> 00:14:59.220
+Speaker 3: For the hypertensive patient, controlling the blood pressure is your core move there.
+
+00:14:59.380 --> 00:15:01.300
+Speaker 3: I use Libetolol a lot for that.
+
+00:15:01.460 --> 00:15:04.980
+Speaker 3: You can give boluses, say, of 20 milligrams at a time.
+
+00:15:04.980 --> 00:15:11.620
+Speaker 3: until you get the blood pressure down into the range you're looking for, and you're also clinically, of course, looking for your patient to stop seizing.
+
+00:15:11.940 --> 00:15:16.500
+Speaker 3: Nicardipine is also a great option there, depending on where you practice.
+
+00:15:16.920 --> 00:15:24.519
+Speaker 3: So you have choices and you want to be clear on what your department stocks in advance so you know what you're going to use in that circumstance.
+
+00:15:24.380 --> 00:15:28.140
+Speaker 1: So that's the differential we should be thinking through when our benzos aren't working.
+
+00:15:28.380 --> 00:15:38.940
+Speaker 1: Hopefully we know that they're, you know, twenty eight weeks pregnant and they come in with a high blood pressure and they're seizing and that's gonna be obvious, but sometimes it's not so obvious.
+
+00:15:39.220 --> 00:15:46.260
+Speaker 3: I guess I'm making a mental note that I should at least be examining the abdomen and if I'm having any uncertainty, sticking a probe on.
+
+00:15:46.500 --> 00:15:46.820
+Speaker 1: Hmm.
+
+00:15:47.160 --> 00:15:55.000
+Speaker 1: And certainly, you know, if they're postpartum, it's up to, I believe, three or four weeks that they can still have a clampsia after.
+
+00:15:55.160 --> 00:15:55.800
+Speaker 1: Um and
+
+00:15:56.160 --> 00:15:56.960
+Speaker 1: That's a bit trickier.
+
+00:15:57.040 --> 00:15:59.040
+Speaker 1: That you gotta find on on history.
+
+00:15:59.280 --> 00:16:07.840
+Speaker 1: So that's where if the patient comes in with altered level of awareness, you need to get on the phone or to the family or to someone to
+
+00:16:08.220 --> 00:16:10.700
+Speaker 1: find out if they've just delivered a baby or not.
+
+00:16:10.940 --> 00:16:12.860
+Speaker 3: Yeah, you're gonna need some collateral there.
+
+00:16:13.740 --> 00:16:16.700
+Speaker 1: We've been talking a lot about the timing of benzos
+
+00:16:17.060 --> 00:16:24.260
+Speaker 1: That you want to give them as fast as possible, that you want to give your second dose after about two minutes if the seizure is continuing.
+
+00:16:24.660 --> 00:16:28.260
+Speaker 1: That brings up the definition of status epilepticus.
+
+00:16:28.520 --> 00:16:31.960
+Speaker 1: Which in the old days was a seizure over thirty minutes.
+
+00:16:32.040 --> 00:16:35.880
+Speaker 1: And now for about a decade now it's been any seizure over five minutes, right?
+
+00:16:36.200 --> 00:16:39.080
+Speaker 1: Or a seizure that has recurred within five minutes.
+
+00:16:39.480 --> 00:16:41.240
+Speaker 3: Where they don't come back to baseline in the middle.
+
+00:16:41.320 --> 00:16:41.560
+Speaker 3: Yep.
+
+00:16:41.880 --> 00:16:42.520
+Speaker 1: Right.
+
+00:16:42.860 --> 00:16:43.980
+Speaker 3: And that's quick, right?
+
+00:16:44.300 --> 00:16:45.420
+Speaker 1: Yeah, that's really fast.
+
+00:16:45.660 --> 00:16:53.260
+Speaker 1: So the question is, you know, we see quite a few patients with seizures in the emergency department who who start their seizure in the emergency department.
+
+00:16:53.700 --> 00:17:02.980
+Speaker 1: And I always am unsure whether to go for like the big guns, you know, am I gonna give five or ten of Ivy Medazam or four to eight?
+
+00:17:03.160 --> 00:17:11.640
+Speaker 1: milligrams of larazipam up front for the patient who's been seizing for one minute because I don't know if they're going to go into status epilepticus.
+
+00:17:11.720 --> 00:17:13.800
+Speaker 1: I don't know if it's going to last for five minutes or more.
+
+00:17:14.319 --> 00:17:20.160
+Speaker 1: the vast majority of seizures resolve within five minutes, even by themselves.
+
+00:17:20.720 --> 00:17:24.079
+Speaker 1: So I'm always unsure like how aggressive to be
+
+00:17:24.160 --> 00:17:26.400
+Speaker 1: after it's one minute or two minutes of seizure.
+
+00:17:26.640 --> 00:17:30.320
+Speaker 1: Do you have an approach to how fast to give that first benzo?
+
+00:17:30.480 --> 00:17:35.760
+Speaker 1: And before they fit the definition for status epilepticus, how aggressive to be in your dosing?
+
+00:17:36.580 --> 00:17:45.539
+Speaker 3: Yes, so I'll tell you my approach, Anton, and this is my opinion, because you will hear experts who have an alternate opinion.
+
+00:17:45.500 --> 00:17:53.180
+Speaker 3: Some people don't treat in those first five minutes because so many patients will spontaneously stop seizing on their own.
+
+00:17:53.440 --> 00:18:03.760
+Speaker 3: I am always worried that if this patient continues on to status, that delaying that first dose actually worsens outcomes and
+
+00:17:55.100 --> 00:17:55.260
+Speaker 3: S
+
+00:18:03.900 --> 00:18:05.980
+Speaker 3: Like those patients have a real morbidity.
+
+00:18:06.060 --> 00:18:13.820
+Speaker 3: If you have status epilepticus, 30% of those people end up with a moderate to severe neurodeficit from that episode.
+
+00:18:13.980 --> 00:18:14.620
+Speaker 3: Like that's
+
+00:18:15.120 --> 00:18:15.760
+Speaker 3: Huge.
+
+00:18:16.320 --> 00:18:19.680
+Speaker 3: And so I want to err on the side of treating them.
+
+00:18:20.080 --> 00:18:21.920
+Speaker 1: My understanding is it's like a snowball effect.
+
+00:18:22.000 --> 00:18:24.960
+Speaker 1: Like the longer the seizure goes on, the harder it is to get them out of it.
+
+00:18:24.960 --> 00:18:25.280
+Speaker 3: Exactly.
+
+00:18:25.520 --> 00:18:30.240
+Speaker 1: And so, yeah, to me it kind of makes no sense just to see if someone's going to resolve their seizure.
+
+00:18:30.720 --> 00:18:31.280
+Speaker 3: Right.
+
+00:18:31.600 --> 00:18:34.720
+Speaker 3: And so for me, if somebody's seizing
+
+00:18:34.800 --> 00:18:40.160
+Speaker 3: I'm asking my nurses for Lorazepam right away, and I'm gonna give them that upfront dose.
+
+00:18:40.320 --> 00:18:43.280
+Speaker 3: Uh if their seizure stops, great, that's a win.
+
+00:18:43.440 --> 00:18:45.840
+Speaker 3: If it doesn't, we've started treatment early.
+
+00:18:45.960 --> 00:18:55.160
+Speaker 3: Either way, I don't think there's a compelling reason to just stand there and let them seize, because we know that they're burning neurons.
+
+00:18:55.700 --> 00:18:56.020
+Speaker 1: All right.
+
+00:18:56.180 --> 00:19:01.060
+Speaker 1: And in terms of the dosing, you're still going to go with the four milligrams of Lirazepam up front?
+
+00:19:01.140 --> 00:19:04.580
+Speaker 1: Because I've seen people, you know, after one minute, they'll just try two milligrams.
+
+00:19:04.660 --> 00:19:07.460
+Speaker 1: And then two minutes later, they'll try another two milligrams.
+
+00:19:07.840 --> 00:19:12.480
+Speaker 3: And the guidelines on this are not clear, so I don't think that's unreasonable.
+
+00:19:12.720 --> 00:19:14.960
+Speaker 3: You could go two milligrams first.
+
+00:19:15.200 --> 00:19:17.600
+Speaker 3: You can also base it on how quick it's been.
+
+00:19:17.760 --> 00:19:25.679
+Speaker 3: Like if you were able to get the drugs to the bedside really rapidly, patient's been seizing 60 seconds or so, I think two milligrams is reasonable.
+
+00:19:25.860 --> 00:19:38.340
+Speaker 3: If it took a little longer to get the drugs to the bedside, because sometimes the med room is just that far away, and you're closer to that three, four, five minute mark, then I'm gonna go four milligrams and treat it a bit more aggressively.
+
+00:19:38.659 --> 00:19:40.500
+Speaker 1: Yeah, and I I think realistically
+
+00:19:40.660 --> 00:19:47.780
+Speaker 1: It usually takes a good three, four minutes just to get the medication into the patient from the time that it's been recognized that they start seizing.
+
+00:19:48.100 --> 00:19:48.580
+Speaker 3: Exactly.
+
+00:19:48.740 --> 00:19:55.300
+Speaker 3: And and sometimes, truthfully, I'll ask for the drug and then while the nurses are getting it, the patient stops seizing.
+
+00:19:55.540 --> 00:19:56.020
+Speaker 3: Fine.
+
+00:19:56.180 --> 00:20:00.420
+Speaker 3: Then I have a syringe at the bedside ready to go in case they do recur.
+
+00:20:00.820 --> 00:20:06.100
+Speaker 3: Which just seems safe to me to be prepped for the next occurrence if it's gonna happen.
+
+00:20:06.360 --> 00:20:14.279
+Speaker 1: Yeah, and the other point is if I gave you four milligrams of IV diazepam right now, assuming we were in the emergency department, it's pretty safe.
+
+00:20:14.360 --> 00:20:15.880
+Speaker 1: I mean, you're in an emergency department.
+
+00:20:16.080 --> 00:20:22.960
+Speaker 1: And benzodiazepines are pretty safe drugs as long as you're there to manage the airway if there's a problem, right?
+
+00:20:23.360 --> 00:20:23.840
+Speaker 3: Exactly.
+
+00:20:24.000 --> 00:20:24.240
+Speaker 3: Right?
+
+00:20:24.320 --> 00:20:27.520
+Speaker 3: And they might have a a nice little nap for a few minutes.
+
+00:20:27.820 --> 00:20:31.020
+Speaker 3: But it's also very safe for their brain as long as you're monitoring them.
+
+00:20:31.340 --> 00:20:31.500
+Speaker 1: Yeah.
+
+00:20:31.660 --> 00:20:33.580
+Speaker 1: So there's very little downside.
+
+00:20:33.900 --> 00:20:36.060
+Speaker 1: So I think, you know, the more we talk about this
+
+00:20:36.620 --> 00:20:45.420
+Speaker 1: For me, my approach is going to be even if it's just one minute of seizure, I'm still going to go for that higher dose, at least four milligrams of Lurazepam.
+
+00:20:45.560 --> 00:20:51.240
+Speaker 1: 'Cause I can manage that easily if it's a bit of a dose that's too high for that patient for whatever reason.
+
+00:20:51.560 --> 00:20:58.680
+Speaker 1: Because even if there's only a three percent chance or a five percent chance of them developing status epilepticus, I think
+
+00:20:58.940 --> 00:21:06.940
+Speaker 1: with the high mortality and morbidity associated with status epilepticus, it's in the balance, it's it's worth giving that big dose of larzepam.
+
+00:21:07.540 --> 00:21:09.140
+Speaker 3: Yeah, I totally agree.
+
+00:21:16.340 --> 00:21:21.460
+Speaker 1: And now a word from one of our sponsors, Paradis, the all-new emergency assistant.
+
+00:21:21.460 --> 00:21:35.700
+Speaker 1: Paratus combines everything you loved about Easy Recess with powerful upgrades, just in time procedural guidance, stress proof organization, and Adams, the intelligent assistant that helps you find exactly what you need.
+
+00:21:35.600 --> 00:21:41.039
+Speaker 1: Whether you're in the ER, on transport, or in the field, Paradis keeps you ready for anything.
+
+00:21:41.360 --> 00:21:44.880
+Speaker 1: Learn more and start your free trial today at Paradus Medical.
+
+00:21:45.200 --> 00:21:46.720
+Speaker 1: com slash EMcases.
+
+00:21:46.960 --> 00:21:50.400
+Speaker 1: That's par a tusmedical.
+
+00:21:50.880 --> 00:21:52.640
+Speaker 1: com slash em cases.
+
+00:21:53.920 --> 00:21:56.800
+Speaker 1: Let's talk about emergency medicine's favorite drug.
+
+00:21:56.779 --> 00:21:57.419
+Speaker 1: Ketamine.
+
+00:21:58.220 --> 00:21:59.740
+Speaker 1: Ketamine fixes everything.
+
+00:22:00.220 --> 00:22:00.940
+Speaker 3: Everything.
+
+00:22:01.260 --> 00:22:02.700
+Speaker 3: Even your sprained ankle.
+
+00:22:02.940 --> 00:22:03.419
+Speaker 1: Yeah.
+
+00:22:03.980 --> 00:22:10.539
+Speaker 1: We've maybe just hinted at what the role of ketamine is in status epilepticus in our opinion, but
+
+00:22:10.640 --> 00:22:14.880
+Speaker 1: There's been a lot of controversy around using ketamine and status epilepticus.
+
+00:22:15.040 --> 00:22:20.080
+Speaker 1: There's been some growing practice of adding ketamine one milligram per kilogram.
+
+00:22:20.160 --> 00:22:21.840
+Speaker 1: So this is a decent dose.
+
+00:22:22.060 --> 00:22:25.260
+Speaker 1: You know, in an average adult, that's 70 milligrams.
+
+00:22:25.420 --> 00:22:32.380
+Speaker 1: You know, in a high BMI patient, we're talking, you know, 100 or 120 or 125 of ketamine IV.
+
+00:22:33.019 --> 00:22:37.419
+Speaker 1: And some experts recommend giving that with your second dose of benzo.
+
+00:22:37.740 --> 00:22:45.580
+Speaker 1: So let's say we've given Lerazepam four milligrams, two minutes later, seizure hasn't stopped, you've given another four milligrams with that.
+
+00:22:45.779 --> 00:22:49.460
+Speaker 1: You give ketamine, let's say 70 milligrams.
+
+00:22:50.019 --> 00:22:57.539
+Speaker 1: And I believe this is based on one pediatric RCT called the KET-MID trial.
+
+00:22:57.760 --> 00:23:00.720
+Speaker 1: And there's been a couple of observational trials in adults.
+
+00:23:00.799 --> 00:23:02.960
+Speaker 1: I think there was a prospective analysis.
+
+00:23:03.120 --> 00:23:04.960
+Speaker 1: There's been a lot of debate on this.
+
+00:23:05.200 --> 00:23:07.440
+Speaker 1: Our good friend Justin Morgenstern.
+
+00:23:07.940 --> 00:23:14.500
+Speaker 1: had a debate with Scott Weingart on MCRIT and uh Justin's got some great posts on this on first 10 EM.
+
+00:23:15.139 --> 00:23:21.460
+Speaker 1: What's your read on the evidence signal for ketamine in status epilepticus and where does it
+
+00:23:21.740 --> 00:23:25.900
+Speaker 1: fit in in terms of like your algorithm or your real-world experience?
+
+00:23:26.780 --> 00:23:30.700
+Speaker 3: I would say my bottom line is I'm still waiting for better data.
+
+00:23:31.040 --> 00:23:35.200
+Speaker 3: So I'm not using it yet as a second line medication.
+
+00:23:35.280 --> 00:23:37.920
+Speaker 3: For me and my algorithm, it's probably third or fourth line.
+
+00:23:38.160 --> 00:23:42.720
+Speaker 3: I am really interested in this area and we want to see what signal is coming out.
+
+00:23:42.700 --> 00:23:45.740
+Speaker 3: The CET mid trial in pediatrics was positive.
+
+00:23:45.820 --> 00:23:50.539
+Speaker 3: That was 144 kids and RCT, and they showed it was beneficial there.
+
+00:23:50.779 --> 00:23:54.940
+Speaker 3: That's the only RCT that's shown positivity so far.
+
+00:23:54.900 --> 00:23:59.220
+Speaker 3: The Kesset trial is still enrolling, so it'll be great to see that data once it's available.
+
+00:23:59.460 --> 00:24:09.220
+Speaker 3: The two adult trials that I'm most familiar with are just observational cohorts where the people who happened to get ketamine in there did better.
+
+00:24:09.260 --> 00:24:12.140
+Speaker 3: Some of them didn't get ketamine in the first day.
+
+00:24:12.380 --> 00:24:17.820
+Speaker 3: Like one of them was a longer trial where they start getting it after really prolonged episodes of Status epilepticus.
+
+00:24:18.220 --> 00:24:21.500
+Speaker 3: So I think it's not in the guidelines yet.
+
+00:24:21.740 --> 00:24:26.060
+Speaker 3: I think the people who are writing those guidelines are waiting for better data to come out
+
+00:24:25.800 --> 00:24:27.480
+Speaker 3: And I guess I am too.
+
+00:24:27.640 --> 00:24:31.080
+Speaker 3: But I do know some people who are early adopters who are already going with it.
+
+00:24:31.160 --> 00:24:33.800
+Speaker 3: Uh so it'll be interesting to see how that plays out.
+
+00:24:34.140 --> 00:24:39.180
+Speaker 1: Yeah, let's talk a little bit about why you would use ketamine in status epilepticus in the first place.
+
+00:24:39.340 --> 00:24:41.980
+Speaker 1: So first of all, we're very familiar with ketamine.
+
+00:24:42.220 --> 00:24:43.020
+Speaker 1: We use it all the time.
+
+00:24:43.180 --> 00:24:44.540
+Speaker 1: So that's that's a plus.
+
+00:24:44.840 --> 00:24:46.919
+Speaker 1: It has a fast onset.
+
+00:24:47.080 --> 00:24:48.440
+Speaker 1: It's great for airway.
+
+00:24:48.520 --> 00:24:53.799
+Speaker 1: Like if you are going to be intubating this patient, it's great for keeping that airway open and keeping them breathing.
+
+00:24:54.160 --> 00:24:55.920
+Speaker 1: So that's a nice benefit.
+
+00:24:56.160 --> 00:25:00.480
+Speaker 1: And my understanding is that it has pretty good anti-seizure properties.
+
+00:25:00.640 --> 00:25:06.000
+Speaker 1: Maybe you could talk a little bit about the pharmacology of ketamine for stopping seizures.
+
+00:25:06.519 --> 00:25:07.320
+Speaker 3: Absolutely.
+
+00:25:07.559 --> 00:25:18.200
+Speaker 3: And because I think this is an important concept, we know when patients have status epilepticus that a good chunk of them become benzodiazepine resistant
+
+00:25:18.160 --> 00:25:22.960
+Speaker 3: It happens in almost a third of cases where benzos stop working.
+
+00:25:23.200 --> 00:25:26.240
+Speaker 3: Your GABA receptors essentially become resistant to it.
+
+00:25:26.400 --> 00:25:31.600
+Speaker 3: And at that same time, your NMDA receptors are upregulating.
+
+00:25:31.740 --> 00:25:35.340
+Speaker 3: And this is more likely to happen as the seizure goes on.
+
+00:25:35.580 --> 00:25:38.940
+Speaker 3: And ketamine works by blocking NMDA.
+
+00:25:39.100 --> 00:25:44.299
+Speaker 3: So it's actually hitting a second mechanism in your brain that can help stop the seizure.
+
+00:25:44.460 --> 00:25:51.419
+Speaker 3: So it makes good sense to me in terms of the pathophysiology about why this may be effective.
+
+00:25:51.740 --> 00:25:54.460
+Speaker 3: And I agree with you, this is a safe drug.
+
+00:25:54.620 --> 00:25:56.460
+Speaker 3: It's a drug we're used to.
+
+00:25:56.860 --> 00:25:59.580
+Speaker 3: It does require a little thought.
+
+00:25:59.740 --> 00:26:02.540
+Speaker 3: Like if you use it as your second-line drug.
+
+00:26:02.660 --> 00:26:07.540
+Speaker 3: So say I'm giving a milligram per kilo along with my benzos up front in those first few minutes.
+
+00:26:07.700 --> 00:26:13.220
+Speaker 3: So I give somebody 70 of ketamine along with the benzos, and they continue to seize
+
+00:26:13.740 --> 00:26:18.060
+Speaker 3: What dose are you then giving as your RSI drug if you're going to use that?
+
+00:26:18.220 --> 00:26:19.340
+Speaker 3: Are you repeating it?
+
+00:26:19.500 --> 00:26:20.300
+Speaker 3: Are you not?
+
+00:26:20.460 --> 00:26:24.220
+Speaker 3: What are the pros and cons of repeat doses of ketamine in the short term?
+
+00:26:24.540 --> 00:26:26.940
+Speaker 3: which isn't an area we've studied a lot.
+
+00:26:27.100 --> 00:26:33.180
+Speaker 3: But you just want to be thinking about what are these downstream consequences if the patient doesn't turn off.
+
+00:26:33.420 --> 00:26:38.140
+Speaker 3: But certainly I think knowing that benzodiazepine resistance is real.
+
+00:26:38.820 --> 00:26:41.780
+Speaker 3: And having something in your algorithm for that is useful.
+
+00:26:41.860 --> 00:26:44.100
+Speaker 3: So ketamine is in my algorithm.
+
+00:26:44.260 --> 00:26:46.180
+Speaker 3: It's just not second line
+
+00:26:46.640 --> 00:26:47.200
+Speaker 1: Fair enough.
+
+00:26:47.280 --> 00:26:52.000
+Speaker 1: It's an interesting point about you've given 70 or 100 milligrams of ketamine.
+
+00:26:52.320 --> 00:26:54.720
+Speaker 1: Now you think, oh, I better intubate this patient.
+
+00:26:54.860 --> 00:26:56.460
+Speaker 1: What are you gonna do next?
+
+00:27:00.539 --> 00:27:08.700
+Speaker 1: So we just talked about using ketamine as a second line medication, but secondline just meaning that with your second benzodose.
+
+00:27:09.100 --> 00:27:19.100
+Speaker 1: There are multiple options for your second-line seizure medication, and these all include your sort of typical anti-seizure medications.
+
+00:27:19.440 --> 00:27:26.000
+Speaker 1: And I would say probably the biggest pitfall in using these medications is just not giving them early enough.
+
+00:27:26.159 --> 00:27:30.480
+Speaker 1: I mean, similar to the benzos, is that we that we think of them as kind of an afterthought.
+
+00:27:30.820 --> 00:27:35.540
+Speaker 1: And most of them have a fairly long onset of action.
+
+00:27:35.780 --> 00:27:43.940
+Speaker 1: And so we really want to give them as early as possible because they aren't going to start working for another five minutes or 10 minutes or 20 minutes, depending on which drug you use.
+
+00:27:44.000 --> 00:27:45.360
+Speaker 1: So there's a whole bunch of options here.
+
+00:27:45.440 --> 00:27:51.280
+Speaker 1: There's phenytoin, there's levitoracetem or kepra, there's velproate.
+
+00:27:51.680 --> 00:27:53.280
+Speaker 1: First, the timing.
+
+00:27:53.380 --> 00:27:56.180
+Speaker 1: We had mentioned ketamine with your second dose of benzo.
+
+00:27:56.340 --> 00:28:00.500
+Speaker 1: When are you going to give this so-called second-line seizure medication?
+
+00:28:00.660 --> 00:28:02.500
+Speaker 1: Which one would you give and why?
+
+00:28:02.900 --> 00:28:03.220
+Speaker 3: Okay.
+
+00:28:04.179 --> 00:28:11.779
+Speaker 3: For my first five minutes of the patient seizing, if I've started a clock, I'm only giving benzos in the first five minutes.
+
+00:28:11.660 --> 00:28:20.300
+Speaker 3: But once they cross the five-minute mark for me, they've hit the definition of status, and I'm gonna add a second line drug right there and then.
+
+00:28:20.460 --> 00:28:25.820
+Speaker 3: So this is where you get to choose whether you want Phenetoin, Valproic, Levatir CTEM, etc.
+
+00:28:26.220 --> 00:28:27.740
+Speaker 3: And there are pros and cons.
+
+00:28:27.820 --> 00:28:29.020
+Speaker 3: We can talk through some of those.
+
+00:28:29.180 --> 00:28:31.900
+Speaker 3: The old school option was to give phenytoin.
+
+00:28:32.240 --> 00:28:37.040
+Speaker 3: which I find has largely fallen out of favor because it takes so long to give it.
+
+00:28:37.200 --> 00:28:42.720
+Speaker 3: Most phenytoin or phosphenytoin infusions have to go in over about twenty minutes minimum.
+
+00:28:42.860 --> 00:28:47.899
+Speaker 3: And because that slows down the onset so much, I think it's fallen out of favor as an option.
+
+00:28:48.139 --> 00:28:56.700
+Speaker 3: So people are more likely, I think, these days, to use either Levatyra cetem or lecosamide, which can go in quite rapidly.
+
+00:28:56.820 --> 00:29:02.260
+Speaker 3: So Levatira cetam, you're giving patients 60 milligrams per kilo.
+
+00:29:02.340 --> 00:29:04.180
+Speaker 3: You're giving them a big dose.
+
+00:29:04.340 --> 00:29:06.100
+Speaker 3: And this is up to a maximum of 4.
+
+00:29:06.260 --> 00:29:07.380
+Speaker 3: 5 grams.
+
+00:29:07.640 --> 00:29:11.240
+Speaker 3: It can go safely over five minutes IV.
+
+00:29:11.400 --> 00:29:16.280
+Speaker 3: There have been a lot of recent studies showing that is safe and feasible for patients.
+
+00:29:16.540 --> 00:29:21.820
+Speaker 3: And so that gets it into your patient in a timely fashion where it might actually start working.
+
+00:29:22.060 --> 00:29:30.700
+Speaker 3: You do just want to wrap your mind around that dose for a second, because most people who we see as outpatients on Leviteracetam are maybe on a gram a day.
+
+00:29:30.300 --> 00:29:32.060
+Speaker 3: And we're talking about giving 4.
+
+00:29:32.300 --> 00:29:34.620
+Speaker 3: 5 grams in five minutes.
+
+00:29:34.940 --> 00:29:40.060
+Speaker 3: So mentally just adjusting to the fact that you're going to give a whopper dose to these patients is useful.
+
+00:29:40.340 --> 00:29:46.020
+Speaker 3: But we know that if they're in status, benzos alone aren't enough.
+
+00:29:46.179 --> 00:29:51.860
+Speaker 3: Like we want the benzo to try to turn it off, but they're still gonna need a longer-term maintenance anti-seizure medicine
+
+00:29:52.060 --> 00:29:54.860
+Speaker 3: So you're gonna want to give one of these second-line drugs.
+
+00:29:55.020 --> 00:29:56.700
+Speaker 3: So I like levatura cetam.
+
+00:29:56.780 --> 00:29:58.220
+Speaker 3: That's what we use the most at my place.
+
+00:29:58.620 --> 00:29:58.940
+Speaker 1: Okay.
+
+00:29:59.100 --> 00:30:03.100
+Speaker 1: We have a lot of patients who take, I call it levaturacetam.
+
+00:30:03.360 --> 00:30:04.720
+Speaker 1: I'm not sure what the correct pronunciation is.
+
+00:30:04.960 --> 00:30:05.279
+Speaker 1: I don't know.
+
+00:30:05.519 --> 00:30:06.480
+Speaker 3: Tomato tomato.
+
+00:30:06.720 --> 00:30:07.360
+Speaker 1: Yeah, I guess so.
+
+00:30:07.519 --> 00:30:08.399
+Speaker 1: Potato potato.
+
+00:30:08.639 --> 00:30:09.840
+Speaker 3: It's definitely hard to say.
+
+00:30:10.080 --> 00:30:10.559
+Speaker 1: Yeah.
+
+00:30:12.340 --> 00:30:14.179
+Speaker 1: I'm gonna call it levituracetem.
+
+00:30:14.340 --> 00:30:17.380
+Speaker 1: Or we could call it Kepra too, but I guess we're supposed to keep to the generic name.
+
+00:30:19.299 --> 00:30:20.500
+Speaker 3: I'm trying to be good.
+
+00:30:21.059 --> 00:30:25.700
+Speaker 1: So for levitar let's say the patient comes in on levituracetem, because actually that's
+
+00:30:25.720 --> 00:30:30.120
+Speaker 1: That's quite a few patients who we see with status epilepticus.
+
+00:30:30.200 --> 00:30:32.600
+Speaker 1: A lot of them will be on leviterastatem.
+
+00:30:33.000 --> 00:30:35.240
+Speaker 1: We don't know if they're compliant with their medications or not.
+
+00:30:35.320 --> 00:30:38.520
+Speaker 1: I mean, that might be one of the reasons why they're having why they're having a seizure.
+
+00:30:38.640 --> 00:30:43.280
+Speaker 1: But in the real world, someone comes in, you know they're on levatoracetem.
+
+00:30:43.440 --> 00:30:49.760
+Speaker 1: How's that gonna change your management in terms of are you gonna choose a different medication or are you gonna choose levatoracetem?
+
+00:30:49.920 --> 00:30:53.200
+Speaker 1: Are you gonna adjust the dose if you know that they are on leviteracetem?
+
+00:30:54.059 --> 00:31:03.260
+Speaker 3: So in the heat of the moment, even if they are on Levitaracitam, I'm not going to be able to check a level and get a level back in a timely manner.
+
+00:31:03.419 --> 00:31:05.500
+Speaker 3: That's not feasible at my place.
+
+00:31:05.560 --> 00:31:08.920
+Speaker 3: I am gonna still just give them the 60 per kilo.
+
+00:31:09.080 --> 00:31:14.360
+Speaker 3: So for the average, you know, person, that's gonna be in the ballpark of four point five grams
+
+00:31:14.360 --> 00:31:15.880
+Speaker 3: It's still safe for them.
+
+00:31:16.120 --> 00:31:17.320
+Speaker 3: It is effective.
+
+00:31:17.559 --> 00:31:22.840
+Speaker 3: I want to turn off whatever is happening in their brain, so I don't dose adjust.
+
+00:31:22.800 --> 00:31:24.000
+Speaker 1: Okay, that makes it simple.
+
+00:31:24.160 --> 00:31:31.520
+Speaker 1: So whether they're on levaturacetem or not, your first line is levaturacetem and it's 60 milligrams per kilogram.
+
+00:31:31.600 --> 00:31:33.040
+Speaker 1: It's a huge dose.
+
+00:31:33.340 --> 00:31:34.940
+Speaker 1: up to four and a half grams.
+
+00:31:35.100 --> 00:31:38.700
+Speaker 1: Most adults are going to take like four grams kind of dosing.
+
+00:31:39.020 --> 00:31:44.140
+Speaker 1: We're going to have an algorithm, again, an updated algorithm on the EMKes website.
+
+00:31:44.260 --> 00:31:49.380
+Speaker 1: that you can access fairly quickly just by typing in EM cases, status epilepticus.
+
+00:31:49.700 --> 00:31:53.220
+Speaker 3: And this is why it's valuable to just like because you do have options here.
+
+00:31:53.380 --> 00:31:57.460
+Speaker 3: So pick your favorite and learn that one drug and that dose.
+
+00:31:57.840 --> 00:31:58.080
+Speaker 3: Right?
+
+00:31:58.160 --> 00:32:08.799
+Speaker 3: Rather than trying to remember all four, pick the one you use most often or whatever's stocked and most easily feasible in your department, because it can be really tricky in the heat of the moment to remember all those doses.
+
+00:32:18.740 --> 00:32:23.220
+Speaker 1: The other options for second-line medications, you had mentioned one
+
+00:32:23.260 --> 00:32:33.660
+Speaker 1: Lucosamide, which I know nothing about, but it's on the list there, and apparently it's a very good medication and it works quite quickly.
+
+00:32:33.860 --> 00:32:39.220
+Speaker 1: You can also give it over just five minutes rather than phenytoin, which takes at least 20.
+
+00:32:39.539 --> 00:32:41.779
+Speaker 1: What do we need to know about leucosamide?
+
+00:32:42.019 --> 00:32:43.380
+Speaker 1: Is it even widely available?
+
+00:32:43.539 --> 00:32:45.860
+Speaker 1: Is it better than levitaracetem?
+
+00:32:46.000 --> 00:32:47.680
+Speaker 1: When would you use it in your algorithm?
+
+00:32:47.840 --> 00:32:49.280
+Speaker 1: Tell us a little bit about that drug.
+
+00:32:49.600 --> 00:32:50.640
+Speaker 3: Okay, good questions.
+
+00:32:50.880 --> 00:32:54.080
+Speaker 3: Lucosamide is a great second line option.
+
+00:32:54.240 --> 00:32:56.800
+Speaker 3: You can give it over five minutes, as you mentioned.
+
+00:32:56.880 --> 00:32:59.360
+Speaker 3: Uh the dose is 400 milligrams IV.
+
+00:32:59.540 --> 00:33:11.540
+Speaker 3: There's no data that it's better or worse, and really we're extrapolating data here about our second line options from the ESET trial, where they showed that they are all roughly equivalent in their efficacy
+
+00:33:12.179 --> 00:33:17.860
+Speaker 3: For me, the reason why I prefer Levatira CTM is purely from feasibility.
+
+00:33:18.100 --> 00:33:21.539
+Speaker 3: We don't stock leucosamide in my emergency department.
+
+00:33:21.620 --> 00:33:25.779
+Speaker 3: So I have to get it down from the main pharmacy, which just takes longer.
+
+00:33:25.660 --> 00:33:28.380
+Speaker 3: And so that's why it's not my top choice.
+
+00:33:28.540 --> 00:33:33.740
+Speaker 3: But if it's something you have readily available, certainly reasonable to go ahead with it
+
+00:33:33.700 --> 00:33:38.659
+Speaker 3: There are a couple things you want to watch out for in terms of potential side effects.
+
+00:33:38.980 --> 00:33:43.700
+Speaker 3: You don't want to use it in the patient who has a known heart block or conduction system disease.
+
+00:33:43.860 --> 00:33:47.139
+Speaker 3: There have been reported cases of V-TAC with glucosamide.
+
+00:33:47.060 --> 00:33:49.540
+Speaker 3: So you want to be thoughtful about arrhythmias.
+
+00:33:49.940 --> 00:33:54.580
+Speaker 3: You also want to avoid it in your patient with severe hepatic dysfunction.
+
+00:33:54.500 --> 00:34:01.380
+Speaker 3: And so think about that in your ethanol use patients and other groups, just because those are the two places where you want to avoid it.
+
+00:34:01.620 --> 00:34:03.540
+Speaker 3: Arrhythmias and liver disease.
+
+00:34:03.740 --> 00:34:03.980
+Speaker 1: Okay.
+
+00:34:04.300 --> 00:34:07.900
+Speaker 1: And in some algorithms, leucosamide is used as sort of a third line agent.
+
+00:34:07.980 --> 00:34:11.260
+Speaker 1: Like let's say you've given Levitoracetem and they're still seizing.
+
+00:34:11.359 --> 00:34:15.359
+Speaker 1: Lycosamide is is then in some algorithms to add on.
+
+00:34:15.520 --> 00:34:18.960
+Speaker 1: Okay, so good to know about heart blocks and liver disease.
+
+00:34:19.200 --> 00:34:20.320
+Speaker 1: for leucosamide.
+
+00:34:20.560 --> 00:34:27.359
+Speaker 1: Let's talk about after your second line medication has gone in, your second dose of benzo has gone in, the patient's still
+
+00:34:27.840 --> 00:34:28.640
+Speaker 1: seizing.
+
+00:34:28.880 --> 00:34:32.240
+Speaker 1: Now we're into refractory status.
+
+00:34:32.400 --> 00:34:34.240
+Speaker 1: We're thinking about airway now.
+
+00:34:34.400 --> 00:34:36.240
+Speaker 1: Let's start with airway consideration.
+
+00:34:36.400 --> 00:34:36.720
+Speaker 1: So
+
+00:34:37.240 --> 00:34:39.399
+Speaker 1: Again, this is all about timing.
+
+00:34:39.639 --> 00:34:43.639
+Speaker 1: When do you decide to intubate the patient with status epilepticus?
+
+00:34:43.800 --> 00:34:45.480
+Speaker 1: And if you do intubate
+
+00:34:45.740 --> 00:34:47.260
+Speaker 1: Are you using propofol?
+
+00:34:47.419 --> 00:34:48.379
+Speaker 1: Are you using ketamine?
+
+00:34:48.540 --> 00:34:50.860
+Speaker 1: Are you using ketopol as your induction agent?
+
+00:34:50.940 --> 00:34:54.460
+Speaker 1: And then there's all kinds of controversy around the paralytic agent.
+
+00:34:54.760 --> 00:35:01.880
+Speaker 1: Because rock eronium is long-acting and you don't want to obliterate your assessment of whether they're in a seizure or not.
+
+00:35:02.040 --> 00:35:04.600
+Speaker 1: And then there's there's a reversal agent for that.
+
+00:35:04.680 --> 00:35:07.240
+Speaker 1: Um so if you have that, so it gets complicated.
+
+00:35:07.200 --> 00:35:08.720
+Speaker 1: But let's try and make it simple.
+
+00:35:08.960 --> 00:35:10.560
+Speaker 1: When do you decide to intubate?
+
+00:35:10.800 --> 00:35:15.599
+Speaker 1: If you do decide to intubate, what induction agent are you using and what paralytic are you using?
+
+00:35:16.480 --> 00:35:17.440
+Speaker 3: Good question.
+
+00:35:17.680 --> 00:35:19.040
+Speaker 3: So let's recap.
+
+00:35:19.520 --> 00:35:22.160
+Speaker 3: My first five minutes are really just benzos.
+
+00:35:22.560 --> 00:35:29.680
+Speaker 3: The second five minutes, which is between five to ten minutes of their seizure, I'm still giving benzos and I'm adding my second line drug.
+
+00:35:30.480 --> 00:35:39.440
+Speaker 3: In the third five minutes, which is between 10 to 15 minutes now that they're seizing, I'm giving third-line drugs as I intubate
+
+00:35:40.000 --> 00:35:46.960
+Speaker 3: And so I tend to go with propofol, although you could also choose ketamine here.
+
+00:35:47.120 --> 00:35:50.480
+Speaker 3: There isn't data to suggest that one is better than the other.
+
+00:35:50.840 --> 00:35:55.720
+Speaker 3: You do want to think about the blood pressure when you're deciding on your induction agent.
+
+00:35:55.960 --> 00:36:01.320
+Speaker 3: If their blood pressure was borderline, that may push me to use ketamine rather than propofol.
+
+00:36:01.760 --> 00:36:10.720
+Speaker 3: Although I would say in general, these patients are going to need massive doses of sedation to try to ensure they stop seizing.
+
+00:36:10.859 --> 00:36:14.460
+Speaker 3: And they all end up going onto a presser like norepinephrine.
+
+00:36:14.700 --> 00:36:24.300
+Speaker 3: So it's not unreasonable to start a presser at this stage to facilitate the whopper doses you're going to want to keep giving for their sedation, even after they're intubated.
+
+00:36:24.620 --> 00:36:28.060
+Speaker 3: But certainly think about the blood pressure as you're choosing your agent.
+
+00:36:28.300 --> 00:36:33.420
+Speaker 3: And the guidelines still suggest that we do do an RSI so that we're giving these patients a paralytic.
+
+00:36:33.559 --> 00:36:37.000
+Speaker 3: The upside to this is it improves your intubating conditions, so we like that.
+
+00:36:37.079 --> 00:36:39.480
+Speaker 3: We want to optimize for first pass success.
+
+00:36:39.880 --> 00:36:46.359
+Speaker 3: The downside is you will no longer be able to see clinically if your patient is still seizing.
+
+00:36:46.660 --> 00:36:53.380
+Speaker 3: And this is a problem because most of us do not have access to bedside EEG to have a different marker.
+
+00:36:53.700 --> 00:36:56.260
+Speaker 3: So your paralytic choices are tricky.
+
+00:36:56.640 --> 00:36:59.839
+Speaker 3: So let me lay out the options for you and you can think about what you would do.
+
+00:37:00.000 --> 00:37:02.960
+Speaker 3: Number one, you could go old school and give succinylcholine.
+
+00:37:03.200 --> 00:37:04.079
+Speaker 3: Easy to do.
+
+00:37:04.319 --> 00:37:09.599
+Speaker 3: And the upside of choosing this is that it's going to be gone in about five minutes.
+
+00:37:09.480 --> 00:37:15.000
+Speaker 3: And that way if your patient is still seizing, you'll be able to see it clinically and titrate your sedation to that.
+
+00:37:15.160 --> 00:37:20.680
+Speaker 3: So there's value here, I do think, in bringing back sucks in selected patients.
+
+00:37:20.859 --> 00:37:34.060
+Speaker 3: You want to be mindful about the contraindications to succinylcholine, which obviously include malignant hyperthermia, but we worry about hypercholemic reactions in patients who have been seizing.
+
+00:37:34.500 --> 00:37:43.220
+Speaker 3: Particularly they've been seizing for a long time, and that's usually upwards of twenty to twenty-five to thirty minutes, like something in that ballpark.
+
+00:37:43.260 --> 00:37:47.340
+Speaker 3: So this is another good reason to think about controlling the airway early.
+
+00:37:47.500 --> 00:37:50.940
+Speaker 3: If they've been seizing for half an hour, I probably wouldn't give sucks.
+
+00:37:51.000 --> 00:38:00.760
+Speaker 3: But if I'm still around that 10-15 minute mark where I like to be thinking about this, it is safe to do as long as you're clear on the onset time of the seizure
+
+00:38:00.920 --> 00:38:06.600
+Speaker 1: Great point about considering how long the seizure's been going on in your decision to use sucks or not.
+
+00:38:07.000 --> 00:38:07.480
+Speaker 3: Yes.
+
+00:38:07.640 --> 00:38:13.800
+Speaker 3: And the time when I really want to carefully cross-check that is when they've started seizing in the field.
+
+00:38:14.140 --> 00:38:14.380
+Speaker 3: Right?
+
+00:38:14.539 --> 00:38:16.940
+Speaker 3: Because it's not just the time they've been seizing in front of me.
+
+00:38:17.020 --> 00:38:19.099
+Speaker 3: I want to really know the onset time.
+
+00:38:19.420 --> 00:38:23.500
+Speaker 3: If I'm not sure, then I'm going to default to using Rockuronium.
+
+00:38:23.760 --> 00:38:25.840
+Speaker 3: Because it's going to give us great intubating conditions.
+
+00:38:26.000 --> 00:38:29.600
+Speaker 3: The downside is it's sticking around for half an hour or so.
+
+00:38:30.000 --> 00:38:33.920
+Speaker 3: And so to manage that half hour, you have options
+
+00:38:34.220 --> 00:38:42.700
+Speaker 3: One is just to assume your patient is still seizing, even though you can't see it, and use maximal doses of sedation to try to stop it.
+
+00:38:43.640 --> 00:38:48.200
+Speaker 3: One is to reverse your rock uronium with Segamodex.
+
+00:38:48.360 --> 00:38:51.480
+Speaker 3: And I don't know how quickly you can actually get it to the bedside.
+
+00:38:51.560 --> 00:38:53.400
+Speaker 3: This is variable across centers.
+
+00:38:53.460 --> 00:39:00.820
+Speaker 3: but it may not actually buy you a ton here in terms of clinical visualization of the seizure.
+
+00:39:01.520 --> 00:39:15.680
+Speaker 3: So my preferred option, I must say, Anton, is super old school, but when I am using rock uronium, I will put a tourniquet around whatever limb is seizing most visibly.
+
+00:39:15.920 --> 00:39:25.680
+Speaker 3: Because then your rock uronium circulates to the airway and gives you the airway conditions you're looking for, but doesn't circulate to that limb, and I can still see clinically if they're seizing.
+
+00:39:26.140 --> 00:39:27.660
+Speaker 1: Sarah MacGyver Gray.
+
+00:39:28.460 --> 00:39:28.779
+Speaker 3: Right?
+
+00:39:29.020 --> 00:39:32.619
+Speaker 3: It's just it's just this is an old, old anesthesia trick.
+
+00:39:32.700 --> 00:39:34.460
+Speaker 3: This is not this was not my idea.
+
+00:39:34.700 --> 00:39:38.940
+Speaker 3: I was taught this as a medical student uh by a clever intensivist.
+
+00:39:39.339 --> 00:39:40.460
+Speaker 1: There's a pearl.
+
+00:39:40.440 --> 00:39:40.920
+Speaker 3: Right?
+
+00:39:41.160 --> 00:39:51.079
+Speaker 3: But so and you can easily keep your tourniquet up for 15 minutes, 20 minutes, half an hour, like you've got some time there, and you'll be able to see if they're seizing.
+
+00:39:51.059 --> 00:39:54.099
+Speaker 3: Put it on whichever limb the seizure is most visible in.
+
+00:39:54.260 --> 00:39:56.020
+Speaker 3: This is not a perfect fix, right?
+
+00:39:56.099 --> 00:40:03.220
+Speaker 3: I would I would much prefer to have continuous live EEG monitoring all the time, but I don't live in that world
+
+00:40:03.340 --> 00:40:05.340
+Speaker 3: So old school is a tourniquet.
+
+00:40:05.900 --> 00:40:10.300
+Speaker 1: I mean for me, you know, I I used sucks for many years and I'm pretty comfortable with it.
+
+00:40:10.460 --> 00:40:11.820
+Speaker 1: So for me, it's a no-brainer.
+
+00:40:11.900 --> 00:40:13.500
+Speaker 1: Just use sucks, you're good.
+
+00:40:13.480 --> 00:40:14.279
+Speaker 3: Yeah, agreed.
+
+00:40:14.440 --> 00:40:14.680
+Speaker 3: Right.
+
+00:40:14.760 --> 00:40:18.359
+Speaker 3: And that's, I gotta say, that's my go-to if the onset is clear.
+
+00:40:18.520 --> 00:40:24.039
+Speaker 3: If I have any uncertainty about the onset or they've been seizing a long time, then I'm going rock uronium with a tourniquet.
+
+00:40:24.240 --> 00:40:24.720
+Speaker 2: Great.
+
+00:40:25.760 --> 00:40:33.040
+Speaker 2: Let's take a little break to hear from one of our sponsors, Metricade, the experts in complex physician scheduling since 2012.
+
+00:40:33.260 --> 00:40:37.180
+Speaker 2: Metricades expert schedulers are their secret sauce.
+
+00:40:37.340 --> 00:40:41.500
+Speaker 2: These people truly understand the complexities of physician scheduling.
+
+00:40:41.500 --> 00:40:46.060
+Speaker 2: They empower us by providing the tools we need to manage our teams efficiently.
+
+00:40:46.300 --> 00:40:54.780
+Speaker 2: At the same time, they give physicians more freedom to share their workflow preferences, so schedules aren't just fair, they're actually workable.
+
+00:40:55.340 --> 00:40:59.660
+Speaker 2: Metricate system is built to make your schedule work for you.
+
+00:40:59.980 --> 00:41:04.700
+Speaker 2: They take the stress out of shift planning so that you can focus on what matters most.
+
+00:41:04.859 --> 00:41:06.060
+Speaker 2: Go to metricaid.
+
+00:41:06.300 --> 00:41:11.260
+Speaker 2: com slash emcases to learn more about how smarter scheduling can work for you.
+
+00:41:11.500 --> 00:41:13.500
+Speaker 2: That's MetricAid one word.
+
+00:41:14.220 --> 00:41:17.660
+Speaker 2: Dot com slash EMCA S E S.
+
+00:41:18.380 --> 00:41:21.900
+Speaker 1: So that's the paralytic and the induction agent.
+
+00:41:21.940 --> 00:41:24.579
+Speaker 1: Let's say we've given a few doses of benzos.
+
+00:41:24.740 --> 00:41:26.820
+Speaker 1: Maybe we've given ketamine or not.
+
+00:41:26.980 --> 00:41:28.500
+Speaker 1: We've now intubated.
+
+00:41:28.579 --> 00:41:32.260
+Speaker 1: We've given propofol and sucks, let's say.
+
+00:41:32.420 --> 00:41:35.220
+Speaker 1: Let's say we've started a propofol drip.
+
+00:41:35.160 --> 00:41:41.240
+Speaker 1: Let's talk a little bit about that, about your third-line medication after intubation.
+
+00:41:41.400 --> 00:41:44.520
+Speaker 1: What kind of dosages are you using for propofol?
+
+00:41:44.760 --> 00:41:45.480
+Speaker 1: Let's start with.
+
+00:41:45.600 --> 00:41:46.800
+Speaker 1: And what are your other options?
+
+00:41:46.880 --> 00:41:50.080
+Speaker 1: There's you know phenobarbital, there's more benzos.
+
+00:41:50.320 --> 00:41:51.440
+Speaker 1: What do you suggest?
+
+00:41:51.760 --> 00:41:58.720
+Speaker 3: Yeah, so first line for me is benzos, which I'm giving repeatedly every three to five minutes until I intubate.
+
+00:41:58.859 --> 00:42:01.099
+Speaker 3: Second line, I'm giving Levitir CTM.
+
+00:42:01.420 --> 00:42:08.140
+Speaker 3: Third line for me is whatever my induction medication is for my intubation, whether it's ketamine or propofol.
+
+00:42:08.559 --> 00:42:16.640
+Speaker 3: And then I'm starting, and typically I will say for me it's propofol, and then I'm starting a propofol infusion post intubation.
+
+00:42:16.760 --> 00:42:20.440
+Speaker 3: and thinking about going with relatively high doses.
+
+00:42:20.680 --> 00:42:26.520
+Speaker 3: If you use milligrams per kilo per hour, that's usually sort of in the range of five to ten milligrams per kilo per hour
+
+00:42:26.760 --> 00:42:33.800
+Speaker 3: If you do mics per kilo per minute, your dosing will be different, usually up to sort of 80 or 100 mics per kilo per minute.
+
+00:42:33.960 --> 00:42:36.760
+Speaker 3: So it's worth knowing how the pumps work at your place.
+
+00:42:36.840 --> 00:42:38.440
+Speaker 3: That usually is what dictates.
+
+00:42:38.559 --> 00:42:46.960
+Speaker 3: your infusion, but you want to be at the high end of the range, and that's often with norepinephrine to support the blood pressure
+
+00:42:47.320 --> 00:42:55.640
+Speaker 1: Okay, that's I think a key point there that m is sort of a key pitfall is that if we just give sort of our usual sedation doses of propofol.
+
+00:42:56.160 --> 00:43:04.160
+Speaker 1: you know, post-intubation sedation doses of of propofol, we will be underdosing for status epilepticus for sure.
+
+00:43:04.320 --> 00:43:06.240
+Speaker 1: So these are much higher doses.
+
+00:43:06.320 --> 00:43:08.640
+Speaker 1: This is something that you need to pause and look up.
+
+00:43:08.859 --> 00:43:14.619
+Speaker 1: And make sure you're getting the right dose and that it's a high dose higher than your usual sedation doses.
+
+00:43:14.940 --> 00:43:15.260
+Speaker 3: Yeah.
+
+00:43:15.420 --> 00:43:19.820
+Speaker 3: Like I'll tell you, Anton, until I can get an EEG there
+
+00:43:20.059 --> 00:43:24.619
+Speaker 3: Which I will tell you, even at my place, is an awfully long time until I get an EEG.
+
+00:43:25.420 --> 00:43:28.380
+Speaker 3: I really want to turn off that seizure.
+
+00:43:28.460 --> 00:43:32.859
+Speaker 3: And so my default is to give them the maximum dose of propofol.
+
+00:43:33.420 --> 00:43:33.740
+Speaker 1: Okay.
+
+00:43:34.420 --> 00:43:37.620
+Speaker 1: And you'll almost certainly be starting norepinephrine.
+
+00:43:37.780 --> 00:43:38.100
+Speaker 1: Yes.
+
+00:43:38.340 --> 00:43:39.460
+Speaker 1: So have that ready.
+
+00:43:39.620 --> 00:43:46.820
+Speaker 1: Have your norepinephrine drip ready to go as soon as you're starting your infusion because pretty much all of these patients, I assume.
+
+00:43:47.140 --> 00:43:50.099
+Speaker 1: will have a low blood pressure and require pressure support.
+
+00:43:50.420 --> 00:43:50.900
+Speaker 3: Absolutely.
+
+00:43:51.140 --> 00:43:57.380
+Speaker 3: I'm actually typically asking for my nore epi when I'm getting induction drugs for my intubation.
+
+00:43:57.640 --> 00:43:59.640
+Speaker 3: Because they've already had benzose.
+
+00:43:59.720 --> 00:44:01.559
+Speaker 3: I'm gonna give them a dose of propofol.
+
+00:44:01.799 --> 00:44:05.799
+Speaker 3: Uh the risk of hypotension is very high, and I like to be proactive about that.
+
+00:44:05.960 --> 00:44:09.240
+Speaker 3: So I typically intubate with norepi hanging in the room.
+
+00:44:09.359 --> 00:44:12.480
+Speaker 3: or at least some version of push dose presser available in the room.
+
+00:44:12.640 --> 00:44:16.960
+Speaker 3: And then I'm gonna put them on a high dose propofol infusion and norepia at the same time.
+
+00:44:17.200 --> 00:44:17.520
+Speaker 3: Okay.
+
+00:44:17.920 --> 00:44:18.640
+Speaker 1: That's a good point.
+
+00:44:18.800 --> 00:44:22.560
+Speaker 1: I mean we should probably just have norepinephrine ready for every intubation we do.
+
+00:44:22.640 --> 00:44:24.320
+Speaker 1: So it's just easy to reach for.
+
+00:44:24.640 --> 00:44:27.600
+Speaker 3: Yeah, it's part we've made it part of our intubation order set now.
+
+00:44:27.680 --> 00:44:28.880
+Speaker 3: It's all bundled together.
+
+00:44:29.059 --> 00:44:32.420
+Speaker 3: When you click for your intubation drugs, you get your norepi every time.
+
+00:44:32.819 --> 00:44:33.140
+Speaker 1: Great.
+
+00:44:33.380 --> 00:44:38.900
+Speaker 1: Yeah, maybe at the end we'll talk a little bit about sort of human factors and logistics of how to do all of this because we've
+
+00:44:39.260 --> 00:44:43.420
+Speaker 1: We're covering a lot of ground here, uh, and there's a lot of little moving parts.
+
+00:44:43.580 --> 00:44:52.460
+Speaker 1: Then there's going to be logistics and human factors to make sure that this all works with all the timing that you want, because again, this is all about good fast timing.
+
+00:44:52.840 --> 00:44:55.160
+Speaker 1: You had mentioned EEG monitoring.
+
+00:44:55.480 --> 00:44:58.760
+Speaker 1: I hear there's all kinds of new technology for EEG monitoring.
+
+00:44:58.840 --> 00:45:00.360
+Speaker 1: That sounds all exciting.
+
+00:45:00.460 --> 00:45:03.420
+Speaker 1: What do we need to know about EEG monitoring?
+
+00:45:03.580 --> 00:45:11.580
+Speaker 1: I'm assuming that 99% of our listeners cannot get EEG monitoring within 30 minutes of a patient seizing in your emergency department.
+
+00:45:11.840 --> 00:45:16.720
+Speaker 1: What's the kind of cool thing that's coming down the pipes in terms of seizure monitoring?
+
+00:45:17.280 --> 00:45:23.840
+Speaker 3: Yeah, so uh for status epilepticus you really want continuous EEG monitoring?
+
+00:45:24.140 --> 00:45:28.700
+Speaker 3: which is not routinely available, I would say, in most emergency departments.
+
+00:45:28.940 --> 00:45:32.700
+Speaker 3: Certainly in Canadian ADs, it's essentially impossible.
+
+00:45:32.840 --> 00:45:34.840
+Speaker 3: And tricky, frankly, for some ICUs.
+
+00:45:35.000 --> 00:45:37.560
+Speaker 3: Some ICUs can't get continuous EEG either.
+
+00:45:37.880 --> 00:45:41.640
+Speaker 3: But artificial intelligence is changing all of this.
+
+00:45:42.040 --> 00:45:51.720
+Speaker 3: There is currently a device available in the US that's FDA approved that uses, it's sort of like a headband that you strap on the patient's forehead.
+
+00:45:51.840 --> 00:45:58.000
+Speaker 3: And AI interprets the EEG readings and you get a diagnosis within five minutes or so.
+
+00:45:58.320 --> 00:46:00.640
+Speaker 3: So currently available
+
+00:46:00.859 --> 00:46:03.660
+Speaker 3: Testing for it is ongoing, but looks really promising.
+
+00:46:03.740 --> 00:46:09.180
+Speaker 3: Like the data has shown it's just as accurate as being read by a neurologist.
+
+00:46:09.359 --> 00:46:12.800
+Speaker 3: you know, people are limited right now, often in terms of price point.
+
+00:46:12.960 --> 00:46:15.599
+Speaker 3: Uh my understanding is that it's very expensive.
+
+00:46:15.760 --> 00:46:22.560
+Speaker 3: But I think technology like this is going to be a game changer, at least as soon as it's affordable enough that we all have one.
+
+00:46:22.640 --> 00:46:28.960
+Speaker 3: Uh because then you're gonna know when the seizure stops and can titrate your medications effectively.
+
+00:46:29.440 --> 00:46:32.960
+Speaker 1: I'm assuming you don't have stocks and have a yacht that you've bought based on your medicine.
+
+00:46:33.279 --> 00:46:34.400
+Speaker 3: If only Yeah, no.
+
+00:46:34.559 --> 00:46:37.200
+Speaker 3: I can't I can't honestly I can't even remember the
+
+00:46:37.559 --> 00:46:40.440
+Speaker 3: The name of the commercial device, the name of the company's escaping me.
+
+00:46:40.520 --> 00:46:42.680
+Speaker 3: I have no stocks or conflict of interest.
+
+00:46:43.000 --> 00:46:47.240
+Speaker 3: Yeah, I mean, I frankly, I hope they hear this and send us one to try, Anton.
+
+00:46:47.319 --> 00:46:48.359
+Speaker 3: Wouldn't that be awesome?
+
+00:46:49.359 --> 00:46:50.480
+Speaker 3: Whoever you are out there.
+
+00:46:50.880 --> 00:46:52.400
+Speaker 3: This is a shout out into the ether.
+
+00:46:52.640 --> 00:46:54.640
+Speaker 3: We would love to test your machine.
+
+00:46:56.560 --> 00:46:57.359
+Speaker 1: It's kind of cool.
+
+00:46:57.440 --> 00:46:58.160
+Speaker 1: The headband thing.
+
+00:46:58.240 --> 00:47:03.040
+Speaker 1: You know, we were talking about a headband thing in our cardiac arrest episode that we did a couple of years back.
+
+00:47:02.980 --> 00:47:03.140
+Speaker 1: Yeah.
+
+00:47:03.539 --> 00:47:12.819
+Speaker 1: I can just imagine in in in a decade from now that all our critically ill patients are gonna look like Bjorn Borg if anyone's old enough listening to to know who Beyond Borg was.
+
+00:47:13.240 --> 00:47:15.400
+Speaker 1: Uh they're gonna look like, you know, having that headband.
+
+00:47:15.960 --> 00:47:16.280
+Speaker 3: Right.
+
+00:47:16.440 --> 00:47:18.840
+Speaker 3: Well, I mean, and I actually think you're totally true.
+
+00:47:18.920 --> 00:47:22.840
+Speaker 3: Like there are all sorts of ICU devices that have been tested that way, things to measure.
+
+00:47:23.140 --> 00:47:29.460
+Speaker 3: oxygen saturation and jugular venous return and various other sort of markers of neurologic health.
+
+00:47:29.539 --> 00:47:31.220
+Speaker 3: Uh like I think this is coming.
+
+00:47:31.380 --> 00:47:32.740
+Speaker 3: So I think that's super exciting.
+
+00:47:32.900 --> 00:47:36.339
+Speaker 3: Like I think when we have these in I don't know how many years
+
+00:47:36.359 --> 00:47:38.200
+Speaker 3: It's going to completely change our approach.
+
+00:47:38.599 --> 00:47:39.320
+Speaker 1: Amazing.
+
+00:47:39.640 --> 00:47:40.040
+Speaker 1: All right.
+
+00:47:40.200 --> 00:47:44.920
+Speaker 1: Any other tips or tricks when it comes to managing status epilepticus that we haven't already covered?
+
+00:47:45.079 --> 00:47:46.920
+Speaker 1: Maybe some human factor stuff.
+
+00:47:46.960 --> 00:47:50.720
+Speaker 1: uh before we get into sort of your algorithm or anything else.
+
+00:47:50.960 --> 00:47:56.960
+Speaker 1: I mean one tip I've heard about is and that I do myself is when you're calling for benzos.
+
+00:47:57.540 --> 00:48:03.940
+Speaker 1: Call for multiple doses of benzos off the top rather than calling for your first dose and then, oh, that's not working.
+
+00:48:04.100 --> 00:48:07.700
+Speaker 1: Let's run back to the machine and get another dose.
+
+00:48:08.040 --> 00:48:19.560
+Speaker 1: So that's just one little practical tip is uh when you're calling for your first dose of benzo, ask for at least two doses, if not three, so that you can give them in rapid succession if you need to.
+
+00:48:19.840 --> 00:48:20.640
+Speaker 3: Absolutely, yeah.
+
+00:48:20.720 --> 00:48:21.840
+Speaker 3: I love that as a tip.
+
+00:48:22.000 --> 00:48:29.520
+Speaker 3: And so the first things I ask for, I totally agree, I ask for multiple doses of my Loraspim up front, assuming I have an IV.
+
+00:48:29.840 --> 00:48:34.880
+Speaker 3: I want the cap glucose right away, and I want to send that VBG with the electrolytes right away.
+
+00:48:35.040 --> 00:48:38.000
+Speaker 3: So those are the first three things I have in the room.
+
+00:48:38.000 --> 00:48:41.760
+Speaker 3: And that gives us a few minutes and most seizures are gonna stop there.
+
+00:48:41.920 --> 00:48:46.160
+Speaker 3: Like most of the time you're not gonna have to go past those three moves.
+
+00:48:46.400 --> 00:48:52.000
+Speaker 3: Maybe now I'll add, grab my ultrasound and make sure my patient isn't pregnant, because we talked about that.
+
+00:48:52.040 --> 00:48:54.520
+Speaker 3: But then you have a little bit of time, right?
+
+00:48:54.680 --> 00:49:05.800
+Speaker 3: After the five minute mark, I'm adding a second line drug, but it's just the one drug, typically, whichever one of them you want, out of Levatura, Cetam, Valproic, Lucosamide, or Phenytoin.
+
+00:49:06.140 --> 00:49:09.339
+Speaker 3: And then you have five minutes there while you're waiting for that to work.
+
+00:49:09.500 --> 00:49:14.460
+Speaker 3: You're still giving repeat doses of benzos to think about your airway and get set up for that.
+
+00:49:14.400 --> 00:49:29.119
+Speaker 3: So that's your time to call your RT, to get your pressers, to choose your induction drug, to get all that stuff ready, so that if you hit the 10 minute mark and your patient's still seizing, you're ready to move in a timely fashion.
+
+00:49:29.160 --> 00:49:37.000
+Speaker 3: So I really like I can't overestimate how important it is to have a timer going in the room and to be really thoughtful about
+
+00:49:37.740 --> 00:49:39.100
+Speaker 3: treating this aggressively.
+
+00:49:39.260 --> 00:49:42.380
+Speaker 3: Like we have to treat this so much more aggressively than we used to, Anton.
+
+00:49:42.540 --> 00:49:44.940
+Speaker 3: We used to have 30 minutes before we got worried.
+
+00:49:45.100 --> 00:49:47.660
+Speaker 3: And I I shudder when I think about it, 'cause
+
+00:49:48.220 --> 00:49:50.700
+Speaker 3: God, like the outcomes for people were not great.
+
+00:49:50.779 --> 00:49:52.940
+Speaker 3: That's why the guidelines have shifted so much.
+
+00:49:53.180 --> 00:49:59.500
+Speaker 3: But we now need to be much faster and much more aggressive off the hop to prevent those bad outcomes.
+
+00:50:00.120 --> 00:50:01.240
+Speaker 1: Couldn't agree more.
+
+00:50:01.480 --> 00:50:04.120
+Speaker 1: I just want to highlight a few things that we've talked about.
+
+00:50:04.440 --> 00:50:08.120
+Speaker 1: If you do go with Laraza Pem as your first line, Benzo.
+
+00:50:08.200 --> 00:50:10.359
+Speaker 1: The guidelines say four milligrams.
+
+00:50:10.520 --> 00:50:16.200
+Speaker 1: You can go as high as eight milligrams for those patients who have known alcohol use disorder.
+
+00:50:16.359 --> 00:50:22.119
+Speaker 1: You know, maybe for the patient with a really high BMI, you might want to go with that higher dose.
+
+00:50:22.320 --> 00:50:28.560
+Speaker 1: If you do choose midazolam as your first go-to, 5 to 10 milligrams IV.
+
+00:50:28.720 --> 00:50:34.960
+Speaker 1: Certainly if you don't have an IV, you're going to be using medazolam 10 milligrams IM intramuscular.
+
+00:50:35.580 --> 00:50:41.340
+Speaker 1: You really want to start your second line agent in that second five minute window.
+
+00:50:41.420 --> 00:50:43.180
+Speaker 1: So between five and ten minutes.
+
+00:50:43.500 --> 00:50:45.420
+Speaker 1: I recall that in the
+
+00:50:45.940 --> 00:50:53.540
+Speaker 1: First EM cases algorithm we had on this from episode 133, that window was a bit later, but now we're suggesting to do it earlier.
+
+00:50:54.160 --> 00:51:01.920
+Speaker 1: The second line medication of choice is levaturacetem or kepra, and that's going to be up to four and a half grams.
+
+00:51:02.000 --> 00:51:05.680
+Speaker 1: And the key thing there is that it's also often underdosed.
+
+00:51:05.940 --> 00:51:10.660
+Speaker 1: So we're giving up to four and a half grams of levitaracetam.
+
+00:51:10.980 --> 00:51:19.619
+Speaker 1: If you choose to give ketamine, you can give it early, like with your second benzodose at one milligram per kilogram.
+
+00:51:19.859 --> 00:51:25.220
+Speaker 1: Sarah's recommendation is to use it a bit later as your third or fourth line medication.
+
+00:51:25.540 --> 00:51:31.780
+Speaker 1: Propofol is probably your go-to induction agent for refractory status.
+
+00:51:32.120 --> 00:51:36.040
+Speaker 1: Make sure you use a high dose when you start your infusion.
+
+00:51:36.200 --> 00:51:40.200
+Speaker 1: So we're talking 80 to 100 micrograms per kilogram per minute.
+
+00:51:40.860 --> 00:51:49.260
+Speaker 1: And that you will almost certainly need to have norepinephrine on board because these patients pretty much universally will dump their blood pressure.
+
+00:51:49.420 --> 00:51:50.940
+Speaker 1: Don't skimp on the propofol.
+
+00:51:51.680 --> 00:51:59.599
+Speaker 1: And at this point, I'm hoping that you've already called your intensivist because then you know you've got more difficult decisions to make.
+
+00:51:59.680 --> 00:52:02.000
+Speaker 1: You know, does this patient now go on leucosamide?
+
+00:52:02.200 --> 00:52:04.760
+Speaker 1: If you haven't given ketamine, is this when you give ketamine?
+
+00:52:05.000 --> 00:52:14.200
+Speaker 1: We didn't even talk about phenobarbital, which is another another option, which has become more popular for severe alcohol withdrawal.
+
+00:52:14.359 --> 00:52:23.240
+Speaker 1: If you have a patient with known withdrawal seizures from alcohol, that phenobarbitol might be a great third or fourth line choice.
+
+00:52:23.559 --> 00:52:25.319
+Speaker 1: There's inhaled anesthetics.
+
+00:52:25.480 --> 00:52:26.760
+Speaker 1: There's all kinds of other stuff.
+
+00:52:26.920 --> 00:52:31.960
+Speaker 1: But I think for me as an emergency provider, now we're in like you were like 20 minutes in.
+
+00:52:32.260 --> 00:52:34.180
+Speaker 1: And now I'm getting the intensivist on the call.
+
+00:52:34.260 --> 00:52:37.940
+Speaker 1: I've done pretty much everything I can, and there's a lot of options there.
+
+00:52:38.100 --> 00:52:40.100
+Speaker 1: And I think by this time my brain is probably
+
+00:52:40.640 --> 00:52:43.920
+Speaker 1: completely full and I have no other options to give the patients.
+
+00:52:44.000 --> 00:52:51.359
+Speaker 3: So Well, and you're moving well out of, you know, the space where we have good evidence and into expert opinion.
+
+00:52:51.300 --> 00:52:53.300
+Speaker 3: Uh you've intubated the patient by then.
+
+00:52:53.540 --> 00:52:54.020
+Speaker 3: Absolutely.
+
+00:52:54.100 --> 00:53:00.260
+Speaker 3: I'm getting my intensivist on board or my neurologist because often they're the gatekeeper to the EEG.
+
+00:53:00.500 --> 00:53:02.980
+Speaker 3: So definitely a good time to be making those phone calls.
+
+00:53:03.240 --> 00:53:03.800
+Speaker 1: Great.
+
+00:53:04.040 --> 00:53:10.360
+Speaker 1: And um I understand you're no longer practicing in the ICU, uh, but you were for how many years was it about 15 years?
+
+00:53:10.440 --> 00:53:11.480
+Speaker 1: You were in 20.
+
+00:53:11.720 --> 00:53:13.240
+Speaker 1: 20 years as an intensivist.
+
+00:53:13.640 --> 00:53:14.680
+Speaker 2: As an intensivist.
+
+00:53:15.539 --> 00:53:20.819
+Speaker 1: So to sort of wrap up here, let's say I've done all of this.
+
+00:53:20.980 --> 00:53:23.619
+Speaker 1: I've given a few doses of benzos.
+
+00:53:23.700 --> 00:53:27.059
+Speaker 1: I I've intubated the patient with propofol and sucks.
+
+00:53:27.460 --> 00:53:37.700
+Speaker 1: I've given my second line medication, uh, levitaracetem, uh, I've started them on a propofol drip at a high dose, they're still seizing, or maybe they've they've settled.
+
+00:53:37.860 --> 00:53:39.700
+Speaker 1: When you get that phone call
+
+00:53:39.960 --> 00:53:45.640
+Speaker 1: What do you usually recommend in your run-of-the-mill refractory status epilepticus?
+
+00:53:45.720 --> 00:53:49.720
+Speaker 1: Or I think there's another name for once they're refractory to your refractory treatments.
+
+00:53:50.120 --> 00:53:51.880
+Speaker 1: I can't remember what it is, but it's like super refractory.
+
+00:53:52.920 --> 00:53:53.000
+Speaker 1: Yeah.
+
+00:53:53.240 --> 00:53:57.480
+Speaker 1: Once you have a super refractory patient, what are your usual recommendations?
+
+00:53:57.800 --> 00:53:58.040
+Speaker 3: Yeah.
+
+00:54:01.120 --> 00:54:09.120
+Speaker 3: Uh so typically these patients who remain refractory will be on max doses of propofol by an infusion.
+
+00:54:09.260 --> 00:54:13.580
+Speaker 3: They'll typically on be on max doses of a benzodiazepine by infusion.
+
+00:54:13.740 --> 00:54:18.700
+Speaker 3: We'll often start ketamine first boluses and then also an infusion of that.
+
+00:54:18.859 --> 00:54:26.540
+Speaker 3: They will be on long-standing high-dose anti-seizure maintenance medications like Levatyra cetem, Valproic, et cetera.
+
+00:54:26.700 --> 00:54:32.460
+Speaker 3: And we'll continue to add those until we can get them to stop seizing on EEG.
+
+00:54:33.220 --> 00:54:42.900
+Speaker 3: Once they've stopped seizing on EEG, they're on all of these medications, then the job is to start gradually weaning them off.
+
+00:54:43.140 --> 00:54:47.700
+Speaker 3: without the seizure recurring, so we can eventually get them extibated.
+
+00:54:47.779 --> 00:54:50.500
+Speaker 3: But that's a process that tends to take days and days and days.
+
+00:54:50.900 --> 00:54:51.140
+Speaker 1: All right.
+
+00:54:51.220 --> 00:54:54.579
+Speaker 1: Yeah, great to know what actually happens in the ICU with these patients.
+
+00:54:55.020 --> 00:55:00.859
+Speaker 1: One thing we didn't even touch on is non-convulsive status epilepticus.
+
+00:55:01.420 --> 00:55:03.500
+Speaker 1: And we're not going to get deep into this, but
+
+00:55:03.740 --> 00:55:06.140
+Speaker 1: Just a few tricks, pearls.
+
+00:55:06.220 --> 00:55:09.260
+Speaker 1: I mean I was speaking with Katie Lynn recently.
+
+00:55:09.660 --> 00:55:10.860
+Speaker 1: Her tip was just uh
+
+00:55:11.440 --> 00:55:19.119
+Speaker 1: just take a good long look at the eyes 'cause most of these patients who don't appear to be seizing in their limbs
+
+00:55:19.240 --> 00:55:23.480
+Speaker 1: There's almost always a clue in their eyes that they're still seizing.
+
+00:55:23.640 --> 00:55:27.720
+Speaker 1: So what we call non-convulsive status epilepticus is actually
+
+00:55:28.040 --> 00:55:31.640
+Speaker 1: you know, if you really pay attention to those eyes, you can see that they're still seizing.
+
+00:55:31.800 --> 00:55:37.080
+Speaker 1: Any other just tips or practical stuff you can tell us about non-convulsive status?
+
+00:55:37.480 --> 00:55:39.720
+Speaker 3: Yeah, so it's a great question, Anton.
+
+00:55:39.800 --> 00:55:41.880
+Speaker 3: I've seen this a bunch of times.
+
+00:55:42.020 --> 00:55:49.140
+Speaker 3: And almost every time the patient to me just starts by looking a bit odd.
+
+00:55:49.540 --> 00:55:58.420
+Speaker 3: Like they're staring or blinking or not responding appropriately or doing a little bit of unusual twitching
+
+00:55:58.640 --> 00:56:05.920
+Speaker 3: And I guess I now just have a mental flag that when I see that, I need to ask myself, is this patient seizing?
+
+00:56:06.000 --> 00:56:07.839
+Speaker 3: Like is this non-convulsive status?
+
+00:56:08.140 --> 00:56:12.700
+Speaker 3: And I get really serious about the physical exam, completely uncovering them.
+
+00:56:12.859 --> 00:56:17.180
+Speaker 3: I want to see all the limbs without any sheets, clothes, etc.
+
+00:56:17.300 --> 00:56:20.740
+Speaker 3: I want to have a close look at the eyes, the way Katie does for sure.
+
+00:56:20.980 --> 00:56:27.620
+Speaker 3: And if I'm not sure, I default to treating them as if they're seizing
+
+00:56:27.660 --> 00:56:32.620
+Speaker 3: Because non-convulsive status is just as bad for your brain as convulsive status.
+
+00:56:32.780 --> 00:56:37.980
+Speaker 3: You're still burning neurons at a very high rate, and outcomes remain miserable.
+
+00:56:38.340 --> 00:56:43.540
+Speaker 3: So if I'm not sure I err on the side of caution and treat them like status epilepticus.
+
+00:56:43.860 --> 00:56:44.020
+Speaker 1: Right.
+
+00:56:44.180 --> 00:56:48.100
+Speaker 1: And then you know you got the diagnosis if you give them your first dose of benzo.
+
+00:56:48.359 --> 00:56:51.400
+Speaker 1: And they suddenly start talking to you and they seem perfectly normal then.
+
+00:56:51.720 --> 00:56:53.160
+Speaker 3: Yes, which I have had.
+
+00:56:53.240 --> 00:56:54.680
+Speaker 3: And you feel like a hero.
+
+00:56:54.839 --> 00:56:59.079
+Speaker 3: You give them four of Larazipam and they blink and they look at you and they're like, oh, what was that?
+
+00:56:59.240 --> 00:57:00.440
+Speaker 3: That was weird.
+
+00:57:00.440 --> 00:57:03.720
+Speaker 3: those moments in emergency medicine continue to blow my mind.
+
+00:57:04.920 --> 00:57:05.640
+Speaker 1: All right, great.
+
+00:57:05.720 --> 00:57:07.240
+Speaker 1: Well thanks so much, Sarah.
+
+00:57:07.480 --> 00:57:09.400
+Speaker 1: That was a really fun discussion.
+
+00:57:09.640 --> 00:57:10.839
+Speaker 1: Yeah, thanks for having me.
+
+00:57:11.160 --> 00:57:15.079
+Speaker 1: We're gonna have a brand new algorithm on the EMKCE's website.
+
+00:57:15.200 --> 00:57:17.840
+Speaker 1: Based on our discussion that we just had.
+
+00:57:18.000 --> 00:57:26.800
+Speaker 1: We'd love to hear if you have any alternate opinions about things like ketamine or just your algorithm in general or any anecdotes.
+
+00:57:27.059 --> 00:57:31.779
+Speaker 1: that you might have to take care of these very sick patients with status epilepticus.
+
+00:57:31.940 --> 00:57:38.339
+Speaker 1: I'm hoping that with all the listeners out there, we can save a few more lives of patients who suffer from seizures.
+
+00:57:46.400 --> 00:57:53.119
+Speaker 1: Sarah Gray will be speaking at the International Online Interactive EM Cases Summit, November 19th.
+
+00:57:53.640 --> 00:57:54.599
+Speaker 1: to 21st.
+
+00:57:54.680 --> 00:57:59.400
+Speaker 1: So please mark your calendars, November 19th to 21st, 2026.
+
+00:57:59.640 --> 00:58:06.440
+Speaker 1: And for the EM Cases Summit, we're hoping to show a few 30-second videos of EM Case's listeners.
+
+00:58:06.540 --> 00:58:09.500
+Speaker 1: Tell us about why they love emergency medicine.
+
+00:58:09.660 --> 00:58:13.820
+Speaker 1: And the idea is that we can bond over the meaning that our careers give us.
+
+00:58:13.980 --> 00:58:17.420
+Speaker 1: So please send us a 30-second video of yourself.
+
+00:58:17.640 --> 00:58:22.599
+Speaker 1: telling us why you love EM and the best videos will get free registration to the summit.
+
+00:58:22.920 --> 00:58:29.000
+Speaker 1: Nothing fancy, just pull out your phone, record 30 seconds, and email it to me.
+
+00:58:29.160 --> 00:58:31.000
+Speaker 1: Anton at emergency medicinecases.
+
+00:58:31.240 --> 00:58:31.480
+Speaker 1: com.
+
+00:58:31.560 --> 00:58:37.400
+Speaker 1: We've pretty much finalized the All-Star Speaker lineup, and you can check that out, not at emergency medicinecases.
+
+00:58:37.560 --> 00:58:39.480
+Speaker 1: com, but at emcasesummit.
+
+00:58:39.960 --> 00:58:40.280
+Speaker 1: com.
+
+00:58:40.460 --> 00:58:43.740
+Speaker 1: And registration opens July 14, 2026.
+
+00:58:44.220 --> 00:58:47.260
+Speaker 1: Until next time, take it easy.
+
