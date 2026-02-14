@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getTranscript = void 0;
+exports.captureSnapshot = exports.getTranscript = void 0;
 const functions = require("firebase-functions");
 const child_process_1 = require("child_process");
 const util_1 = require("util");
@@ -215,5 +215,93 @@ exports.getTranscript = functions.https.onCall(async (request) => {
         }
     }
     throw new functions.https.HttpsError("not-found", `No transcript found for video ${videoId}`);
+});
+// ─── Snapshot Capture ─────────────────────────────────────────────────
+// Uses yt-dlp to download a video segment, ffmpeg to extract a frame,
+// then uploads the frame to Firebase Storage.
+// @ts-ignore
+exports.captureSnapshot = functions.https.onCall(async (request) => {
+    const { data, auth } = request;
+    if (!auth) {
+        throw new functions.https.HttpsError("unauthenticated", "The function must be called while authenticated.");
+    }
+    const videoId = data === null || data === void 0 ? void 0 : data.videoId;
+    const timestamp = data === null || data === void 0 ? void 0 : data.timestamp; // seconds (float)
+    if (!videoId || timestamp === undefined || timestamp === null) {
+        throw new functions.https.HttpsError("invalid-argument", "The function must be called with 'videoId' and 'timestamp' arguments.");
+    }
+    const tsRounded = Math.floor(timestamp);
+    let tempDir = null;
+    try {
+        tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'snapshot-'));
+        const videoFile = path.join(tempDir, 'segment.mp4');
+        const frameFile = path.join(tempDir, 'frame.jpg');
+        // 1. Download a segment around the timestamp using yt-dlp
+        //    Wider buffer (3s before, 3s after) for keyframe safety
+        const startSec = Math.max(0, tsRounded - 3);
+        const endSec = tsRounded + 4;
+        const ytdlpCmd = `/opt/homebrew/bin/yt-dlp ` +
+            `-f "bv*[height<=720]" ` + // Best video ≤720p for speed
+            `--download-sections "*${startSec}-${endSec}" ` +
+            `--force-keyframes-at-cuts ` +
+            `-o "${videoFile}" ` +
+            `--no-part ` +
+            `"https://www.youtube.com/watch?v=${videoId}"`;
+        console.log(`[captureSnapshot] Downloading segment: ${ytdlpCmd}`);
+        const { stdout, stderr } = await execAsync(ytdlpCmd, { timeout: 30000 });
+        console.log(`[captureSnapshot] yt-dlp stdout: ${stdout}`);
+        if (stderr)
+            console.log(`[captureSnapshot] yt-dlp stderr: ${stderr}`);
+        // Check if file exists
+        if (!fs.existsSync(videoFile)) {
+            // yt-dlp sometimes appends format extensions, find the actual file
+            const files = fs.readdirSync(tempDir);
+            const videoFileActual = files.find(f => f.startsWith('segment'));
+            if (!videoFileActual) {
+                throw new Error(`Download failed. Files in temp: ${files.join(', ')}`);
+            }
+            // Rename to expected path
+            fs.renameSync(path.join(tempDir, videoFileActual), videoFile);
+        }
+        // 2. Extract frame using ffmpeg with EXACT fractional offset
+        //    The downloaded segment starts at startSec, so the precise seek
+        //    offset = timestamp - startSec (preserving fractional seconds)
+        const seekOffset = (timestamp - startSec).toFixed(3);
+        const ffmpegBin = '/opt/homebrew/bin/ffmpeg';
+        const ffmpegCmd = `${ffmpegBin} -i "${videoFile}" -ss ${seekOffset} -frames:v 1 -q:v 2 "${frameFile}" -y`;
+        console.log(`[captureSnapshot] Extracting frame: ${ffmpegCmd}`);
+        await execAsync(ffmpegCmd, { timeout: 15000 });
+        if (!fs.existsSync(frameFile)) {
+            throw new Error("Failed to extract frame from video segment.");
+        }
+        const frameSize = fs.statSync(frameFile).size;
+        console.log(`[captureSnapshot] Frame extracted: ${frameSize} bytes`);
+        // 3. Read frame and return as base64 data URL
+        const frameBuffer = fs.readFileSync(frameFile);
+        const base64 = frameBuffer.toString('base64');
+        const dataUrl = `data:image/jpeg;base64,${base64}`;
+        console.log(`[captureSnapshot] Returning base64 data URL (${base64.length} chars)`);
+        return { imageUrl: dataUrl };
+    }
+    catch (error) {
+        console.error(`[captureSnapshot] Error: ${error.message}`);
+        if (error instanceof functions.https.HttpsError) {
+            throw error;
+        }
+        throw new functions.https.HttpsError("internal", `Failed to capture snapshot: ${error.message}`);
+    }
+    finally {
+        // Cleanup temp dir
+        if (tempDir) {
+            try {
+                if (fs.existsSync(tempDir)) {
+                    fs.rmSync(tempDir, { recursive: true });
+                }
+            }
+            catch (e) {
+                console.error("Failed to cleanup temp dir:", e);
+            }
+        }
+    }
 });
 //# sourceMappingURL=index.js.map

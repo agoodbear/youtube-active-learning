@@ -218,12 +218,24 @@ export function HighlightsPanel({ videoId, onSeek, onLoop, onStopLoop, currentLo
                                             {/* Image Area - Click to Enlarge */}
                                             <div
                                                 className="aspect-video relative bg-slate-100 cursor-zoom-in group/image"
-                                                onClick={() => h.imageUrl && setLightboxImage(h.imageUrl.replace('hqdefault', 'maxresdefault'))}
+                                                onClick={() => h.imageUrl && setLightboxImage(
+                                                    h.imageUrl.includes('img.youtube.com')
+                                                        ? h.imageUrl.replace('hqdefault', 'maxresdefault')
+                                                        : h.imageUrl
+                                                )}
                                             >
                                                 {h.imageUrl ? (
                                                     <img src={h.imageUrl} alt="Snapshot" className="w-full h-full object-cover transition-transform duration-500 group-hover/image:scale-105" loading="lazy" />
                                                 ) : (
                                                     <div className="w-full h-full flex items-center justify-center text-slate-400 text-xs">No Image</div>
+                                                )}
+
+                                                {/* Loading spinner when image is still placeholder */}
+                                                {h.imageUrl?.includes('img.youtube.com') && (
+                                                    <div className="absolute top-2 left-2 flex items-center gap-1.5 bg-black/60 backdrop-blur-sm text-white/90 text-[10px] font-medium px-2 py-1 rounded-full z-10">
+                                                        <div className="w-3 h-3 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                                                        Capturing...
+                                                    </div>
                                                 )}
 
                                                 {/* Overlay Gradient */}

@@ -8,7 +8,9 @@ import { HighlightsPanel } from '../components/HighlightsPanel';
 import { MarkersBar } from '../components/MarkersBar';
 import { CategoryDropdown } from '../components/CategoryDropdown';
 import { LibraryPage } from '../components/LibraryPage';
-import { subscribeHighlights, getVideoCategories, addHighlight, saveVideoMeta } from '../lib/db';
+import { subscribeHighlights, getVideoCategories, addHighlight, saveVideoMeta, updateHighlight } from '../lib/db';
+import { httpsCallable } from 'firebase/functions';
+import { functions } from '../lib/firebase';
 import { LogOut, Layout, BookOpen, Sparkles, ArrowDownCircle, FileText, Highlighter } from 'lucide-react';
 import { cn } from '../lib/utils';
 
@@ -222,11 +224,12 @@ export function AppLayout() {
     const handleSnapshot = useCallback(async (timestamp: number) => {
         if (!user || !videoId) return;
 
-        // Use high-quality thumbnail as snapshot placeholder
+        // Use static thumbnail as immediate placeholder
         const thumbnail = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
 
         try {
-            await addHighlight({
+            // 1. Save highlight immediately with placeholder (instant feedback)
+            const docRef = await addHighlight({
                 userId: user.uid,
                 videoId: videoId,
                 text: '',
@@ -235,6 +238,23 @@ export function AppLayout() {
                 type: 'Snapshot',
                 imageUrl: thumbnail
             });
+
+            // 2. Call Cloud Function to capture real frame in background
+            if (functions) {
+                const captureSnapshotFn = httpsCallable(functions, 'captureSnapshot');
+                captureSnapshotFn({ videoId, timestamp })
+                    .then((result: any) => {
+                        const realImageUrl = result.data?.imageUrl;
+                        if (realImageUrl && docRef.id) {
+                            // Update the highlight with the real screenshot URL
+                            updateHighlight(docRef.id, { imageUrl: realImageUrl });
+                            console.log('[Snapshot] Updated with real frame:', realImageUrl);
+                        }
+                    })
+                    .catch((err: any) => {
+                        console.warn('[Snapshot] Cloud Function failed, keeping placeholder:', err.message);
+                    });
+            }
         } catch (error) {
             console.error("Error saving snapshot:", error);
         }
