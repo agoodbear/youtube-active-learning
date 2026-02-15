@@ -17,7 +17,8 @@
     "dependencies": {
         "firebase-admin": "^13.6.0",
         "firebase-functions": "^7.0.5",
-        "youtube-transcript": "^1.2.1",
+        "undici": "^6.23.0",
+        "youtube-transcript-plus": "^1.2.0",
         "youtubei.js": "^5.8.0"
     },
     "devDependencies": {
