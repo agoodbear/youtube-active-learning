@@ -2,7 +2,7 @@ import { initializeApp, type FirebaseApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider, type Auth } from "firebase/auth";
 import { getFirestore, type Firestore } from "firebase/firestore";
 import { getFunctions, type Functions, connectFunctionsEmulator } from "firebase/functions";
-import { getStorage } from "firebase/storage";
+import { getStorage, type FirebaseStorage } from "firebase/storage";
 
 // Config from env or placeholders
 const firebaseConfig = {
@@ -18,6 +18,7 @@ let app: FirebaseApp | undefined;
 let auth: Auth | undefined;
 let db: Firestore | undefined;
 let functions: Functions | undefined;
+let storage: FirebaseStorage | undefined;
 let initializationError: string | null = null;
 
 try {
@@ -30,6 +31,7 @@ try {
     auth = getAuth(app);
     db = getFirestore(app);
     functions = getFunctions(app);
+    storage = getStorage(app);
 
     // Connect to Emulators in Development
     // Note: Only if you are running 'firebase emulators:start'
@@ -49,5 +51,4 @@ try {
 }
 
 export const googleProvider = new GoogleAuthProvider();
-export const storage = app ? getStorage(app) : undefined;
-export { app, auth, db, functions, initializationError };
+export { app, auth, db, functions, storage, initializationError };

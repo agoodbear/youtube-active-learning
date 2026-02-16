@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { subscribeHighlights, deleteHighlight, updateHighlight } from '../lib/db';
@@ -33,6 +33,11 @@ export function HighlightsPanel({ videoId, onSeek, onLoop, onStopLoop, currentLo
     const [editingId, setEditingId] = useState<string | null>(null);
     const [editText, setEditText] = useState("");
     const [filterTag, setFilterTag] = useState<string>("");
+    const [selectedSnapshotId, setSelectedSnapshotId] = useState<string | null>(null);
+    const [uploadingSnapshotId, setUploadingSnapshotId] = useState<string | null>(null);
+    const [uploadProgressById, setUploadProgressById] = useState<Record<string, number>>({});
+    const [snapshotUploadError, setSnapshotUploadError] = useState<string | null>(null);
+    const snapshotCardRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
     const handleStartEdit = (id: string, currentComment: string = "") => {
         setEditingId(id);
@@ -112,118 +117,6 @@ export function HighlightsPanel({ videoId, onSeek, onLoop, onStopLoop, currentLo
         return () => window.removeEventListener('highlight-to-transcript', handleSync);
     }, []);
 
-    const [isUploading, setIsUploading] = useState<string | null>(null);
-
-    // Import storage if not available in props (it is not, so we use the global import we will add)
-    // Actually we need to add the import statement at the top of the file first.
-    // Assuming we do that in a separate step or I can do it here if I am clever?
-    // I will add the handlePaste logic here.
-
-    const handlePaste = async (e: React.ClipboardEvent, id: string, timestamp: number) => {
-        const items = e.clipboardData.items;
-        let blob: Blob | null = null;
-
-        for (let i = 0; i < items.length; i++) {
-            if (items[i].type.indexOf("image") !== -1) {
-                blob = items[i].getAsFile();
-                break;
-            }
-        }
-
-        if (blob) {
-            e.preventDefault();
-
-            if (!user) {
-                alert("Please sign in to upload images.");
-                return;
-            }
-            if (!storage) {
-                alert("Storage not available.");
-                return;
-            }
-
-            setIsUploading(id);
-            try {
-                console.log(`[Paste] 1. Raw blob size: ${(blob.size / 1024).toFixed(2)} KB, type: ${blob.type}`);
-
-                // COMPRESSION STEP: Convert to JPEG via Canvas
-                // This ensures we have a standard format and reasonable size
-                const compressedBlob = await new Promise<Blob>((resolve, reject) => {
-                    const img = new Image();
-                    img.onload = () => {
-                        const canvas = document.createElement('canvas');
-                        // Limit max dimension to avoid huge textures (e.g. 1920px width)
-                        // Maintain aspect ratio
-                        let width = img.width;
-                        let height = img.height;
-                        const MAX_WIDTH = 1920;
-
-                        if (width > MAX_WIDTH) {
-                            height = Math.round(height * (MAX_WIDTH / width));
-                            width = MAX_WIDTH;
-                        }
-
-                        canvas.width = width;
-                        canvas.height = height;
-                        const ctx = canvas.getContext('2d');
-                        if (!ctx) {
-                            reject(new Error("Failed to get canvas context"));
-                            return;
-                        }
-                        ctx.drawImage(img, 0, 0, width, height);
-
-                        // Output as JPEG 0.8 quality
-                        canvas.toBlob((b) => {
-                            if (b) resolve(b);
-                            else reject(new Error("Canvas compression failed"));
-                        }, 'image/jpeg', 0.8);
-                    };
-                    img.onerror = (e) => {
-                        console.error("Image load error:", e);
-                        reject(new Error("Failed to load image for compression"));
-                    };
-                    img.src = URL.createObjectURL(blob as Blob); // Cast needed if blob logic above is slightly inferred
-                });
-
-                console.log(`[Paste] 2. Compressed blob size: ${(compressedBlob.size / 1024).toFixed(2)} KB`);
-
-                const storageRef = ref(storage, `snapshots/${user.uid}/${videoId}/${timestamp.toFixed(2)}_pasted.jpg`);
-
-                // Use resumable upload with metadata
-                const metadata = { contentType: 'image/jpeg' };
-                const uploadTask = uploadBytesResumable(storageRef, compressedBlob, metadata);
-
-                uploadTask.on('state_changed',
-                    (snapshot) => {
-                        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                        console.log(`[Paste] Upload is ${progress.toFixed(1)}% done`);
-                    },
-                    (error) => {
-                        console.error("[Paste] Upload Error:", error);
-                        alert(`Upload failed: ${error.message}`);
-                        setIsUploading(null);
-                    }
-                );
-
-                console.log(`[Paste] 3. Upload task started`);
-                await uploadTask;
-                console.log(`[Paste] 4. Upload complete, fetching URL...`);
-
-                const url = await getDownloadURL(storageRef);
-                console.log(`[Paste] 5. URL got: ${url}`);
-
-                await updateHighlight(id, { imageUrl: url });
-                console.log("[Paste] 6. Database updated");
-
-            } catch (err: any) {
-                console.error("Paste upload failed (catch):", err);
-                alert(`Upload failed: ${err.message}`);
-            } finally {
-                setIsUploading(null);
-            }
-        }
-    };
-
     const handleDelete = async (id: string) => {
         try {
             await deleteHighlight(id);
@@ -262,6 +155,145 @@ export function HighlightsPanel({ videoId, onSeek, onLoop, onStopLoop, currentLo
         if (!currentLoop) return false;
         return Math.abs(currentLoop.start - (h.timestamp - 2)) < 0.5;
     };
+
+    const normalizeClipboardImage = useCallback(async (inputBlob: Blob): Promise<Blob> => {
+        const maxWidth = 1920;
+        const quality = 0.82;
+        let width = 0;
+        let height = 0;
+        let draw: ((ctx: CanvasRenderingContext2D, targetWidth: number, targetHeight: number) => void) | null = null;
+
+        if (typeof createImageBitmap === "function") {
+            const bitmap = await createImageBitmap(inputBlob);
+            width = bitmap.width;
+            height = bitmap.height;
+            draw = (ctx, targetWidth, targetHeight) => {
+                ctx.drawImage(bitmap, 0, 0, targetWidth, targetHeight);
+                bitmap.close();
+            };
+        } else {
+            const imageUrl = URL.createObjectURL(inputBlob);
+            const image = await new Promise<HTMLImageElement>((resolve, reject) => {
+                const img = new Image();
+                img.onload = () => resolve(img);
+                img.onerror = reject;
+                img.src = imageUrl;
+            });
+            width = image.width;
+            height = image.height;
+            draw = (ctx, targetWidth, targetHeight) => {
+                ctx.drawImage(image, 0, 0, targetWidth, targetHeight);
+                URL.revokeObjectURL(imageUrl);
+            };
+        }
+
+        if (!draw || width <= 0 || height <= 0) {
+            throw new Error("Failed to decode clipboard image.");
+        }
+
+        const scale = width > maxWidth ? maxWidth / width : 1;
+        const targetWidth = Math.max(1, Math.round(width * scale));
+        const targetHeight = Math.max(1, Math.round(height * scale));
+        const canvas = document.createElement("canvas");
+        canvas.width = targetWidth;
+        canvas.height = targetHeight;
+        const context = canvas.getContext("2d");
+        if (!context) {
+            throw new Error("Canvas 2D context not available.");
+        }
+        draw(context, targetWidth, targetHeight);
+
+        const jpegBlob = await new Promise<Blob>((resolve, reject) => {
+            canvas.toBlob((blob) => {
+                if (!blob) {
+                    reject(new Error("Failed to convert image to JPEG."));
+                    return;
+                }
+                resolve(blob);
+            }, "image/jpeg", quality);
+        });
+
+        return jpegBlob;
+    }, []);
+
+    const handleSnapshotCardSelect = useCallback((highlightId: string) => {
+        setSelectedSnapshotId(highlightId);
+        setSnapshotUploadError(null);
+        const card = snapshotCardRefs.current[highlightId];
+        card?.focus();
+    }, []);
+
+    const handleSnapshotPaste = useCallback(async (event: React.ClipboardEvent<HTMLDivElement>, highlightId: string) => {
+        const imageItem = Array.from(event.clipboardData.items).find((item) => item.type.startsWith("image/"));
+        if (!imageItem) return;
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        if (!user || !videoId || !storage) {
+            const message = "Not signed in or Firebase Storage is unavailable.";
+            setSnapshotUploadError(message);
+            console.error("[SnapshotPaste] " + message);
+            return;
+        }
+
+        const rawImageFile = imageItem.getAsFile();
+        if (!rawImageFile) {
+            const message = "Clipboard image item could not be read.";
+            setSnapshotUploadError(message);
+            console.error("[SnapshotPaste] " + message);
+            return;
+        }
+
+        setSelectedSnapshotId(highlightId);
+        setSnapshotUploadError(null);
+        setUploadingSnapshotId(highlightId);
+        setUploadProgressById((prev) => ({ ...prev, [highlightId]: 0 }));
+
+        try {
+            const normalizedJpeg = await normalizeClipboardImage(rawImageFile);
+            const filename = `${Date.now()}-${highlightId}.jpg`;
+            const snapshotPath = `snapshots/${user.uid}/${videoId}/${filename}`;
+            const snapshotRef = ref(storage, snapshotPath);
+
+            const downloadUrl = await new Promise<string>((resolve, reject) => {
+                const metadata = { contentType: "image/jpeg" };
+                const task = uploadBytesResumable(snapshotRef, normalizedJpeg, metadata);
+                const timeout = window.setTimeout(() => {
+                    task.cancel();
+                    reject(new Error("Upload timeout (>45s)."));
+                }, 45000);
+
+                task.on(
+                    "state_changed",
+                    (snapshot) => {
+                        if (snapshot.totalBytes > 0) {
+                            const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+                            setUploadProgressById((prev) => ({ ...prev, [highlightId]: progress }));
+                        }
+                    },
+                    (error) => {
+                        window.clearTimeout(timeout);
+                        reject(error);
+                    },
+                    async () => {
+                        window.clearTimeout(timeout);
+                        const url = await getDownloadURL(snapshotRef);
+                        resolve(url);
+                    }
+                );
+            });
+
+            await updateHighlight(highlightId, { imageUrl: downloadUrl });
+            setUploadProgressById((prev) => ({ ...prev, [highlightId]: 100 }));
+        } catch (error) {
+            const message = error instanceof Error ? error.message : "Snapshot upload failed.";
+            setSnapshotUploadError(message);
+            console.error("[SnapshotPaste] Upload failed:", error);
+        } finally {
+            setUploadingSnapshotId((current) => (current === highlightId ? null : current));
+        }
+    }, [normalizeClipboardImage, user, videoId]);
 
     return (
         <div className="flex flex-col h-full bg-slate-50/50 relative">
@@ -323,13 +355,21 @@ export function HighlightsPanel({ videoId, onSeek, onLoop, onStopLoop, currentLo
                                 const activeLoop = isLoopingThis(h);
 
                                 if (h.type === 'Snapshot') {
+                                    const isSelected = selectedSnapshotId === h.id;
+                                    const uploadProgress = uploadProgressById[h.id] ?? 0;
+                                    const isUploading = uploadingSnapshotId === h.id;
                                     return (
                                         <div
                                             key={h.id}
                                             id={`highlight - card - ${h.id} `}
-                                            className="group relative rounded-xl border border-slate-200 bg-white shadow-sm overflow-hidden hover:shadow-md hover:border-cyan-300 transition-all cursor-default"
+                                            ref={(node) => { snapshotCardRefs.current[h.id] = node; }}
                                             tabIndex={0}
-                                            onPaste={(e) => handlePaste(e, h.id, h.timestamp)}
+                                            onClick={() => handleSnapshotCardSelect(h.id)}
+                                            onPaste={(event) => { void handleSnapshotPaste(event, h.id); }}
+                                            className={cn(
+                                                "group relative rounded-xl border bg-white shadow-sm overflow-hidden hover:shadow-md hover:border-cyan-300 transition-all cursor-default outline-none",
+                                                isSelected ? "border-cyan-400 ring-2 ring-cyan-200" : "border-slate-200"
+                                            )}
                                         >
                                             {/* Image Area - Click to Enlarge */}
                                             <div
@@ -341,7 +381,7 @@ export function HighlightsPanel({ videoId, onSeek, onLoop, onStopLoop, currentLo
                                                 )}
                                             >
                                                 {h.imageUrl ? (
-                                                    <img src={h.imageUrl} alt="Snapshot" className={cn("w-full h-full object-cover transition-transform duration-500 group-hover/image:scale-105", isUploading === h.id && "opacity-50")} loading="lazy" />
+                                                    <img src={h.imageUrl} alt="Snapshot" className={cn("w-full h-full object-cover transition-transform duration-500 group-hover/image:scale-105", isUploading && "opacity-50")} loading="lazy" />
                                                 ) : (
                                                     <div className="w-full h-full flex flex-col items-center justify-center text-slate-400 gap-1">
                                                         <span className="text-xs">No Image</span>
@@ -350,7 +390,7 @@ export function HighlightsPanel({ videoId, onSeek, onLoop, onStopLoop, currentLo
                                                 )}
 
                                                 {/* Paste / Uploading Overlay */}
-                                                {(isUploading === h.id) && (
+                                                {isUploading && (
                                                     <div className="absolute inset-0 bg-black/50 flex items-center justify-center text-white text-xs font-medium z-20">
                                                         Uploading...
                                                     </div>
@@ -364,10 +404,26 @@ export function HighlightsPanel({ videoId, onSeek, onLoop, onStopLoop, currentLo
                                                 )}
 
                                                 {/* Loading spinner when image is still placeholder */}
-                                                {h.imageUrl?.includes('img.youtube.com') && (
+                                                {h.imageUrl?.includes('img.youtube.com') && !isUploading && (
                                                     <div className="absolute top-2 left-2 flex items-center gap-1.5 bg-black/60 backdrop-blur-sm text-white/90 text-[10px] font-medium px-2 py-1 rounded-full z-10">
                                                         <div className="w-3 h-3 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                                                         Capturing...
+                                                    </div>
+                                                )}
+
+                                                {/* Manual upload progress */}
+                                                {isUploading && (
+                                                    <div className="absolute top-2 left-2 right-2 bg-black/70 backdrop-blur-sm rounded-lg p-2 z-20">
+                                                        <div className="flex items-center justify-between text-[10px] text-white mb-1">
+                                                            <span>Uploading...</span>
+                                                            <span>{uploadProgress}%</span>
+                                                        </div>
+                                                        <div className="h-1.5 bg-white/20 rounded-full overflow-hidden">
+                                                            <div
+                                                                className="h-full bg-cyan-400 transition-all duration-200"
+                                                                style={{ width: `${uploadProgress}%` }}
+                                                            />
+                                                        </div>
                                                     </div>
                                                 )}
 
@@ -420,6 +476,16 @@ export function HighlightsPanel({ videoId, onSeek, onLoop, onStopLoop, currentLo
 
                                             {/* Comment Section (Editable) */}
                                             <div className="px-3 py-2 border-t border-slate-100 bg-slate-50/50">
+                                                <div className="text-[10px] text-slate-400 mb-1">
+                                                    Click card then press <span className="font-mono">Cmd/Ctrl + V</span> to paste screenshot.
+                                                </div>
+
+                                                {isSelected && snapshotUploadError && (
+                                                    <div className="text-[10px] text-red-500 mb-1">
+                                                        Upload failed: {snapshotUploadError}
+                                                    </div>
+                                                )}
+
                                                 {editingId === h.id ? (
                                                     <input
                                                         type="text"
