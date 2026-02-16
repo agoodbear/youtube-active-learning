@@ -11,7 +11,7 @@ import { LibraryPage } from '../components/LibraryPage';
 import { subscribeHighlights, getVideoCategories, addHighlight, saveVideoMeta, updateHighlight } from '../lib/db';
 import { storage } from '../lib/firebase';
 import { ref, uploadString, getDownloadURL } from 'firebase/storage';
-import { parseStoryboardSpec, getStoryboardData } from '../lib/storyboard';
+import { getCombinedStoryboardSpec, getStoryboardData } from '../lib/storyboard';
 import { LogOut, Layout, BookOpen, Sparkles, ArrowDownCircle, FileText, Highlighter } from 'lucide-react';
 import { cn } from '../lib/utils';
 
@@ -252,62 +252,54 @@ export function AppLayout() {
             });
             docRefId = docRef.id;
 
-            // 2. Client-side Storyboard Capture
+            // 2. Client-side Storyboard Capture (Local + Invidious Fallback)
             const playerResponse = playerRef.current?.getPlayerResponse();
-            if (playerResponse) {
-                const specRaw = playerResponse.storyboards?.playerStoryboardSpecRenderer?.spec;
-                if (specRaw) {
-                    const spec = parseStoryboardSpec(specRaw);
-                    if (spec) {
-                        const data = getStoryboardData(spec, timestamp);
+            const spec = await getCombinedStoryboardSpec(videoId, playerResponse);
 
-                        // Load image
-                        const img = new Image();
-                        img.crossOrigin = "Anonymous";
-                        img.src = data.url;
+            if (spec) {
+                const data = getStoryboardData(spec, timestamp);
 
-                        await new Promise((resolve, reject) => {
-                            img.onload = resolve;
-                            img.onerror = reject;
-                        });
+                // Load image
+                const img = new Image();
+                img.crossOrigin = "Anonymous";
+                img.src = data.url;
 
-                        // Crop via Canvas
-                        const canvas = document.createElement('canvas');
-                        canvas.width = data.width;
-                        canvas.height = data.height;
-                        const ctx = canvas.getContext('2d');
-                        if (ctx) {
-                            ctx.drawImage(
-                                img,
-                                data.x, data.y, data.width, data.height, // Source crop
-                                0, 0, data.width, data.height            // Dest
-                            );
+                await new Promise((resolve, reject) => {
+                    img.onload = resolve;
+                    img.onerror = reject;
+                });
 
-                            // Get Data URL
-                            const dataUrl = canvas.toDataURL('image/jpeg', 0.85);
+                // Crop via Canvas
+                const canvas = document.createElement('canvas');
+                canvas.width = data.width;
+                canvas.height = data.height;
+                const ctx = canvas.getContext('2d');
+                if (ctx) {
+                    ctx.drawImage(
+                        img,
+                        data.x, data.y, data.width, data.height, // Source crop
+                        0, 0, data.width, data.height            // Dest
+                    );
 
-                            // Upload to Firebase Storage
-                            if (storage) {
-                                const storageRef = ref(storage, `snapshots/${user.uid}/${videoId}/${timestamp.toFixed(2)}.jpg`);
-                                await uploadString(storageRef, dataUrl, 'data_url');
-                                const downloadURL = await getDownloadURL(storageRef);
+                    // Get Data URL
+                    const dataUrl = canvas.toDataURL('image/jpeg', 0.85);
 
-                                // Update Firestore
-                                if (docRefId) {
-                                    await updateHighlight(docRefId, { imageUrl: downloadURL });
-                                    console.log('[Snapshot] Successfully captured and uploaded storyboard frame');
-                                }
-                                return; // Success!
-                            }
+                    // Upload to Firebase Storage
+                    if (storage) {
+                        const storageRef = ref(storage, `snapshots/${user.uid}/${videoId}/${timestamp.toFixed(2)}.jpg`);
+                        await uploadString(storageRef, dataUrl, 'data_url');
+                        const downloadURL = await getDownloadURL(storageRef);
+
+                        // Update Firestore
+                        if (docRefId) {
+                            await updateHighlight(docRefId, { imageUrl: downloadURL });
+                            console.log('[Snapshot] Successfully captured and uploaded storyboard frame');
                         }
                     }
                 }
+            } else {
+                console.warn('[Snapshot] No storyboard spec found (Local or Invidious). Keeping placeholder.');
             }
-
-            console.warn('[Snapshot] Failed to extract storyboard, falling back to thumbnail/backend');
-            // If client-side failed, we could optionally try backend, but user wants to avoid backend blocking.
-            // For now, if client fails, we stick with the thumbnail (which is already set).
-
         } catch (error) {
             console.error("Error saving snapshot:", error);
         }

@@ -112,3 +112,98 @@ export function getStoryboardData(spec: StoryboardSpec, timestampSeconds: number
         height: spec.height
     };
 }
+
+// ─── Invidious Fallback ─────────────────────────────────────────────
+
+const INVIDIOUS_INSTANCES = [
+    'https://iv.ggtyler.dev',
+    'https://inv.tux.pizza',
+    'https://invidious.jing.rocks',
+    'https://vid.puffyan.us'
+];
+
+interface InvidiousStoryboard {
+    url: string;
+    templateUrl?: string;
+    width: number;
+    height: number;
+    count: number;
+    interval: number; // ms
+    storyboardWidth: number;
+    storyboardHeight: number;
+    storyboardCount: number;
+}
+
+/**
+ * Tries to fetch storyboard spec from Invidious instances.
+ */
+async function fetchFromInvidious(videoId: string): Promise<StoryboardSpec | null> {
+    for (const instance of INVIDIOUS_INSTANCES) {
+        try {
+            const res = await fetch(`${instance}/api/v1/storyboards/${videoId}`);
+            if (!res.ok) continue;
+            const data = await res.json();
+
+            if (data.storyboards && Array.isArray(data.storyboards) && data.storyboards.length > 0) {
+                // Pick the best quality (usually the last one or largest width)
+                // Invidious usually returns [low, medium, high]
+                const best = data.storyboards[data.storyboards.length - 1] as InvidiousStoryboard;
+
+                // Convert to our format
+                // Invidious returns individual URLs sometimes, or a template.
+                // data.storyboards[i].templateUrl might be "https://.../storyboard_L2/M$M.jpg"
+
+                let baseUrl = best.templateUrl || best.url;
+
+                // Calculate rows/cols from storyboard dimensions
+                // Invidious doesn't always give row/col count explicitly in the same way
+                // But we can infer or use defaults if standard 5x5 (25 frames) or similar.
+                // Actually, Invidious response usually includes enough info.
+
+                // Fallback calculations if strict row/col not present (standard YT is often 5x5 or 10x10)
+                // Let's assume standard L2 usually has 5 rows, 5 cols -> 25 images per sheet.
+                // We'll calculate columns based on storyboardWidth / width
+                const cols = Math.floor(best.storyboardWidth / best.width);
+                const rows = Math.floor(best.storyboardHeight / best.height);
+
+                return {
+                    baseUrl,
+                    width: best.width,
+                    height: best.height,
+                    frameCount: best.count,
+                    step: best.interval,
+                    rowCount: rows || 5, // fallback
+                    colCount: cols || 5   // fallback
+                };
+            }
+        } catch (e) {
+            // console.warn(`Failed to fetch from ${instance}`, e);
+            continue;
+        }
+    }
+    return null;
+}
+
+/**
+ * Main entry point: tries local player response first, then falls back to Invidious.
+ */
+export async function getCombinedStoryboardSpec(videoId: string, playerResponse?: any): Promise<StoryboardSpec | null> {
+    // 1. Try Local Player Response
+    if (playerResponse?.storyboards?.playerStoryboardSpecRenderer?.spec) {
+        const spec = parseStoryboardSpec(playerResponse.storyboards.playerStoryboardSpecRenderer.spec);
+        if (spec) {
+            console.log('[Storyboard] Found local player spec');
+            return spec;
+        }
+    }
+
+    // 2. Try Invidious
+    console.log('[Storyboard] Local spec missing, trying Invidious fallback...');
+    const invidiousSpec = await fetchFromInvidious(videoId);
+    if (invidiousSpec) {
+        console.log('[Storyboard] Found Invidious spec');
+        return invidiousSpec;
+    }
+
+    return null;
+}
