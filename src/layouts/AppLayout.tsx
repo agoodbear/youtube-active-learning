@@ -9,7 +9,8 @@ import { MarkersBar } from '../components/MarkersBar';
 import { CategoryDropdown } from '../components/CategoryDropdown';
 import { LibraryPage } from '../components/LibraryPage';
 import { subscribeHighlights, getVideoCategories, addHighlight, saveVideoMeta, updateHighlight } from '../lib/db';
-import { storage } from '../lib/firebase';
+import { storage, functions } from '../lib/firebase';
+import { httpsCallable } from 'firebase/functions';
 import { ref, uploadString, getDownloadURL } from 'firebase/storage';
 import { getCombinedStoryboardSpec, getStoryboardData } from '../lib/storyboard';
 import { LogOut, Layout, BookOpen, Sparkles, ArrowDownCircle, FileText, Highlighter } from 'lucide-react';
@@ -298,7 +299,32 @@ export function AppLayout() {
                     }
                 }
             } else {
-                console.warn('[Snapshot] No storyboard spec found (Local or Invidious). Keeping placeholder.');
+                console.warn('[Snapshot] No storyboard spec found (Local or Invidious). Calling backend fallback...');
+
+                if (functions) {
+                    try {
+                        const captureSnapshot = httpsCallable(functions, 'captureSnapshot');
+                        const result = await captureSnapshot({
+                            videoId,
+                            timestamp,
+                            duration: playerRef.current?.getDuration()
+                        });
+
+                        const data = result.data as { imageUrl: string };
+
+                        if (data.imageUrl && docRefId && storage) {
+                            // Upload base64 to Storage
+                            const storageRef = ref(storage, `snapshots/${user.uid}/${videoId}/${timestamp.toFixed(2)}_backend.jpg`);
+                            await uploadString(storageRef, data.imageUrl, 'data_url');
+                            const downloadURL = await getDownloadURL(storageRef);
+
+                            await updateHighlight(docRefId, { imageUrl: downloadURL });
+                            console.log('[Snapshot] Backend fallback success!');
+                        }
+                    } catch (backendError) {
+                        console.error('[Snapshot] Backend fallback failed:', backendError);
+                    }
+                }
             }
         } catch (error) {
             console.error("Error saving snapshot:", error);
