@@ -3,9 +3,10 @@ import { Camera } from 'lucide-react';
 
 export interface VideoPlayerHandle {
     seekTo: (seconds: number) => void;
-    getCurrentTime: () => number;
+    getDuration: () => number;
     togglePlayPause: () => void;
     isPlaying: () => boolean;
+    getPlayerResponse: () => any;
 }
 
 interface VideoPlayerProps {
@@ -25,6 +26,7 @@ interface YTPlayer {
     pauseVideo: () => void;
     getPlayerState: () => number;
     destroy: () => void;
+    getPlayerResponse?: () => any;
 }
 
 interface YTEvent {
@@ -148,6 +150,12 @@ export const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(({ ur
             }
             return 0;
         },
+        getDuration: () => {
+            if (playerInstanceRef.current && playerInstanceRef.current.getDuration) {
+                return playerInstanceRef.current.getDuration();
+            }
+            return 0;
+        },
         togglePlayPause: () => {
             if (!playerInstanceRef.current) return;
             const state = playerInstanceRef.current.getPlayerState();
@@ -161,6 +169,12 @@ export const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(({ ur
         isPlaying: () => {
             if (!playerInstanceRef.current || !playerInstanceRef.current.getPlayerState) return false;
             return playerInstanceRef.current.getPlayerState() === 1;
+        },
+        getPlayerResponse: () => {
+            if (playerInstanceRef.current && playerInstanceRef.current.getPlayerResponse) {
+                return playerInstanceRef.current.getPlayerResponse();
+            }
+            return null;
         }
     }));
 

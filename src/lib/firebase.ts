@@ -2,6 +2,7 @@ import { initializeApp, type FirebaseApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider, type Auth } from "firebase/auth";
 import { getFirestore, type Firestore } from "firebase/firestore";
 import { getFunctions, type Functions, connectFunctionsEmulator } from "firebase/functions";
+import { getStorage } from "firebase/storage";
 
 // Config from env or placeholders
 const firebaseConfig = {
@@ -48,4 +49,5 @@ try {
 }
 
 export const googleProvider = new GoogleAuthProvider();
+export const storage = app ? getStorage(app) : undefined;
 export { app, auth, db, functions, initializationError };

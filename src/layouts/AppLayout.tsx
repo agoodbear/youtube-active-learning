@@ -9,8 +9,9 @@ import { MarkersBar } from '../components/MarkersBar';
 import { CategoryDropdown } from '../components/CategoryDropdown';
 import { LibraryPage } from '../components/LibraryPage';
 import { subscribeHighlights, getVideoCategories, addHighlight, saveVideoMeta, updateHighlight } from '../lib/db';
-import { httpsCallable } from 'firebase/functions';
-import { functions } from '../lib/firebase';
+import { storage } from '../lib/firebase';
+import { ref, uploadString, getDownloadURL } from 'firebase/storage';
+import { parseStoryboardSpec, getStoryboardData } from '../lib/storyboard';
 import { LogOut, Layout, BookOpen, Sparkles, ArrowDownCircle, FileText, Highlighter } from 'lucide-react';
 import { cn } from '../lib/utils';
 
@@ -59,6 +60,15 @@ export function AppLayout() {
     const playerRef = useRef<VideoPlayerHandle>(null);
     const transcriptRef = useRef<TranscriptViewHandle>(null);
     const [videoUrl, setVideoUrl] = useState<string>("https://www.youtube.com/watch?v=dQw4w9WgXcQ");
+
+    useEffect(() => {
+        // Parse URL on mount to check for /video/:id
+        const path = window.location.pathname;
+        const match = path.match(/\/video\/([^/?]+)/);
+        if (match && match[1]) {
+            setVideoUrl(`https://www.youtube.com/watch?v=${match[1]}`);
+        }
+    }, []);
 
     const [currentTime, setCurrentTime] = useState(0);
     const [duration, setDuration] = useState(0);
@@ -227,8 +237,10 @@ export function AppLayout() {
         // Use static thumbnail as immediate placeholder
         const thumbnail = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
 
+        let docRefId: string | undefined;
+
         try {
-            // 1. Save highlight immediately with placeholder (instant feedback)
+            // 1. Save highlight immediately with placeholder
             const docRef = await addHighlight({
                 userId: user.uid,
                 videoId: videoId,
@@ -238,23 +250,64 @@ export function AppLayout() {
                 type: 'Snapshot',
                 imageUrl: thumbnail
             });
+            docRefId = docRef.id;
 
-            // 2. Call Cloud Function to capture real frame in background
-            if (functions) {
-                const captureSnapshotFn = httpsCallable(functions, 'captureSnapshot');
-                captureSnapshotFn({ videoId, timestamp })
-                    .then((result: any) => {
-                        const realImageUrl = result.data?.imageUrl;
-                        if (realImageUrl && docRef.id) {
-                            // Update the highlight with the real screenshot URL
-                            updateHighlight(docRef.id, { imageUrl: realImageUrl });
-                            console.log('[Snapshot] Updated with real frame:', realImageUrl);
+            // 2. Client-side Storyboard Capture
+            const playerResponse = playerRef.current?.getPlayerResponse();
+            if (playerResponse) {
+                const specRaw = playerResponse.storyboards?.playerStoryboardSpecRenderer?.spec;
+                if (specRaw) {
+                    const spec = parseStoryboardSpec(specRaw);
+                    if (spec) {
+                        const data = getStoryboardData(spec, timestamp);
+
+                        // Load image
+                        const img = new Image();
+                        img.crossOrigin = "Anonymous";
+                        img.src = data.url;
+
+                        await new Promise((resolve, reject) => {
+                            img.onload = resolve;
+                            img.onerror = reject;
+                        });
+
+                        // Crop via Canvas
+                        const canvas = document.createElement('canvas');
+                        canvas.width = data.width;
+                        canvas.height = data.height;
+                        const ctx = canvas.getContext('2d');
+                        if (ctx) {
+                            ctx.drawImage(
+                                img,
+                                data.x, data.y, data.width, data.height, // Source crop
+                                0, 0, data.width, data.height            // Dest
+                            );
+
+                            // Get Data URL
+                            const dataUrl = canvas.toDataURL('image/jpeg', 0.85);
+
+                            // Upload to Firebase Storage
+                            if (storage) {
+                                const storageRef = ref(storage, `snapshots/${user.uid}/${videoId}/${timestamp.toFixed(2)}.jpg`);
+                                await uploadString(storageRef, dataUrl, 'data_url');
+                                const downloadURL = await getDownloadURL(storageRef);
+
+                                // Update Firestore
+                                if (docRefId) {
+                                    await updateHighlight(docRefId, { imageUrl: downloadURL });
+                                    console.log('[Snapshot] Successfully captured and uploaded storyboard frame');
+                                }
+                                return; // Success!
+                            }
                         }
-                    })
-                    .catch((err: any) => {
-                        console.warn('[Snapshot] Cloud Function failed, keeping placeholder:', err.message);
-                    });
+                    }
+                }
             }
+
+            console.warn('[Snapshot] Failed to extract storyboard, falling back to thumbnail/backend');
+            // If client-side failed, we could optionally try backend, but user wants to avoid backend blocking.
+            // For now, if client fails, we stick with the thumbnail (which is already set).
+
         } catch (error) {
             console.error("Error saving snapshot:", error);
         }
