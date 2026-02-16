@@ -1,15 +1,31 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.captureSnapshot = exports.getTranscriptPublicAsia = exports.getTranscriptPublic = exports.getTranscript = void 0;
+const https_1 = require("firebase-functions/v2/https");
 const functions = require("firebase-functions");
 const child_process_1 = require("child_process");
 const util_1 = require("util");
 const fs = require("fs");
 const os = require("os");
 const path = require("path");
+const nodeCrypto = require("crypto");
 const undici_1 = require("undici");
 const youtube_transcript_plus_1 = require("youtube-transcript-plus");
+const yt_dlp_wrap_1 = require("yt-dlp-wrap");
+const youtubei_js_1 = require("youtubei.js");
 const execAsync = (0, util_1.promisify)(child_process_1.exec);
+const ffmpegPath = require('ffmpeg-static');
+const YTDLP_BINARY = 'yt-dlp';
+const YTDLP_PATH = path.join(os.tmpdir(), YTDLP_BINARY);
+async function ensureYtDlp() {
+    if (fs.existsSync(YTDLP_PATH)) {
+        return;
+    }
+    console.log("[Setup] Downloading yt-dlp binary...");
+    await yt_dlp_wrap_1.default.downloadFromGithub(YTDLP_PATH);
+    fs.chmodSync(YTDLP_PATH, '755'); // Make executable
+    console.log("[Setup] yt-dlp downloaded and executable.");
+}
 function secondsToMs(seconds) {
     return Math.round(seconds * 1000);
 }
@@ -196,6 +212,54 @@ async function fetchCaptionTracksFromInnertubePlayer(videoId, referer, userAgent
                 racyCheckOk: true,
             },
         },
+        {
+            name: "WEB_EMBED",
+            userAgent: DEFAULT_UA,
+            referer,
+            headers: {
+                "content-type": "application/json",
+                "accept": "application/json",
+                "x-youtube-client-name": "56",
+                "x-youtube-client-version": "1.20240228.01.00",
+            },
+            body: {
+                context: {
+                    client: {
+                        clientName: "WEB_EMBED",
+                        clientVersion: "1.20240228.01.00",
+                        hl: "en",
+                        gl: "US",
+                    },
+                },
+                videoId,
+                contentCheckOk: true,
+                racyCheckOk: true,
+            },
+        },
+        {
+            name: "TV_EMBEDDED",
+            userAgent: "Mozilla/5.0 (SmartHub; SMART-TV; U; Linux/SmartTV) AppleWebKit/531.2+ (KHTML, like Gecko) WebBrowser/1.0 SmartHub",
+            referer,
+            headers: {
+                "content-type": "application/json",
+                "accept": "application/json",
+                "x-youtube-client-name": "55",
+                "x-youtube-client-version": "4.20220223.00.00",
+            },
+            body: {
+                context: {
+                    client: {
+                        clientName: "TV_EMBEDDED",
+                        clientVersion: "4.20220223.00.00",
+                        hl: "en",
+                        gl: "US",
+                    },
+                },
+                videoId,
+                contentCheckOk: true,
+                racyCheckOk: true,
+            },
+        }
     ];
     for (const key of INNERTUBE_API_KEYS) {
         for (const attempt of attempts) {
@@ -575,15 +639,15 @@ async function fetchTranscriptFromTimedTextApi(videoId, referer, userAgent) {
     return parseXmlTimedText(xmlBody);
 }
 // @ts-ignore
-exports.getTranscript = functions.https.onCall({ secrets: [TRANSCRIPT_PROXY_URL] }, async (request) => {
+exports.getTranscript = (0, https_1.onCall)({ secrets: [TRANSCRIPT_PROXY_URL] }, async (request) => {
     var _a, _b, _c;
     const { data, auth } = request;
     if (!auth) {
-        throw new functions.https.HttpsError("unauthenticated", "The function must be called while authenticated.");
+        throw new https_1.HttpsError("unauthenticated", "The function must be called while authenticated.");
     }
     const videoId = data === null || data === void 0 ? void 0 : data.videoId;
     if (!videoId) {
-        throw new functions.https.HttpsError("invalid-argument", "The function must be called with a 'videoId' argument.");
+        throw new https_1.HttpsError("invalid-argument", "The function must be called with a 'videoId' argument.");
     }
     // 1. Check Mock Data First (Always succeed for demo videos)
     if (MOCK_TRANSCRIPTS[videoId]) {
@@ -631,12 +695,12 @@ exports.getTranscript = functions.https.onCall({ secrets: [TRANSCRIPT_PROXY_URL]
         const message = error instanceof Error ? error.message : String(error);
         console.warn(`[youtube-transcript-plus] Failed for ${videoId}: ${message}`);
         if (error instanceof youtube_transcript_plus_1.YoutubeTranscriptTooManyRequestError || message.includes("too many requests") || message.includes("captcha")) {
-            throw new functions.https.HttpsError("resource-exhausted", "YouTube is currently rate-limiting requests. Please try again later or upload an SRT file manually.");
+            throw new https_1.HttpsError("resource-exhausted", "YouTube is currently rate-limiting requests. Please try again later or upload an SRT file manually.");
         }
         // If YouTube returns an interstitial/consent page, youtube-transcript-plus can surface
         // as NotAvailable. Treat that as a transient error rather than a true not-found.
         if (error instanceof youtube_transcript_plus_1.YoutubeTranscriptDisabledError) {
-            throw new functions.https.HttpsError("not-found", `No transcript found for video ${videoId}`);
+            throw new https_1.HttpsError("not-found", `No transcript found for video ${videoId}`);
         }
     }
     // 3. Secondary fallback: parse timedtext directly
@@ -652,7 +716,7 @@ exports.getTranscript = functions.https.onCall({ secrets: [TRANSCRIPT_PROXY_URL]
         const message = error instanceof Error ? error.message : String(error);
         console.warn(`[timedtext] Failed for ${videoId}: ${message}`);
         if (message.includes("too many requests") || message.includes("captcha")) {
-            throw new functions.https.HttpsError("resource-exhausted", "YouTube is currently rate-limiting requests. Please try again later or upload an SRT file manually.");
+            throw new https_1.HttpsError("resource-exhausted", "YouTube is currently rate-limiting requests. Please try again later or upload an SRT file manually.");
         }
     }
     // 4. Last fallback to yt-dlp where available (mainly local/dev environments)
@@ -661,18 +725,17 @@ exports.getTranscript = functions.https.onCall({ secrets: [TRANSCRIPT_PROXY_URL]
     let tempDir = null;
     let outputTemplate = null;
     try {
-        // Cloud Functions runtime may not have yt-dlp installed.
-        const hasYtDlp = await execAsync("command -v yt-dlp")
-            .then(() => true)
-            .catch(() => false);
-        if (!hasYtDlp) {
-            console.warn("[yt-dlp] Binary not available in runtime. Skipping yt-dlp fallback.");
-            throw new functions.https.HttpsError("not-found", `No transcript found for video ${videoId}`);
-        }
+        // Ensure yt-dlp binary is ready
+        await ensureYtDlp();
         tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'ytdlp-'));
         outputTemplate = path.join(tempDir, '%(id)s');
         // Run yt-dlp to download subtitles only
-        const ytdlpCmd = `yt-dlp --write-auto-sub --sub-langs "en.*" --skip-download --sub-format vtt -o "${outputTemplate}" "https://www.youtube.com/watch?v=${videoId}"`;
+        let ytdlpCmd = `${YTDLP_PATH} --write-auto-sub --sub-langs "en.*" --skip-download --sub-format vtt -o "${outputTemplate}"`;
+        const proxyUrl = TRANSCRIPT_PROXY_URL.value();
+        if (proxyUrl) {
+            ytdlpCmd += ` --proxy "${proxyUrl}"`;
+        }
+        ytdlpCmd += ` "https://www.youtube.com/watch?v=${videoId}"`;
         console.log(`[yt-dlp] Running: ${ytdlpCmd}`);
         const { stdout, stderr } = await execAsync(ytdlpCmd, { timeout: 30000 });
         console.log(`[yt-dlp] stdout: ${stdout}`);
@@ -699,20 +762,20 @@ exports.getTranscript = functions.https.onCall({ secrets: [TRANSCRIPT_PROXY_URL]
         console.error(`[yt-dlp] Error: ${error.message}`);
         // Check for Rate Limiting / 429
         if (((_a = error.message) === null || _a === void 0 ? void 0 : _a.includes('HTTP Error 429')) || ((_b = error.stderr) === null || _b === void 0 ? void 0 : _b.includes('HTTP Error 429'))) {
-            throw new functions.https.HttpsError("resource-exhausted", "YouTube is currently rate-limiting requests. Please try again later or upload an SRT file manually.");
+            throw new https_1.HttpsError("resource-exhausted", "YouTube is currently rate-limiting requests. Please try again later or upload an SRT file manually.");
         }
         // Rethrow other known HttpsErrors
-        if (error instanceof functions.https.HttpsError) {
+        if (error instanceof https_1.HttpsError) {
             throw error;
         }
         // If binary is missing in runtime, don't surface internal error to user.
         if ((_c = error.message) === null || _c === void 0 ? void 0 : _c.includes("yt-dlp: not found")) {
-            throw new functions.https.HttpsError("not-found", `No transcript found for video ${videoId}`);
+            throw new https_1.HttpsError("not-found", `No transcript found for video ${videoId}`);
         }
         // For unknown errors, throw internal but with a message?
         // Or let it be handled by default?
         // If we want to avoid "internal" without details:
-        throw new functions.https.HttpsError("internal", `Failed to fetch transcript: ${error.message}`);
+        throw new https_1.HttpsError("internal", `Failed to fetch transcript: ${error.message}`);
     }
     finally {
         // Cleanup
@@ -727,11 +790,11 @@ exports.getTranscript = functions.https.onCall({ secrets: [TRANSCRIPT_PROXY_URL]
             }
         }
     }
-    throw new functions.https.HttpsError("not-found", `No transcript found for video ${videoId}`);
+    throw new https_1.HttpsError("not-found", `No transcript found for video ${videoId}`);
 });
 // Key-protected HTTP endpoint for smoke testing in production without Firebase Auth.
 // Enabled via Secret Manager: TRANSCRIPT_DEBUG_KEY
-exports.getTranscriptPublic = functions.https.onRequest({ secrets: [TRANSCRIPT_DEBUG_KEY, TRANSCRIPT_PROXY_URL] }, async (req, res) => {
+exports.getTranscriptPublic = (0, https_1.onRequest)({ secrets: [TRANSCRIPT_DEBUG_KEY, TRANSCRIPT_PROXY_URL] }, async (req, res) => {
     try {
         const expected = TRANSCRIPT_DEBUG_KEY.value() || "";
         const key = String(req.query.key || req.header("x-api-key") || "");
@@ -763,7 +826,7 @@ exports.getTranscriptPublic = functions.https.onRequest({ secrets: [TRANSCRIPT_D
         res.status(500).json({ ok: false, error: message });
     }
 });
-exports.getTranscriptPublicAsia = functions.https.onRequest({ region: "asia-east1", secrets: [TRANSCRIPT_DEBUG_KEY, TRANSCRIPT_PROXY_URL] }, async (req, res) => {
+exports.getTranscriptPublicAsia = (0, https_1.onRequest)({ region: "asia-east1", secrets: [TRANSCRIPT_DEBUG_KEY, TRANSCRIPT_PROXY_URL] }, async (req, res) => {
     try {
         const expected = TRANSCRIPT_DEBUG_KEY.value() || "";
         const key = String(req.query.key || req.header("x-api-key") || "");
@@ -799,59 +862,711 @@ exports.getTranscriptPublicAsia = functions.https.onRequest({ region: "asia-east
 // Uses yt-dlp to download a video segment, ffmpeg to extract a frame,
 // then uploads the frame to Firebase Storage.
 // @ts-ignore
-exports.captureSnapshot = functions.https.onCall(async (request) => {
+// Helper to find a direct video URL from InnerTube (Android client preferred)
+async function fetchVideoUrlFromInnertube(videoId) {
+    var _a, _b, _c, _d;
+    const referer = `https://www.youtube.com/watch?v=${videoId}`;
+    // Android client 19.x+ often returns raw 'url' in streamingData without signature cipher for some videos.
+    // Try Android first.
+    const attempts = [
+        {
+            name: "ANDROID",
+            userAgent: ANDROID_UA,
+            referer,
+            headers: {
+                "content-type": "application/json",
+                "accept": "application/json",
+                "x-youtube-client-name": "3",
+                "x-youtube-client-version": "20.10.38",
+            },
+            body: {
+                context: {
+                    client: {
+                        clientName: "ANDROID",
+                        clientVersion: "20.10.38",
+                        hl: "en",
+                        gl: "US",
+                        androidSdkVersion: 30
+                    },
+                },
+                videoId,
+                contentCheckOk: true,
+                racyCheckOk: true,
+            },
+        },
+        {
+            name: "IOS",
+            userAgent: "Mozilla/5.0 (iPhone; CPU iPhone OS 16_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.0 Mobile/15E148 Safari/604.1",
+            referer,
+            headers: {
+                "content-type": "application/json",
+                "accept": "application/json",
+                "x-youtube-client-name": "5",
+                "x-youtube-client-version": "19.29.1",
+            },
+            body: {
+                context: {
+                    client: {
+                        clientName: "IOS",
+                        clientVersion: "19.29.1",
+                        hl: "en",
+                        gl: "US",
+                        deviceMake: "Apple",
+                        deviceModel: "iPhone14,5",
+                        osName: "iPhone",
+                        osVersion: "16.0",
+                    },
+                },
+                videoId,
+                contentCheckOk: true,
+                racyCheckOk: true,
+            }
+        },
+        {
+            name: "WEB_EMBED",
+            userAgent: DEFAULT_UA,
+            referer,
+            headers: {
+                "content-type": "application/json",
+                "accept": "application/json",
+                "x-youtube-client-name": "56",
+                "x-youtube-client-version": "1.20240228.01.00",
+            },
+            body: {
+                context: {
+                    client: {
+                        clientName: "WEB_EMBED",
+                        clientVersion: "1.20240228.01.00",
+                        hl: "en",
+                        gl: "US",
+                    },
+                },
+                videoId,
+                contentCheckOk: true,
+                racyCheckOk: true,
+            },
+        },
+        {
+            name: "TV_EMBEDDED",
+            userAgent: "Mozilla/5.0 (SmartHub; SMART-TV; U; Linux/SmartTV) AppleWebKit/531.2+ (KHTML, like Gecko) WebBrowser/1.0 SmartHub",
+            referer,
+            headers: {
+                "content-type": "application/json",
+                "accept": "application/json",
+                "x-youtube-client-name": "55",
+                "x-youtube-client-version": "4.20220223.00.00",
+            },
+            body: {
+                context: {
+                    client: {
+                        clientName: "TV_EMBEDDED",
+                        clientVersion: "4.20220223.00.00",
+                        hl: "en",
+                        gl: "US",
+                    },
+                },
+                videoId,
+                contentCheckOk: true,
+                racyCheckOk: true,
+            },
+        },
+        {
+            name: "TV",
+            userAgent: "Mozilla/5.0 (ChromiumNet) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36",
+            referer,
+            headers: {
+                "content-type": "application/json",
+                "accept": "application/json",
+                "x-youtube-client-name": "38",
+                "x-youtube-client-version": "6.20240223.00.00",
+            },
+            body: {
+                context: {
+                    client: {
+                        clientName: "TV",
+                        clientVersion: "6.20240223.00.00",
+                        hl: "en",
+                        gl: "US",
+                    },
+                },
+                videoId,
+                contentCheckOk: true,
+                racyCheckOk: true,
+            },
+        }
+    ];
+    for (const key of INNERTUBE_API_KEYS) {
+        for (const attempt of attempts) {
+            try {
+                const url = `https://www.youtube.com/youtubei/v1/player?key=${key}&prettyPrint=false`;
+                const res = await fetchWithHeaders(url, {
+                    method: "POST",
+                    headers: attempt.headers,
+                    body: JSON.stringify(attempt.body)
+                }, attempt.userAgent, attempt.referer);
+                if (!res.ok)
+                    continue;
+                const json = await res.json();
+                if (((_a = json.playabilityStatus) === null || _a === void 0 ? void 0 : _a.status) !== "OK") {
+                    console.warn(`[innertube-video] ${attempt.name} playability: ${(_b = json.playabilityStatus) === null || _b === void 0 ? void 0 : _b.status}`);
+                }
+                const formats = [
+                    ...(((_c = json.streamingData) === null || _c === void 0 ? void 0 : _c.formats) || []),
+                    ...(((_d = json.streamingData) === null || _d === void 0 ? void 0 : _d.adaptiveFormats) || [])
+                ];
+                // Find a usable MP4/WebM with video, preferably < 720p, AND has 'url' property (no cipher)
+                const usable = formats.filter((f) => {
+                    var _a, _b;
+                    return f.url &&
+                        (((_a = f.mimeType) === null || _a === void 0 ? void 0 : _a.includes("video/mp4")) || ((_b = f.mimeType) === null || _b === void 0 ? void 0 : _b.includes("video/webm")));
+                }).sort((a, b) => {
+                    const ha = a.height || 0;
+                    const hb = b.height || 0;
+                    return hb - ha; // Descending height
+                });
+                if (usable.length > 0) {
+                    console.log(`[innertube-video] Found ${usable.length} direct URLs via ${attempt.name}`);
+                    return { url: usable[0].url, userAgent: attempt.userAgent, referer: attempt.referer };
+                }
+            }
+            catch (e) {
+                console.warn(`[innertube-video] Error ${attempt.name}: ${e}`);
+            }
+        }
+    }
+    return null;
+}
+// Manual Storyboard Fetching & Parsing
+// Bypass Innertube library which fails on signature extraction when proxy/IP is restricted.
+async function fetchStoryboardSpecManual(videoId) {
+    var _a, _b, _c, _d, _e, _f, _g;
+    const referer = `https://www.youtube.com/watch?v=${videoId}`;
+    // Web Embed and TV Embed are often less restricted for metadata
+    const attempts = [
+        {
+            name: "WEB_EMBED",
+            userAgent: DEFAULT_UA,
+            referer,
+            headers: {
+                "content-type": "application/json",
+                "x-youtube-client-name": "56",
+                "x-youtube-client-version": "1.20240228.01.00",
+            },
+            body: {
+                context: {
+                    client: {
+                        clientName: "WEB_EMBED",
+                        clientVersion: "1.20240228.01.00",
+                        hl: "en",
+                        gl: "US",
+                    },
+                },
+                videoId,
+            },
+        },
+        {
+            name: "MWEB",
+            userAgent: "Mozilla/5.0 (iPhone; CPU iPhone OS 16_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Mobile/15E148 Safari/604.1",
+            referer,
+            headers: {
+                "content-type": "application/json",
+                "x-youtube-client-name": "2",
+                "x-youtube-client-version": "2.20240308.00.00",
+            },
+            body: {
+                context: {
+                    client: {
+                        clientName: "MWEB",
+                        clientVersion: "2.20240308.00.00",
+                        hl: "en",
+                        gl: "US",
+                    },
+                },
+                videoId,
+            },
+        },
+        {
+            name: "WEB",
+            userAgent: DEFAULT_UA,
+            referer,
+            headers: {
+                "content-type": "application/json",
+                "x-youtube-client-name": "1",
+                "x-youtube-client-version": "2.20240308.00.00",
+            },
+            body: {
+                context: {
+                    client: {
+                        clientName: "WEB",
+                        clientVersion: "2.20240308.00.00",
+                        hl: "en",
+                        gl: "US",
+                    },
+                },
+                videoId,
+            },
+        },
+        {
+            name: "TV_EMBEDDED",
+            userAgent: "Mozilla/5.0 (SmartHub; SMART-TV; U; Linux/SmartTV) AppleWebKit/531.2+ (KHTML, like Gecko) WebBrowser/1.0 SmartHub",
+            referer,
+            headers: {
+                "content-type": "application/json",
+                "x-youtube-client-name": "55",
+                "x-youtube-client-version": "4.20220223.00.00",
+            },
+            body: {
+                context: {
+                    client: {
+                        clientName: "TV_EMBEDDED",
+                        clientVersion: "4.20220223.00.00",
+                        hl: "en",
+                        gl: "US",
+                    },
+                },
+                videoId,
+            },
+        },
+        // Fallback to Android if others fail (though likely blocked)
+        {
+            name: "ANDROID",
+            userAgent: ANDROID_UA,
+            referer,
+            headers: {
+                "content-type": "application/json",
+                "x-youtube-client-name": "3",
+                "x-youtube-client-version": "20.10.38",
+            },
+            body: {
+                context: {
+                    client: {
+                        clientName: "ANDROID",
+                        clientVersion: "20.10.38",
+                        hl: "en",
+                        gl: "US",
+                        androidSdkVersion: 30
+                    },
+                },
+                videoId,
+            },
+        }
+    ];
+    for (const key of INNERTUBE_API_KEYS) {
+        for (const attempt of attempts) {
+            try {
+                const url = `https://www.youtube.com/youtubei/v1/player?key=${key}&prettyPrint=false`;
+                const res = await fetchWithHeaders(url, {
+                    method: "POST",
+                    headers: attempt.headers,
+                    body: JSON.stringify(attempt.body)
+                }, attempt.userAgent, attempt.referer);
+                if (!res.ok)
+                    continue;
+                const json = await res.json();
+                if (((_a = json.playabilityStatus) === null || _a === void 0 ? void 0 : _a.status) !== 'OK') {
+                    console.log(`[ManualStoryboard] ${attempt.name} status: ${(_b = json.playabilityStatus) === null || _b === void 0 ? void 0 : _b.status}`);
+                }
+                console.log(`[ManualStoryboard] ${attempt.name} keys: ${Object.keys(json).join(',')}`);
+                if (json.storyboards)
+                    console.log(`[ManualStoryboard] storyboards keys: ${Object.keys(json.storyboards).join(',')}`);
+                if (json.playerConfig)
+                    console.log(`[ManualStoryboard] playerConfig keys: ${Object.keys(json.playerConfig).join(',')}`);
+                // Storyboards location varies
+                // 1. playerStoryboardSpecRenderer (in storyboards object)
+                const spec = ((_d = (_c = json.storyboards) === null || _c === void 0 ? void 0 : _c.playerStoryboardSpecRenderer) === null || _d === void 0 ? void 0 : _d.spec) ||
+                    ((_g = (_f = (_e = json.playerConfig) === null || _e === void 0 ? void 0 : _e.storyboardConfig) === null || _f === void 0 ? void 0 : _f.playerStoryboardSpecRenderer) === null || _g === void 0 ? void 0 : _g.spec);
+                if (spec && typeof spec === 'string') {
+                    console.log(`[ManualStoryboard] Found spec via ${attempt.name}: ${spec}`);
+                    return parseStoryboardSpec(spec);
+                }
+            }
+            catch (e) {
+                console.warn(`[ManualStoryboard] Error ${attempt.name}: ${e}`);
+            }
+        }
+    }
+    return null;
+}
+function parseStoryboardSpec(spec) {
+    // Format: URL|width#height#count#rows#cols#interval#bg#sig
+    // Example: https://i.yt.../$L$/$N$.jpg|48#27#100#10#10#0#default#rs$A$...
+    const parts = spec.split('|');
+    if (parts.length < 2)
+        return null;
+    const url = parts[0];
+    const params = parts[1].split('#');
+    // If params length < 7, might be legacy or different, but let's try
+    if (params.length < 5)
+        return null;
+    const width = parseInt(params[0], 10);
+    const height = parseInt(params[1], 10);
+    const count = parseInt(params[2], 10);
+    const rows = parseInt(params[3], 10);
+    const cols = parseInt(params[4], 10);
+    const interval = parseInt(params[5], 10); // in ms
+    // index 6 is bg, 7 is sig (sometimes)
+    // Map to Innertube-like object for compatibility
+    return {
+        template_url: url,
+        thumbnail_width: width,
+        thumbnail_height: height,
+        rows: rows,
+        columns: cols,
+        interval: interval,
+        storyboard_count: count
+    };
+}
+// 3. Fallback: Parse from Watch Page HTML (Scraping)
+async function fetchStoryboardSpecFromWatchHtml(videoId, userAgent) {
+    var _a, _b;
+    try {
+        const referer = `https://www.youtube.com/watch?v=${videoId}`;
+        const res = await fetchWithHeaders(referer, { headers: { accept: "text/html" } }, userAgent, referer);
+        if (!res.ok)
+            return null;
+        const html = await res.text();
+        // Method A: Extract from ytInitialPlayerResponse JSON
+        const match = html.match(/ytInitialPlayerResponse\s*=\s*({.+?});/);
+        if (match) {
+            try {
+                const playerResponse = JSON.parse(match[1]);
+                const spec = (_b = (_a = playerResponse.storyboards) === null || _a === void 0 ? void 0 : _a.playerStoryboardSpecRenderer) === null || _b === void 0 ? void 0 : _b.spec;
+                if (spec) {
+                    console.log("[WatchHtml] Found spec in ytInitialPlayerResponse");
+                    return parseStoryboardSpec(spec);
+                }
+            }
+            catch (e) { /* ignore */ }
+        }
+        // Method B: Direct Regex (Robust fallback)
+        // Look for "spec":"https://..." pattern
+        const specRegex = /"spec":"(https?:[^"]+\|[^"]+)"/;
+        const specMatch = html.match(specRegex);
+        if (specMatch) {
+            console.log("[WatchHtml] Found spec via direct regex");
+            // Unescape common JSON escapes if necessary
+            const raw = specMatch[1].replace(/\\u0026/g, "&").replace(/\\/g, "");
+            return parseStoryboardSpec(raw);
+        }
+    }
+    catch (e) {
+        console.warn(`[WatchHtml] Error: ${e}`);
+    }
+    return null;
+}
+// @ts-ignore
+// ─── Storyboard Fallback Logic ──────────────────────────────────────────────
+// Return type is handled dynamically (base64 string or object with spec)
+async function captureSnapshotFromStoryboard(videoId, timestamp, ffmpegPath, totalDuration) {
+    console.log(`[Storyboard] Attempting fallback for ${videoId} at ${timestamp}s (total=${totalDuration}s)`);
+    let bestBoard = null;
+    // 1. Try Innertube Library
+    try {
+        console.log('[Storyboard] Initializing Innertube...');
+        const proxyAgent = getProxyAgentOrNull();
+        // Custom fetch wrapper to force proxy usage
+        const customFetch = async (input, init) => {
+            let url;
+            let options = init || {};
+            if (typeof input === 'string') {
+                url = input;
+            }
+            else if (input instanceof URL) {
+                url = input.toString();
+            }
+            else {
+                url = input.url;
+                options = Object.assign({ method: input.method, headers: input.headers, body: input.body }, options);
+            }
+            return fetchMaybeViaProxy(url, options, proxyAgent);
+        };
+        const innertubeConfig = {
+            cache: new youtubei_js_1.UniversalCache(false),
+            generate_session_locally: true,
+            fetch: customFetch
+        };
+        const innertube = await youtubei_js_1.Innertube.create(innertubeConfig);
+        console.log('[Storyboard] Innertube initialized. Fetching basic info...');
+        const info = await innertube.getBasicInfo(videoId);
+        console.log('[Storyboard] Basic info fetched.');
+        // Use duration from Innertube if not provided
+        if (!totalDuration && info.basic_info.duration) {
+            totalDuration = info.basic_info.duration;
+            console.log(`[Storyboard] Retrieved totalDuration from Innertube: ${totalDuration}s`);
+        }
+        const storyboards = info.basic_info.storyboards;
+        if (storyboards && Array.isArray(storyboards) && storyboards.length > 0) {
+            bestBoard = storyboards.sort((a, b) => (b.thumbnail_height * b.thumbnail_width) - (a.thumbnail_height * a.thumbnail_width))[0];
+            console.log(`[Storyboard] Found board via Innertube: ${bestBoard.thumbnail_width}x${bestBoard.thumbnail_height}`);
+        }
+        else {
+            console.log('[Storyboard] No storyboards found from Innertube.');
+        }
+    }
+    catch (e) {
+        console.warn(`[Storyboard] Innertube failed: ${e}`);
+    }
+    // 2. Fallback to Manual Fetch if Innertube failed
+    if (!bestBoard) {
+        console.log('[Storyboard] Falling back to manual fetch...');
+        bestBoard = await fetchStoryboardSpecManual(videoId);
+    }
+    // 3. Fallback to HTML Scraping
+    if (!bestBoard) {
+        console.log('[Storyboard] Falling back to HTML scraping...');
+        bestBoard = await fetchStoryboardSpecFromWatchHtml(videoId, DEFAULT_UA);
+    }
+    if (!bestBoard) {
+        console.log('[Storyboard] Could not identify best storyboard (All methods failed).');
+        return null;
+    }
+    console.log(`[Storyboard] Selected board: ${bestBoard.thumbnail_width}x${bestBoard.thumbnail_height}, cols=${bestBoard.columns}, rows=${bestBoard.rows}`);
+    // Determine duration per tile.
+    // If we have totalDuration, we can calculate it: duration / count
+    // But sometimes 'interval' from spec is more accurate for the grid.
+    let durationPerTile = 0;
+    if (bestBoard.interval && parseInt(bestBoard.interval, 10) > 0) {
+        durationPerTile = parseInt(bestBoard.interval, 10);
+        console.log(`[Storyboard] Using spec interval: ${durationPerTile}ms`);
+    }
+    // If interval is missing or we suspect it's wrong, and we have totalDuration:
+    // If interval is missing or we suspect it's wrong, and we have totalDuration:
+    if (totalDuration && bestBoard.storyboard_count > 0) {
+        // durationPerTile = (totalDuration * 1000) / storyboard_count
+        const calculated = Math.floor((totalDuration * 1000) / bestBoard.storyboard_count);
+        console.log(`[Storyboard] Calculated interval from duration: ${calculated}ms (${totalDuration}s / ${bestBoard.storyboard_count} tiles)`);
+        // If 'durationPerTile' (from spec) is suspiciously different from calculated (e.g. > 20% diff), 
+        // trust the calculated one, as spec interval might be generic.
+        if (durationPerTile > 0) {
+            const diff = Math.abs(durationPerTile - calculated);
+            if (diff > (calculated * 0.2)) {
+                console.warn(`[Storyboard] Spec interval (${durationPerTile}) differs significantly from calculated (${calculated}). Using calculated.`);
+                durationPerTile = calculated;
+            }
+        }
+        else {
+            durationPerTile = calculated;
+        }
+    }
+    if (durationPerTile === 0) {
+        console.warn('[Storyboard] No interval found and no duration provided, defaulting to 10000ms');
+        durationPerTile = 10000;
+    }
+    const timeMs = timestamp * 1000;
+    const totalTileIndex = Math.floor(timeMs / durationPerTile);
+    const tilesPerBoard = bestBoard.rows * bestBoard.columns;
+    const boardIndex = Math.floor(totalTileIndex / tilesPerBoard);
+    const tileInBoard = totalTileIndex % tilesPerBoard;
+    const row = Math.floor(tileInBoard / bestBoard.columns);
+    const col = tileInBoard % bestBoard.columns;
+    // Construct URL
+    let url = bestBoard.template_url;
+    url = url.replace('$N$', boardIndex.toString());
+    url = url.replace('$M$', '0'); // Usually 0
+    // Handle $L$ (Level) substitution
+    // Some specs have URLs like ".../storyboard3_L$L$/$N$.jpg"
+    // We usually want level 2 (medium) or if unavailable, try to guess.
+    // Spec usually implies a specific level, but if the URL is generic template, we must pick one.
+    if (url.includes('$L$')) {
+        console.log("[Storyboard] URL template requires Level ($L$). Defaulting to L2.");
+        url = url.replace('$L$', '2');
+    }
+    console.log(`[Storyboard] Fetching board URL: ${url}`);
+    // Generate unique nonce for temp files to prevent concurrency issues
+    const nonce = nodeCrypto.randomBytes(4).toString('hex');
+    const uniqueId = `${videoId}_${timestamp}_${nonce}`;
+    // Add headers to request (Google Video links can be picky about UA)
+    // Use manual redirect to detect if we are being 302'd to a placeholder
+    const response = await fetch(url, {
+        method: 'GET',
+        redirect: 'manual',
+        headers: {
+            "User-Agent": DEFAULT_UA,
+            "Referer": `https://www.youtube.com/watch?v=${videoId}`
+        }
+    });
+    console.log(`[Storyboard] Fetch Response: status=${response.status}, type=${response.headers.get("content-type")}, len=${response.headers.get("content-length")}, loc=${response.headers.get("location")}`);
+    if (!response.ok && response.status !== 302 && response.status !== 301) {
+        console.error(`[Storyboard] Failed to fetch board (HTT P error): ${response.status} ${response.statusText}`);
+        return null;
+    }
+    // Handle Redirects Manually
+    if (response.status === 302 || response.status === 301) {
+        const location = response.headers.get("location");
+        console.warn(`[Storyboard] REDIRECTED to: ${location}`);
+        if (location && (location.includes("hqdefault.jpg") || location.includes("vi/"))) {
+            console.error("[Storyboard] Redirected to standard thumbnail! IP likely blocked or invalid URL.");
+            return null; // Don't use this, it's garbage
+        }
+        // If redirected to another apparently valid URL, maybe we follow it? 
+        // For now, fail to be safe and visible.
+        return null;
+    }
+    const arrayBuffer = await response.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
+    // Save to temp with UNIQUE path
+    const boardPath = `/tmp/sb_${uniqueId}.jpg`;
+    const outPath = `/tmp/crop_${uniqueId}.jpg`;
+    fs.writeFileSync(boardPath, buffer);
+    const tileW = bestBoard.thumbnail_width;
+    const tileH = bestBoard.thumbnail_height;
+    const x = col * tileW;
+    const y = row * tileH;
+    // Ensure ffmpeg is executable
+    if (fs.existsSync(ffmpegPath)) {
+        try {
+            fs.chmodSync(ffmpegPath, '755');
+        }
+        catch (e) { /* ignore */ }
+    }
+    // Crop with ffmpeg
+    const cmd = `"${ffmpegPath}" -y -i "${boardPath}" -vf "crop=${tileW}:${tileH}:${x}:${y}" "${outPath}" -hide_banner -loglevel error`;
+    // Log intent for easy debugging
+    console.log(`[Storyboard] Cropping: ${tileW}x${tileH} at ${x},${y} -> ${outPath}`);
+    try {
+        await execAsync(cmd);
+        if (fs.existsSync(outPath)) {
+            const cropBuffer = fs.readFileSync(outPath);
+            const base64 = `data:image/jpeg;base64,${cropBuffer.toString('base64')}`;
+            return base64;
+        }
+        else {
+            console.error("[Storyboard] Output file not found after ffmpeg!");
+        }
+    }
+    catch (err) {
+        console.error(`[Storyboard] ffmpeg execution failed: ${err.message}`);
+        if (err.stderr)
+            console.error(`[Storyboard] stderr: ${err.stderr}`);
+    }
+    finally {
+        // Cleanup with correct paths
+        try {
+            if (fs.existsSync(boardPath))
+                fs.unlinkSync(boardPath);
+            if (fs.existsSync(outPath))
+                fs.unlinkSync(outPath);
+        }
+        catch (e) { /* ignore */ }
+    }
+    return null;
+}
+exports.captureSnapshot = (0, https_1.onCall)({ memory: '1GiB', timeoutSeconds: 300, secrets: [TRANSCRIPT_PROXY_URL] }, async (request) => {
     const { data, auth } = request;
     if (!auth) {
-        throw new functions.https.HttpsError("unauthenticated", "The function must be called while authenticated.");
+        throw new https_1.HttpsError("unauthenticated", "The function must be called while authenticated.");
     }
     const videoId = data === null || data === void 0 ? void 0 : data.videoId;
     const timestamp = data === null || data === void 0 ? void 0 : data.timestamp; // seconds (float)
+    const duration = data === null || data === void 0 ? void 0 : data.duration; // total video seconds (float, optional)
     if (!videoId || timestamp === undefined || timestamp === null) {
-        throw new functions.https.HttpsError("invalid-argument", "The function must be called with 'videoId' and 'timestamp' arguments.");
+        throw new https_1.HttpsError("invalid-argument", "The function must be called with 'videoId' and 'timestamp' arguments.");
     }
-    const tsRounded = Math.floor(timestamp);
     let tempDir = null;
     try {
         tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'snapshot-'));
-        const videoFile = path.join(tempDir, 'segment.mp4');
         const frameFile = path.join(tempDir, 'frame.jpg');
-        // 1. Download a segment around the timestamp using yt-dlp
-        //    Wider buffer (3s before, 3s after) for keyframe safety
-        const startSec = Math.max(0, tsRounded - 3);
-        const endSec = tsRounded + 4;
-        const ytdlpCmd = `/opt/homebrew/bin/yt-dlp ` +
-            `-f "bv*[height<=720]" ` + // Best video ≤720p for speed
-            `--download-sections "*${startSec}-${endSec}" ` +
-            `--force-keyframes-at-cuts ` +
-            `-o "${videoFile}" ` +
-            `--no-part ` +
-            `"https://www.youtube.com/watch?v=${videoId}"`;
-        console.log(`[captureSnapshot] Downloading segment: ${ytdlpCmd}`);
-        const { stdout, stderr } = await execAsync(ytdlpCmd, { timeout: 30000 });
-        console.log(`[captureSnapshot] yt-dlp stdout: ${stdout}`);
-        if (stderr)
-            console.log(`[captureSnapshot] yt-dlp stderr: ${stderr}`);
-        // Check if file exists
-        if (!fs.existsSync(videoFile)) {
-            // yt-dlp sometimes appends format extensions, find the actual file
-            const files = fs.readdirSync(tempDir);
-            const videoFileActual = files.find(f => f.startsWith('segment'));
-            if (!videoFileActual) {
-                throw new Error(`Download failed. Files in temp: ${files.join(', ')}`);
+        // STRATEGY 1: Internal Android API (Direct URL)
+        // This bypasses yt-dlp bot detection/sign-in issues by using client emulation
+        let strategy = "ytdlp";
+        let directData = null;
+        // Force fallback if requested (for testing storyboard logic locally)
+        // We can pass a special flag in 'data'
+        const forceFallback = (data === null || data === void 0 ? void 0 : data.forceFallback) === true;
+        if (!forceFallback) {
+            try {
+                directData = await fetchVideoUrlFromInnertube(videoId);
+                if (directData)
+                    strategy = "direct";
             }
-            // Rename to expected path
-            fs.renameSync(path.join(tempDir, videoFileActual), videoFile);
+            catch (e) {
+                console.warn("[captureSnapshot] Innertube fetch failed, falling back to yt-dlp", e);
+            }
         }
-        // 2. Extract frame using ffmpeg with EXACT fractional offset
-        //    The downloaded segment starts at startSec, so the precise seek
-        //    offset = timestamp - startSec (preserving fractional seconds)
-        const seekOffset = (timestamp - startSec).toFixed(3);
-        const ffmpegBin = '/opt/homebrew/bin/ffmpeg';
-        const ffmpegCmd = `${ffmpegBin} -i "${videoFile}" -ss ${seekOffset} -frames:v 1 -q:v 2 "${frameFile}" -y`;
-        console.log(`[captureSnapshot] Extracting frame: ${ffmpegCmd}`);
-        await execAsync(ffmpegCmd, { timeout: 15000 });
+        else {
+            console.log("[captureSnapshot] FORCING FALLBACK (skipping direct/ytdlp)");
+        }
+        if (!forceFallback && strategy === "direct" && directData) {
+            console.log("[captureSnapshot] Using DIRECT URL strategy (Android client)");
+            try {
+                // Using ffmpeg with direct URL headers
+                const headersStr = `User-Agent: ${directData.userAgent}\r\nReferer: ${directData.referer}`;
+                // Use INPUT seeking (-ss before -i) for speed and to avoid downloading the whole stream
+                const ffmpegCmd = `"${ffmpegPath}" ` +
+                    `-headers "${headersStr}" ` +
+                    `-ss ${timestamp} ` +
+                    `-i "${directData.url}" ` +
+                    `-frames:v 1 ` +
+                    `-q:v 2 ` +
+                    `-y "${frameFile}"`;
+                // Hide URL in logs
+                console.log(`[captureSnapshot] ffmpeg direct cmd: ${ffmpegCmd.replace(directData.url, "URL_HIDDEN")}`);
+                await execAsync(ffmpegCmd, { timeout: 30000 });
+            }
+            catch (e) {
+                console.warn(`[captureSnapshot] Direct URL capture failed: ${e.message}. Falling back to yt-dlp.`);
+            }
+        }
+        // 2. Fallback to yt-dlp (if frame not created yet)
+        if (!fs.existsSync(frameFile) && !forceFallback) {
+            console.log("[captureSnapshot] Fallback to yt-dlp strategy");
+            await ensureYtDlp();
+            const videoFile = path.join(tempDir, 'segment.mp4');
+            const startSec = timestamp;
+            const endSec = timestamp + 1.0;
+            // Add proxy if available
+            try {
+                const proxyUrl = TRANSCRIPT_PROXY_URL.value();
+                let proxyArgs = "";
+                if (proxyUrl && proxyUrl !== "DISABLED") {
+                    proxyArgs = `--proxy "${proxyUrl}" `;
+                }
+                let ytdlpCmd = `"${YTDLP_PATH}" ` +
+                    `-f "bv*[vcodec^=avc1][height<=720]" ` +
+                    `--download-sections "${startSec}-${endSec}" ` +
+                    `--force-keyframes-at-cuts ` +
+                    `--extractor-args "youtube:player_client=android" ` +
+                    `--ffmpeg-location "${ffmpegPath}" ` +
+                    `${proxyArgs}` +
+                    `-o "${videoFile}" ` +
+                    `--no-part ` +
+                    `"https://www.youtube.com/watch?v=${videoId}"`;
+                console.log(`[captureSnapshot] Downloading precise segment: ${ytdlpCmd}`);
+                const { stdout, stderr } = await execAsync(ytdlpCmd, { timeout: 30000 });
+                console.log(`[captureSnapshot] yt-dlp stdout: ${stdout}`);
+                if (stderr)
+                    console.log(`[captureSnapshot] yt-dlp stderr: ${stderr}`);
+                // Check if file exists (yt-dlp might fail)
+                if (!fs.existsSync(videoFile)) {
+                    // Try finding file with extension if yt-dlp appended one
+                    const files = fs.readdirSync(tempDir);
+                    const videoFileActual = files.find(f => f.startsWith('segment'));
+                    if (videoFileActual) {
+                        fs.renameSync(path.join(tempDir, videoFileActual), videoFile);
+                    }
+                }
+                // Extract frame
+                const ffmpegCmd = `"${ffmpegPath}" -i "${videoFile}" -frames:v 1 -q:v 2 -update 1 "${frameFile}" -y`;
+                await execAsync(ffmpegCmd, { timeout: 15000 });
+            }
+            catch (dlError) {
+                console.warn(`[captureSnapshot] yt-dlp/ffmpeg failed: ${dlError.message}. Proceeding to fallback.`);
+            }
+        }
         if (!fs.existsSync(frameFile)) {
-            throw new Error("Failed to extract frame from video segment.");
+            console.log("[captureSnapshot] Frame extraction failed. Attempting Storyboard Fallback.");
+            // ffmpeg-static require is at top level, stored in ffmpegPath variable? 
+            // Yes: const ffmpegPath = require('ffmpeg-static');
+            try {
+                const sbImage = await captureSnapshotFromStoryboard(videoId, timestamp, ffmpegPath, duration);
+                if (sbImage) {
+                    return { imageUrl: sbImage };
+                }
+            }
+            catch (e) {
+                console.warn("[captureSnapshot] Storyboard fallback exception:", e);
+            }
+            throw new Error("Failed to extract frame from video segment and storyboard fallback failed.");
         }
         const frameSize = fs.statSync(frameFile).size;
         console.log(`[captureSnapshot] Frame extracted: ${frameSize} bytes`);
@@ -864,10 +1579,10 @@ exports.captureSnapshot = functions.https.onCall(async (request) => {
     }
     catch (error) {
         console.error(`[captureSnapshot] Error: ${error.message}`);
-        if (error instanceof functions.https.HttpsError) {
+        if (error instanceof https_1.HttpsError) {
             throw error;
         }
-        throw new functions.https.HttpsError("internal", `Failed to capture snapshot: ${error.message}`);
+        throw new https_1.HttpsError("internal", `Failed to capture snapshot: ${error.message}`);
     }
     finally {
         // Cleanup temp dir
