@@ -1254,7 +1254,31 @@ async function fetchStoryboardSpecFromWatchHtml(videoId, userAgent) {
     }
     return null;
 }
-// 4. Fallback: Parse via AllOrigins Proxy
+// 4. Fallback: Parse via CodeTabs Proxy (High Success Rate)
+async function fetchStoryboardSpecFromCodeTabs(videoId) {
+    try {
+        const targetUrl = `https://www.youtube.com/watch?v=${videoId}`;
+        const proxyUrl = `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(targetUrl)}`;
+        const res = await fetch(proxyUrl);
+        if (!res.ok) {
+            console.warn(`[CodeTabs] Status ${res.status}`);
+            return null;
+        }
+        const html = await res.text();
+        const specRegex = /"spec":"(https?:[^"]+\|[^"]+)"/;
+        const match = html.match(specRegex);
+        if (match) {
+            console.log("[CodeTabs] Found spec!");
+            const raw = match[1].replace(/\\u0026/g, "&").replace(/\\/g, "");
+            return parseStoryboardSpec(raw);
+        }
+    }
+    catch (e) {
+        console.warn(`[CodeTabs] Error: ${e}`);
+    }
+    return null;
+}
+// 5. Fallback: Parse via AllOrigins Proxy
 async function fetchStoryboardSpecFromAllOrigins(videoId) {
     try {
         const targetUrl = `https://www.youtube.com/watch?v=${videoId}`;
@@ -1343,7 +1367,12 @@ async function captureSnapshotFromStoryboard(videoId, timestamp, ffmpegPath, tot
         console.log('[Storyboard] Falling back to HTML scraping...');
         bestBoard = await fetchStoryboardSpecFromWatchHtml(videoId, DEFAULT_UA);
     }
-    // 4. Fallback to AllOrigins Proxy
+    // 4. Fallback to CodeTabs (New Champion)
+    if (!bestBoard) {
+        console.log('[Storyboard] Falling back to CodeTabs Proxy...');
+        bestBoard = await fetchStoryboardSpecFromCodeTabs(videoId);
+    }
+    // 5. Fallback to AllOrigins Proxy
     if (!bestBoard) {
         console.log('[Storyboard] Falling back to AllOrigins Proxy...');
         bestBoard = await fetchStoryboardSpecFromAllOrigins(videoId);
