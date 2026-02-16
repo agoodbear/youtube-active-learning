@@ -96,38 +96,53 @@ export function getStoryboardData(spec: StoryboardSpec, timestampSeconds: number
 
 // ─── CORS Proxy Fallback ─────────────────────────────────────────────
 
-/**
- * Tries to scrape the storyboard spec directly from the YouTube video page
- * using a CORS proxy (allorigins.win).
- */
 async function fetchFromCorsProxy(videoId: string): Promise<StoryboardSpec | null> {
-    const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(`https://www.youtube.com/watch?v=${videoId}`)}`;
+    const targetUrl = `https://www.youtube.com/watch?v=${videoId}`;
 
+    // 1. Try CodeTabs (Primary)
     try {
-        console.log(`[Storyboard] Fetching via proxy: ${proxyUrl}`);
+        const proxyUrl = `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(targetUrl)}`;
+        console.log(`[Storyboard] Fetching via CodeTabs: ${proxyUrl}`);
         const res = await fetch(proxyUrl);
-        if (!res.ok) throw new Error(`Proxy status: ${res.status}`);
+        if (res.ok) {
+            const html = await res.text();
 
-        const html = await res.text();
+            // Regex variations
+            // 1. Direct "spec": "..."
+            // 2. ytInitialPlayerResponse = { ... }
 
-        // Regex to find the storyboard spec inside the HTML
-        // It usually looks like: "playerStoryboardSpecRenderer":{"spec":"..."}
-        // or inside ytInitialPlayerResponse
-
-        const match = html.match(/"playerStoryboardSpecRenderer":\s*\{"spec":"(.*?)"\}/);
-        if (match && match[1]) {
-            let specRaw = match[1];
-            // Unescape extra backslashes if present
-            specRaw = specRaw.replace(/\\"/g, '"').replace(/\\\\/g, '\\');
-
-            const spec = parseStoryboardSpec(specRaw);
-            if (spec) return spec;
+            const specRegex = /"spec":"(https?:[^"]+\|[^"]+)"/;
+            const match = html.match(specRegex);
+            if (match && match[1]) {
+                // Clean up string
+                const specRaw = match[1].replace(/\\u0026/g, "&").replace(/\\/g, "");
+                const spec = parseStoryboardSpec(specRaw);
+                if (spec) return spec;
+            }
         }
-
-        console.warn('[Storyboard] Proxy fetch successful but spec not found in HTML');
     } catch (e) {
-        console.warn('[Storyboard] Proxy fetch failed', e);
+        console.warn('[Storyboard] CodeTabs fetch failed', e);
     }
+
+    // 2. Try AllOrigins (Backup)
+    try {
+        const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(targetUrl)}`;
+        console.log(`[Storyboard] Fetching via AllOrigins: ${proxyUrl}`);
+        const res = await fetch(proxyUrl);
+        if (res.ok) {
+            const html = await res.text();
+            const specRegex = /"spec":"(https?:[^"]+\|[^"]+)"/;
+            const match = html.match(specRegex);
+            if (match && match[1]) {
+                const specRaw = match[1].replace(/\\u0026/g, "&").replace(/\\/g, "");
+                const spec = parseStoryboardSpec(specRaw);
+                if (spec) return spec;
+            }
+        }
+    } catch (e) {
+        console.warn('[Storyboard] AllOrigins fetch failed', e);
+    }
+
     return null;
 }
 

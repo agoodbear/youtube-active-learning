@@ -1,8 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.captureSnapshot = exports.getTranscriptPublicAsia = exports.getTranscriptPublic = exports.getTranscript = void 0;
+exports.setStorageCors = exports.captureSnapshot = exports.getTranscriptPublicAsia = exports.getTranscriptPublic = exports.getTranscript = exports.debugSnapshot = void 0;
 const https_1 = require("firebase-functions/v2/https");
 const functions = require("firebase-functions");
+const app_1 = require("firebase-admin/app");
+const storage_1 = require("firebase-admin/storage");
+(0, app_1.initializeApp)();
 const child_process_1 = require("child_process");
 const util_1 = require("util");
 const fs = require("fs");
@@ -96,6 +99,72 @@ function createYoutubeFetch(referer) {
         return fetchMaybeViaProxy(url, withYouTubeHeaders(init, url, userAgent, referer), proxyAgent);
     };
 }
+// DEBUG: Public HTTP function to test environment restrictions
+exports.debugSnapshot = (0, https_1.onRequest)(async (req, res) => {
+    const videoId = req.query.videoId || 'KAasBVVVU6M';
+    const logs = [];
+    const log = (msg) => { console.log(msg); logs.push(msg); };
+    log(`[Debug] Testing environment for ${videoId}...`);
+    log(`[Debug] User - Agent: ${DEFAULT_UA} `);
+    // 1. Check IP
+    try {
+        const ipRes = await fetch("https://api.ipify.org?format=json");
+        const ipJson = await ipRes.json();
+        log(`[Debug] Public IP: ${ipJson.ip} `);
+    }
+    catch (e) {
+        log(`[Debug] IP Check Failed: ${e} `);
+    }
+    // 2. Test CodeTabs
+    try {
+        log(`[Debug] Testing CodeTabs...`);
+        const targetUrl = `https://www.youtube.com/watch?v=${videoId}`;
+        const proxyUrl = `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(targetUrl)}`;
+        const start = Date.now();
+        const ctRes = await fetch(proxyUrl);
+        const duration = Date.now() - start;
+        log(`[Debug] CodeTabs Status: ${ctRes.status} (${duration}ms)`);
+        if (ctRes.ok) {
+            const html = await ctRes.text();
+            log(`[Debug] CodeTabs Body Length: ${html.length}`);
+            const specRegex = /"spec":"(https?:[^"]+\|[^"]+)"/;
+            if (specRegex.test(html))
+                log(`[Debug] CodeTabs: SUCCESS (Found spec)`);
+            else
+                log(`[Debug] CodeTabs: FAILURE (No spec)`);
+        }
+        else {
+            const text = await ctRes.text();
+            log(`[Debug] CodeTabs Error Body: ${text.substring(0, 200)}`);
+        }
+    }
+    catch (e) {
+        log(`[Debug] CodeTabs Exception: ${e}`);
+    }
+    // 3. Test AllOrigins
+    try {
+        log(`[Debug] Testing AllOrigins...`);
+        const targetUrl = `https://www.youtube.com/watch?v=${videoId}`;
+        const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(targetUrl)}`;
+        const start = Date.now();
+        const aoRes = await fetch(proxyUrl);
+        const duration = Date.now() - start;
+        log(`[Debug] AllOrigins Status: ${aoRes.status} (${duration}ms)`);
+        if (aoRes.ok) {
+            const html = await aoRes.text();
+            log(`[Debug] AllOrigins Body Length: ${html.length}`);
+            const specRegex = /"spec":"(https?:[^"]+\|[^"]+)"/;
+            if (specRegex.test(html))
+                log(`[Debug] AllOrigins: SUCCESS (Found spec)`);
+            else
+                log(`[Debug] AllOrigins: FAILURE (No spec)`);
+        }
+    }
+    catch (e) {
+        log(`[Debug] AllOrigins Exception: ${e}`);
+    }
+    res.json({ logs });
+});
 async function fetchWithHeaders(url, init, userAgent, referer) {
     const normalized = {
         method: init.method || "GET",
@@ -1261,10 +1330,13 @@ async function fetchStoryboardSpecFromCodeTabs(videoId) {
         const proxyUrl = `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(targetUrl)}`;
         const res = await fetch(proxyUrl);
         if (!res.ok) {
-            console.warn(`[CodeTabs] Status ${res.status}`);
+            console.warn(`[CodeTabs] Status ${res.status} ${res.statusText}`);
+            const errorText = await res.text().catch(() => 'No body');
+            console.warn(`[CodeTabs] Error Body: ${errorText.substring(0, 200)}`);
             return null;
         }
         const html = await res.text();
+        console.log(`[CodeTabs] Response Length: ${html.length}`);
         const specRegex = /"spec":"(https?:[^"]+\|[^"]+)"/;
         const match = html.match(specRegex);
         if (match) {
@@ -1272,9 +1344,15 @@ async function fetchStoryboardSpecFromCodeTabs(videoId) {
             const raw = match[1].replace(/\\u0026/g, "&").replace(/\\/g, "");
             return parseStoryboardSpec(raw);
         }
+        else {
+            console.log("[CodeTabs] No spec found in response.");
+            // console.log(`[CodeTabs] Snippet: ${html.substring(0, 500)}`); // Optional debug
+        }
     }
     catch (e) {
         console.warn(`[CodeTabs] Error: ${e}`);
+        if (e instanceof Error)
+            console.warn(`[CodeTabs] Stack: ${e.stack}`);
     }
     return null;
 }
@@ -1438,14 +1516,8 @@ async function captureSnapshotFromStoryboard(videoId, timestamp, ffmpegPath, tot
     const uniqueId = `${videoId}_${timestamp}_${nonce}`;
     // Add headers to request (Google Video links can be picky about UA)
     // Use manual redirect to detect if we are being 302'd to a placeholder
-    const response = await fetch(url, {
-        method: 'GET',
-        redirect: 'manual',
-        headers: {
-            "User-Agent": DEFAULT_UA,
-            "Referer": `https://www.youtube.com/watch?v=${videoId}`
-        }
-    });
+    // Use helper to fetch image, potentially via proxy if direct fails
+    const response = await fetchImageMaybeViaProxy(url, videoId);
     console.log(`[Storyboard] Fetch Response: status=${response.status}, type=${response.headers.get("content-type")}, len=${response.headers.get("content-length")}, loc=${response.headers.get("location")}`);
     if (!response.ok && response.status !== 302 && response.status !== 301) {
         console.error(`[Storyboard] Failed to fetch board (HTT P error): ${response.status} ${response.statusText}`);
@@ -1657,6 +1729,92 @@ exports.captureSnapshot = (0, https_1.onCall)({ memory: '1GiB', timeoutSeconds: 
                 console.error("Failed to cleanup temp dir:", e);
             }
         }
+    }
+});
+// Helper to fetch image (storyboard tile) with proxy fallback
+async function fetchImageMaybeViaProxy(url, videoId) {
+    // 1. Try Direct
+    try {
+        const directRes = await fetch(url, {
+            method: 'GET',
+            redirect: 'manual',
+            headers: {
+                "User-Agent": DEFAULT_UA,
+                "Referer": `https://www.youtube.com/watch?v=${videoId}`
+            }
+        });
+        // 302/301 handling (Manual)
+        if (directRes.status === 302 || directRes.status === 301) {
+            const loc = directRes.headers.get("location");
+            if (loc && (loc.includes("hqdefault.jpg") || loc.includes("vi/"))) {
+                console.warn("[Storyboard] Direct fetch REDIRECTED to thumbnail (Blocked). Trying proxy.");
+                // Fallthrough to proxy
+            }
+            else if (loc) {
+                // Determine if valid redirect? usually storyboard URLs don't redirect unless blocked or expired.
+                console.warn(`[Storyboard] Direct fetch redirected to ${loc}. Treating as blocked.`);
+                // Fallthrough
+            }
+            else {
+                return directRes; // Return as is (likely error or success)
+            }
+        }
+        else if (directRes.ok) {
+            return directRes;
+        }
+        else if (directRes.status === 403 || directRes.status === 404) {
+            console.warn(`[Storyboard] Direct fetch status ${directRes.status}. Trying proxy.`);
+        }
+    }
+    catch (e) {
+        console.warn(`[Storyboard] Direct fetch exception: ${e}. Trying proxy.`);
+    }
+    // 2. Try CodeTabs
+    try {
+        const proxyUrl = `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`;
+        console.log(`[Storyboard] Fetching image via CodeTabs: ${proxyUrl}`);
+        const res = await fetch(proxyUrl);
+        if (res.ok)
+            return res;
+        console.warn(`[CodeTabs] Image fetch status ${res.status}`);
+    }
+    catch (e) {
+        console.warn(`[CodeTabs] Image fetch error: ${e}`);
+    }
+    // 3. Try AllOrigins (Binary? AllOrigins raw supports images)
+    try {
+        const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`;
+        console.log(`[Storyboard] Fetching image via AllOrigins: ${proxyUrl}`);
+        const res = await fetch(proxyUrl);
+        if (res.ok)
+            return res;
+    }
+    catch (e) {
+        console.warn(`[AllOrigins] Image fetch error: ${e}`);
+    }
+    // Return a failed response if all else fails
+    return new Response(null, { status: 500, statusText: "All fetch methods failed" });
+}
+// One-time utility to set CORS for storage
+// One-time utility to set CORS for storage
+exports.setStorageCors = (0, https_1.onRequest)(async (req, res) => {
+    try {
+        // Try getting the default bucket without specifying name
+        const bucket = (0, storage_1.getStorage)().bucket();
+        console.log("Found default bucket:", bucket.name);
+        await bucket.setCorsConfiguration([
+            {
+                origin: ["*"],
+                method: ["GET", "PUT", "POST", "DELETE", "HEAD"],
+                responseHeader: ["Content-Type", "Access-Control-Allow-Origin"],
+                maxAgeSeconds: 3600
+            }
+        ]);
+        res.status(200).send(`CORS set success. Bucket: ${bucket.name}`);
+    }
+    catch (error) {
+        console.error("Failed to set CORS:", error);
+        res.status(500).send("Error setting CORS: " + error.message);
     }
 });
 //# sourceMappingURL=index.js.map

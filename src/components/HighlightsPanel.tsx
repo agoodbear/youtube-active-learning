@@ -2,6 +2,8 @@ import { useState, useEffect, useMemo } from 'react';
 import { createPortal } from 'react-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { subscribeHighlights, deleteHighlight, updateHighlight } from '../lib/db';
+import { storage } from '../lib/firebase';
+import { ref, getDownloadURL, uploadBytesResumable } from 'firebase/storage';
 import { Trash2, Repeat, PauseCircle, PlayCircle, Filter, Highlighter } from 'lucide-react';
 import { TagDropdown } from './TagDropdown';
 import { cn } from '../lib/utils';
@@ -110,6 +112,118 @@ export function HighlightsPanel({ videoId, onSeek, onLoop, onStopLoop, currentLo
         return () => window.removeEventListener('highlight-to-transcript', handleSync);
     }, []);
 
+    const [isUploading, setIsUploading] = useState<string | null>(null);
+
+    // Import storage if not available in props (it is not, so we use the global import we will add)
+    // Actually we need to add the import statement at the top of the file first.
+    // Assuming we do that in a separate step or I can do it here if I am clever?
+    // I will add the handlePaste logic here.
+
+    const handlePaste = async (e: React.ClipboardEvent, id: string, timestamp: number) => {
+        const items = e.clipboardData.items;
+        let blob: Blob | null = null;
+
+        for (let i = 0; i < items.length; i++) {
+            if (items[i].type.indexOf("image") !== -1) {
+                blob = items[i].getAsFile();
+                break;
+            }
+        }
+
+        if (blob) {
+            e.preventDefault();
+
+            if (!user) {
+                alert("Please sign in to upload images.");
+                return;
+            }
+            if (!storage) {
+                alert("Storage not available.");
+                return;
+            }
+
+            setIsUploading(id);
+            try {
+                console.log(`[Paste] 1. Raw blob size: ${(blob.size / 1024).toFixed(2)} KB, type: ${blob.type}`);
+
+                // COMPRESSION STEP: Convert to JPEG via Canvas
+                // This ensures we have a standard format and reasonable size
+                const compressedBlob = await new Promise<Blob>((resolve, reject) => {
+                    const img = new Image();
+                    img.onload = () => {
+                        const canvas = document.createElement('canvas');
+                        // Limit max dimension to avoid huge textures (e.g. 1920px width)
+                        // Maintain aspect ratio
+                        let width = img.width;
+                        let height = img.height;
+                        const MAX_WIDTH = 1920;
+
+                        if (width > MAX_WIDTH) {
+                            height = Math.round(height * (MAX_WIDTH / width));
+                            width = MAX_WIDTH;
+                        }
+
+                        canvas.width = width;
+                        canvas.height = height;
+                        const ctx = canvas.getContext('2d');
+                        if (!ctx) {
+                            reject(new Error("Failed to get canvas context"));
+                            return;
+                        }
+                        ctx.drawImage(img, 0, 0, width, height);
+
+                        // Output as JPEG 0.8 quality
+                        canvas.toBlob((b) => {
+                            if (b) resolve(b);
+                            else reject(new Error("Canvas compression failed"));
+                        }, 'image/jpeg', 0.8);
+                    };
+                    img.onerror = (e) => {
+                        console.error("Image load error:", e);
+                        reject(new Error("Failed to load image for compression"));
+                    };
+                    img.src = URL.createObjectURL(blob as Blob); // Cast needed if blob logic above is slightly inferred
+                });
+
+                console.log(`[Paste] 2. Compressed blob size: ${(compressedBlob.size / 1024).toFixed(2)} KB`);
+
+                const storageRef = ref(storage, `snapshots/${user.uid}/${videoId}/${timestamp.toFixed(2)}_pasted.jpg`);
+
+                // Use resumable upload with metadata
+                const metadata = { contentType: 'image/jpeg' };
+                const uploadTask = uploadBytesResumable(storageRef, compressedBlob, metadata);
+
+                uploadTask.on('state_changed',
+                    (snapshot) => {
+                        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                        console.log(`[Paste] Upload is ${progress.toFixed(1)}% done`);
+                    },
+                    (error) => {
+                        console.error("[Paste] Upload Error:", error);
+                        alert(`Upload failed: ${error.message}`);
+                        setIsUploading(null);
+                    }
+                );
+
+                console.log(`[Paste] 3. Upload task started`);
+                await uploadTask;
+                console.log(`[Paste] 4. Upload complete, fetching URL...`);
+
+                const url = await getDownloadURL(storageRef);
+                console.log(`[Paste] 5. URL got: ${url}`);
+
+                await updateHighlight(id, { imageUrl: url });
+                console.log("[Paste] 6. Database updated");
+
+            } catch (err: any) {
+                console.error("Paste upload failed (catch):", err);
+                alert(`Upload failed: ${err.message}`);
+            } finally {
+                setIsUploading(null);
+            }
+        }
+    };
+
     const handleDelete = async (id: string) => {
         try {
             await deleteHighlight(id);
@@ -214,6 +328,8 @@ export function HighlightsPanel({ videoId, onSeek, onLoop, onStopLoop, currentLo
                                             key={h.id}
                                             id={`highlight - card - ${h.id} `}
                                             className="group relative rounded-xl border border-slate-200 bg-white shadow-sm overflow-hidden hover:shadow-md hover:border-cyan-300 transition-all cursor-default"
+                                            tabIndex={0}
+                                            onPaste={(e) => handlePaste(e, h.id, h.timestamp)}
                                         >
                                             {/* Image Area - Click to Enlarge */}
                                             <div
@@ -225,9 +341,26 @@ export function HighlightsPanel({ videoId, onSeek, onLoop, onStopLoop, currentLo
                                                 )}
                                             >
                                                 {h.imageUrl ? (
-                                                    <img src={h.imageUrl} alt="Snapshot" className="w-full h-full object-cover transition-transform duration-500 group-hover/image:scale-105" loading="lazy" />
+                                                    <img src={h.imageUrl} alt="Snapshot" className={cn("w-full h-full object-cover transition-transform duration-500 group-hover/image:scale-105", isUploading === h.id && "opacity-50")} loading="lazy" />
                                                 ) : (
-                                                    <div className="w-full h-full flex items-center justify-center text-slate-400 text-xs">No Image</div>
+                                                    <div className="w-full h-full flex flex-col items-center justify-center text-slate-400 gap-1">
+                                                        <span className="text-xs">No Image</span>
+                                                        <span className="text-[10px] text-slate-300">Click & Paste (Cmd+V)</span>
+                                                    </div>
+                                                )}
+
+                                                {/* Paste / Uploading Overlay */}
+                                                {(isUploading === h.id) && (
+                                                    <div className="absolute inset-0 bg-black/50 flex items-center justify-center text-white text-xs font-medium z-20">
+                                                        Uploading...
+                                                    </div>
+                                                )}
+
+                                                {/* Hover Paste Hint */}
+                                                {!isUploading && (
+                                                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/image:opacity-100 flex items-center justify-center text-white text-xs font-medium transition-opacity pointer-events-none z-10">
+                                                        Click & Paste to Replace
+                                                    </div>
                                                 )}
 
                                                 {/* Loading spinner when image is still placeholder */}
