@@ -64,7 +64,7 @@ function secondsToMs(seconds: number): number {
 }
 
 const DEFAULT_UA =
-    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36";
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36";
 
 const ANDROID_UA =
     "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Mobile Safari/537.36";
@@ -1492,6 +1492,36 @@ async function fetchStoryboardSpecFromWatchHtml(videoId: string, userAgent: stri
     return null;
 }
 
+// 4. Fallback: Parse via AllOrigins Proxy
+async function fetchStoryboardSpecFromAllOrigins(videoId: string): Promise<any | null> {
+    try {
+        const targetUrl = `https://www.youtube.com/watch?v=${videoId}`;
+        const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(targetUrl)}`;
+
+        // Use standard fetch without custom headers to avoid CORS preflight issues with the proxy
+        // (though in Node.js CORS doesn't apply, AllOrigins might filter headers)
+        const res = await fetch(proxyUrl);
+        if (!res.ok) {
+            console.warn(`[AllOrigins] Status ${res.status}`);
+            return null;
+        }
+
+        const html = await res.text();
+
+        // Direct regex search
+        const specRegex = /"spec":"(https?:[^"]+\|[^"]+)"/;
+        const match = html.match(specRegex);
+        if (match) {
+            console.log("[AllOrigins] Found spec!");
+            const raw = match[1].replace(/\\u0026/g, "&").replace(/\\/g, "");
+            return parseStoryboardSpec(raw);
+        }
+    } catch (e) {
+        console.warn(`[AllOrigins] Error: ${e}`);
+    }
+    return null;
+}
+
 // @ts-ignore
 // ─── Storyboard Fallback Logic ──────────────────────────────────────────────
 
@@ -1571,6 +1601,12 @@ async function captureSnapshotFromStoryboard(videoId: string, timestamp: number,
     if (!bestBoard) {
         console.log('[Storyboard] Falling back to HTML scraping...');
         bestBoard = await fetchStoryboardSpecFromWatchHtml(videoId, DEFAULT_UA);
+    }
+
+    // 4. Fallback to AllOrigins Proxy
+    if (!bestBoard) {
+        console.log('[Storyboard] Falling back to AllOrigins Proxy...');
+        bestBoard = await fetchStoryboardSpecFromAllOrigins(videoId);
     }
 
     if (!bestBoard) {

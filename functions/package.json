@@ -20,7 +20,7 @@
         "firebase-functions": "^7.0.5",
         "undici": "^6.23.0",
         "youtube-transcript-plus": "^1.2.0",
-        "youtubei.js": "^5.8.0",
+        "youtubei.js": "^16.0.1",
         "yt-dlp-wrap": "^2.3.12"
     },
     "devDependencies": {

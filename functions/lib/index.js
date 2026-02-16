@@ -29,7 +29,7 @@ async function ensureYtDlp() {
 function secondsToMs(seconds) {
     return Math.round(seconds * 1000);
 }
-const DEFAULT_UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36";
+const DEFAULT_UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36";
 const ANDROID_UA = "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Mobile Safari/537.36";
 // This API key is commonly embedded in YouTube clients. Using it lets us call Innertube
 // without first scraping the watch page (which is frequently blocked in server environments).
@@ -1254,6 +1254,33 @@ async function fetchStoryboardSpecFromWatchHtml(videoId, userAgent) {
     }
     return null;
 }
+// 4. Fallback: Parse via AllOrigins Proxy
+async function fetchStoryboardSpecFromAllOrigins(videoId) {
+    try {
+        const targetUrl = `https://www.youtube.com/watch?v=${videoId}`;
+        const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(targetUrl)}`;
+        // Use standard fetch without custom headers to avoid CORS preflight issues with the proxy
+        // (though in Node.js CORS doesn't apply, AllOrigins might filter headers)
+        const res = await fetch(proxyUrl);
+        if (!res.ok) {
+            console.warn(`[AllOrigins] Status ${res.status}`);
+            return null;
+        }
+        const html = await res.text();
+        // Direct regex search
+        const specRegex = /"spec":"(https?:[^"]+\|[^"]+)"/;
+        const match = html.match(specRegex);
+        if (match) {
+            console.log("[AllOrigins] Found spec!");
+            const raw = match[1].replace(/\\u0026/g, "&").replace(/\\/g, "");
+            return parseStoryboardSpec(raw);
+        }
+    }
+    catch (e) {
+        console.warn(`[AllOrigins] Error: ${e}`);
+    }
+    return null;
+}
 // @ts-ignore
 // ─── Storyboard Fallback Logic ──────────────────────────────────────────────
 // Return type is handled dynamically (base64 string or object with spec)
@@ -1315,6 +1342,11 @@ async function captureSnapshotFromStoryboard(videoId, timestamp, ffmpegPath, tot
     if (!bestBoard) {
         console.log('[Storyboard] Falling back to HTML scraping...');
         bestBoard = await fetchStoryboardSpecFromWatchHtml(videoId, DEFAULT_UA);
+    }
+    // 4. Fallback to AllOrigins Proxy
+    if (!bestBoard) {
+        console.log('[Storyboard] Falling back to AllOrigins Proxy...');
+        bestBoard = await fetchStoryboardSpecFromAllOrigins(videoId);
     }
     if (!bestBoard) {
         console.log('[Storyboard] Could not identify best storyboard (All methods failed).');
